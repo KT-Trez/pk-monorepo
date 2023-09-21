@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "es2022"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2022"
+  },
+  "exclude": [
+    "node_modules",
+  ],
+  "include": [
+    "src"
+  ]
+}
