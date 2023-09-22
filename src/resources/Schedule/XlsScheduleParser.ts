@@ -1,7 +1,7 @@
-import { Sheet } from '../../types/sheet';
-import { XlsParser } from '../XlsParser';
+import { XlsParser } from '../../components/XlsParser';
+import { ParserInterface } from '../../types/interfaces';
 import { LessonBuilder } from './LessonBuilder';
-import { Duration, Lesson, ScheduleParser } from './types';
+import { Duration, Lesson } from './types';
 
 export type ScheduleParserConfig = {
   dateIndex: number;
@@ -15,18 +15,31 @@ export type ScheduleParserConfig = {
   yearRegex: RegExp;
 };
 
-export class XlsScheduleParser implements ScheduleParser {
+export class XlsScheduleParser
+  implements ParserInterface<{ lessons: Lesson[]; year: string }>
+{
   private readonly config: ScheduleParserConfig;
-  private readonly sheet: Sheet<number | string | Date>;
+  private readonly data: (number | string | Date)[][];
 
   constructor(config: ScheduleParserConfig, scheduleFile: string) {
     this.config = config;
-    this.sheet = new XlsParser(scheduleFile).parse(true);
+    this.data = new XlsParser<number | string | Date>()
+      .parse(scheduleFile)
+      .flat()
+      .map((sheet) => sheet.data)
+      .flat();
   }
 
   #hasHours(row: (number | string | Date)[]) {
     const hours = row.at(this.config.hourIndex);
     return typeof hours === 'string' && this.config.hourRegex.test(hours);
+  }
+
+  parse() {
+    return {
+      lessons: this.#parseLessons(),
+      year: this.#parseYear(),
+    };
   }
 
   #parseDateAndDuration(
@@ -107,9 +120,9 @@ export class XlsScheduleParser implements ScheduleParser {
     }));
   }
 
-  parseLessons(): Lesson[] {
+  #parseLessons(): Lesson[] {
     let date: Date = new Date();
-    const lessons = this.sheet.data.reduce<LessonBuilder[]>((acc, row) => {
+    const lessons = this.data.reduce<LessonBuilder[]>((acc, row) => {
       if (!this.#hasHours(row)) {
         return acc;
       }
@@ -134,8 +147,8 @@ export class XlsScheduleParser implements ScheduleParser {
     return lessons.map((lesson) => lesson.build());
   }
 
-  parseYear(): string {
-    for (const row of this.sheet.data) {
+  #parseYear(): string {
+    for (const row of this.data) {
       const year = row.at(this.config.yearIndex);
       if (typeof year === 'string' && this.config.yearRegex.test(year)) {
         return year;

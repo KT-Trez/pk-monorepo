@@ -6,8 +6,3 @@ export type Lesson = {
   group: string;
   startsAt: Date;
 };
-
-export type ScheduleParser = {
-  parseLessons(): Lesson[];
-  parseYear(): string;
-};

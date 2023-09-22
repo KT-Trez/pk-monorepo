@@ -1,17 +1,28 @@
-import { Lesson, ScheduleParser } from './types';
+import { icsSchedulePatch, scheduleFilePath } from '../../config';
+import { ParserInterface, WriterInterface } from '../../types/interfaces';
+import { Lesson } from './types';
 
 export class Schedule {
-  classes: Lesson[];
+  lessons: Lesson[];
   year: string;
 
   constructor() {
-    this.classes = [];
-    this.year = 'year not specified';
+    this.lessons = [];
+    this.year = '[UNKNOWN]';
   }
 
-  parse(parser: ScheduleParser) {
-    this.classes = parser.parseLessons();
-    this.year = parser.parseYear();
+  parse(parser: ParserInterface<{ lessons: Lesson[]; year: string }>) {
+    const { lessons, year } = parser.parse(scheduleFilePath);
+    this.lessons = lessons;
+    this.year = year;
+    return this;
+  }
+
+  writeToFile<T>(
+    dataAdapter: (lessons: Lesson[]) => T[],
+    writer: WriterInterface<T>,
+  ) {
+    writer.write(dataAdapter(this.lessons), icsSchedulePatch);
     return this;
   }
 }

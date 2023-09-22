@@ -1,14 +1,21 @@
 import { isCuotScheduleValid, updateRssUpdateLockfile } from './rss.service';
-import { downloadSchedule, getScheduleDownloadURL } from './schedule.service';
+import {
+  downloadSchedule,
+  getScheduleDownloadURL,
+  parseXlsSchedule,
+  writeToIcs,
+} from './schedule.service';
 
 export const updateResources = async () => {
-  const [isValid, lastScheduleUpdate] = await isCuotScheduleValid();
-  if (!isValid && lastScheduleUpdate) {
+  const [isScheduleValid, lastScheduleUpdate] = await isCuotScheduleValid();
+  if (!isScheduleValid && lastScheduleUpdate) {
     await updateRssUpdateLockfile(lastScheduleUpdate.pubDate);
   }
 
-  if (!isValid) {
+  if (!isScheduleValid) {
     const scheduleDownloadURL = await getScheduleDownloadURL();
     await downloadSchedule(scheduleDownloadURL);
+    parseXlsSchedule();
+    writeToIcs();
   }
 };
