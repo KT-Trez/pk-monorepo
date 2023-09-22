@@ -1,8 +1,7 @@
-import { Class } from './Class';
-import { IScheduleParser } from './types';
+import { Lesson, ScheduleParser } from './types';
 
 export class Schedule {
-  classes: Class[];
+  classes: Lesson[];
   year: string;
 
   constructor() {
@@ -10,8 +9,8 @@ export class Schedule {
     this.year = 'year not specified';
   }
 
-  parse(parser: IScheduleParser) {
-    this.classes = parser.parseClasses();
+  parse(parser: ScheduleParser) {
+    this.classes = parser.parseLessons();
     this.year = parser.parseYear();
     return this;
   }
