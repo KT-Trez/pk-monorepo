@@ -1,9 +1,10 @@
 # dependencies
+/.env
 /node_modules
-/resources
 
 # editors
 /.idea
 
-# production
-/package-*.json
+# temp
+/dist
+/resources
