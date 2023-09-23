@@ -1,7 +1,10 @@
 # dependencies
+/.env
 /node_modules
-/resources
 
 # editors
-/.env
 /.idea
+
+# temp
+/dist
+/resources
