@@ -1,6 +1,5 @@
 import xlsx from 'node-xlsx';
-import { ParserInterface } from '../types/interfaces';
-import { Sheet } from '../types/sheet';
+import { ParserInterface, Sheet } from 'types';
 
 export class XlsParser<T> implements ParserInterface<Sheet<T>[]> {
   parse(xlsPath: string): Sheet<T>[] {

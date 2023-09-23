@@ -1,8 +1,8 @@
 import { timetableIcsPath, timetableXlsPath } from 'config';
-import { ParserInterface, WriterInterface } from 'types/interfaces';
+import { ParserInterface, WriterInterface } from 'types';
 import { Lesson } from './types';
 
-export class Schedule {
+export class Timetable {
   lessons: Lesson[];
   year: string;
 
@@ -12,7 +12,7 @@ export class Schedule {
   }
 
   parse(parser: ParserInterface<{ lessons: Lesson[]; year: string }>) {
-    // todo: change to dynnamic path
+    // todo: change to dynamic path
     const { lessons, year } = parser.parse(timetableXlsPath);
     this.lessons = lessons;
     this.year = year;
@@ -23,7 +23,7 @@ export class Schedule {
     dataAdapter: (lessons: Lesson[]) => T[],
     writer: WriterInterface<T[]>,
   ) {
-    // todo: change to dynnamic path
+    // todo: change to dynamic path
     writer.write(dataAdapter(this.lessons), timetableIcsPath);
     return this;
   }

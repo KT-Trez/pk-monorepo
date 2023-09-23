@@ -1,7 +1,6 @@
-import console from 'console';
 import process from 'process';
 import Parser from 'rss-parser';
-import { WriterInterface } from 'types/interfaces';
+import { WriterInterface } from 'types';
 
 export class Rss<Feed, Item> {
   get feed(): (Feed & Parser.Output<Item>) | undefined {
