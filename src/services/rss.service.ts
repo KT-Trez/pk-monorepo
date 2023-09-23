@@ -1,41 +1,44 @@
+import { LockfileWriter } from 'components/LockfileWriter';
+import {
+  cuotRssOrigin,
+  cuotTimeTableOrigin,
+  timetableLockfilePath,
+} from 'config';
+import console from 'console';
 import fs from 'fs';
+import process from 'process';
+import { Rss } from 'resources/Rss';
 import Parser from 'rss-parser';
-import { rssUpdateLockfilePath, scheduleUrl } from '../config';
-import { RssFeed, RssItem } from '../types/rss';
+import { CuotFeed, CuotItem } from 'types/rss';
 
-const normalizeText = (text: string) => text.replace(/[^a-z]/gi, '');
+export const cuotRss = new Rss<CuotFeed, CuotItem>(cuotRssOrigin);
 
-export const isCuotScheduleValid = async (): Promise<
-  [boolean, RssItem | undefined]
-> => {
-  const rssItems = await readCuotOrigin();
-  const lastScheduleUpdate = rssItems.find((item) =>
-    new RegExp(normalizeText(scheduleUrl), 'i').test(normalizeText(item.link)),
+export const getLastTimetableUpdate = () => {
+  return cuotRss.feed?.items.find(
+    (item) => item.link.trim() === cuotTimeTableOrigin,
   );
-
-  if (!fs.existsSync(rssUpdateLockfilePath)) {
-    return [false, lastScheduleUpdate];
-  }
-
-  const rssLastUpdate = fs.readFileSync(rssUpdateLockfilePath, {
-    encoding: 'utf-8',
-  });
-
-  return [lastScheduleUpdate?.pubDate === rssLastUpdate, lastScheduleUpdate];
 };
 
-const readCuotOrigin = async (): Promise<RssItem[]> => {
-  const parser: Parser<RssFeed, RssItem> = new Parser();
-  const feed = await parser.parseURL('https://it.pk.edu.pl/rss/');
-  return feed.items;
+export const readTimetableLockfile = () => {
+  if (fs.existsSync(timetableLockfilePath)) {
+    return fs.readFileSync(timetableLockfilePath, { encoding: 'utf-8' });
+  }
+  return '';
 };
 
-export const updateRssUpdateLockfile = async (lastUpdate: string) => {
-  if (fs.existsSync(rssUpdateLockfilePath)) {
-    fs.rmSync(rssUpdateLockfilePath);
+export const updateCuotTimetableLockfile = async (reload?: boolean) => {
+  if (process.env.DEBUG) {
+    console.info('Updating cuot timetable lockfile');
   }
 
-  fs.writeFileSync(rssUpdateLockfilePath, lastUpdate, {
-    encoding: 'utf-8',
-  });
+  if (reload) {
+    await cuotRss.reload();
+  }
+
+  const dataExtractor = (feed: CuotFeed & Parser.Output<CuotItem>) =>
+    feed.items.find((item) => item.link.trim() === cuotTimeTableOrigin)
+      ?.pubDate ?? new Date().getTime();
+
+  const writer = new LockfileWriter();
+  cuotRss.writeLockfile(dataExtractor, timetableLockfilePath, writer);
 };

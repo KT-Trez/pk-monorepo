@@ -1,9 +1,9 @@
 import fs from 'fs';
 import * as ics from 'ics';
 import { EventAttributes } from 'ics';
-import { WriterInterface } from '../types/interfaces';
+import { WriterInterface } from 'types/interfaces';
 
-export class IcsWriter implements WriterInterface<EventAttributes> {
+export class IcsWriter implements WriterInterface<EventAttributes[]> {
   write(events: EventAttributes[], icsPath: string) {
     if (fs.existsSync(icsPath)) {
       fs.rmSync(icsPath);

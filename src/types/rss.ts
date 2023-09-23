@@ -1,4 +1,4 @@
-export type RssFeed = {
+export type CuotFeed = {
   category: string;
   description: string;
   docs: string;
@@ -9,7 +9,7 @@ export type RssFeed = {
   title: string;
 };
 
-export type RssItem = {
+export type CuotItem = {
   description: string;
   link: string;
   pubDate: string;
