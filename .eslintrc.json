@@ -18,7 +18,6 @@
   ],
   "root": true,
   "rules": {
-    "no-console": "warn",
     "prettier/prettier": "error"
   }
 }

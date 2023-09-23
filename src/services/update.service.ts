@@ -1,4 +1,5 @@
 import process from 'process';
+import { xlsParserConfig } from 'resources/Timetable';
 import {
   cuotRss,
   getLastTimetableUpdate,
@@ -6,11 +7,11 @@ import {
   updateCuotTimetableLockfile,
 } from './rss.service';
 import {
-  downloadSchedule,
-  getScheduleDownloadURL,
-  parseXlsSchedule,
+  downloadToXls,
+  parseDownloadURLFromWeb,
+  parseFromXls,
   writeToIcs,
-} from './schedule.service';
+} from './timetable.service';
 
 export const updateResources = async () => {
   if (process.env.DEBUG) {
@@ -23,11 +24,10 @@ export const updateResources = async () => {
   const timetableLockfile = readTimetableLockfile();
 
   if (timetableLastUpdate?.pubDate !== timetableLockfile) {
+    await downloadToXls(await parseDownloadURLFromWeb());
     await updateCuotTimetableLockfile();
 
-    const scheduleDownloadURL = await getScheduleDownloadURL();
-    await downloadSchedule(scheduleDownloadURL); // todo: wait till download stream finishes
-    parseXlsSchedule();
-    writeToIcs();
+    const timetable = parseFromXls(xlsParserConfig);
+    writeToIcs(timetable);
   }
 };
