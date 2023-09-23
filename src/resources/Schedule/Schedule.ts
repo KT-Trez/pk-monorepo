@@ -1,5 +1,5 @@
-import { icsSchedulePatch, scheduleFilePath } from '../../config';
-import { ParserInterface, WriterInterface } from '../../types/interfaces';
+import { timetableIcsPath, timetableXlsPath } from 'config';
+import { ParserInterface, WriterInterface } from 'types/interfaces';
 import { Lesson } from './types';
 
 export class Schedule {
@@ -12,7 +12,8 @@ export class Schedule {
   }
 
   parse(parser: ParserInterface<{ lessons: Lesson[]; year: string }>) {
-    const { lessons, year } = parser.parse(scheduleFilePath);
+    // todo: change to dynnamic path
+    const { lessons, year } = parser.parse(timetableXlsPath);
     this.lessons = lessons;
     this.year = year;
     return this;
@@ -20,9 +21,10 @@ export class Schedule {
 
   writeToFile<T>(
     dataAdapter: (lessons: Lesson[]) => T[],
-    writer: WriterInterface<T>,
+    writer: WriterInterface<T[]>,
   ) {
-    writer.write(dataAdapter(this.lessons), icsSchedulePatch);
+    // todo: change to dynnamic path
+    writer.write(dataAdapter(this.lessons), timetableIcsPath);
     return this;
   }
 }

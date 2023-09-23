@@ -3,5 +3,5 @@ export type ParserInterface<T> = {
 };
 
 export type WriterInterface<T> = {
-  write(data: T[], filePath: string): void;
+  write(data: T, filePath: string): void;
 };
