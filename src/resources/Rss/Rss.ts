@@ -3,15 +3,16 @@ import Parser from 'rss-parser';
 import { WriterInterface } from 'types';
 
 export class Rss<Feed, Item> {
-  get feed(): (Feed & Parser.Output<Item>) | undefined {
-    return this._feed;
-  }
-
-  private _feed?: Feed & Parser.Output<Item>;
   private readonly origin: string;
 
   constructor(origin: string) {
     this.origin = origin;
+  }
+
+  private _feed?: Feed & Parser.Output<Item>;
+
+  get feed(): (Feed & Parser.Output<Item>) | undefined {
+    return this._feed;
   }
 
   async reload() {
