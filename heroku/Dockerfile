@@ -1,1 +1,0 @@
-FROM kttrez/pk_plan:latest

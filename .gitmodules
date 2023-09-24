@@ -1,6 +1,0 @@
-[submodule "pk_plan-server"]
-	path = pk_plan-server
-	url = ssh://git@192.168.2.1:3022/kt-trez/pk_plan-server.git
-[submodule "pk_plan-client"]
-	path = pk_plan-client
-	url = ssh://git@192.168.2.1:3022/kt-trez/pk_plan-client.git
