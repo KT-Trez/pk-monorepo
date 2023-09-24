@@ -1,10 +1,13 @@
 {
   "dependencies": {
     "dotenv": "^16.3.1",
+    "ics": "^3.5.0",
+    "node-cron": "^3.0.2",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
+    "@types/node-cron": "^3.0.8",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
@@ -13,7 +16,11 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "main": "src/index.ts",
   "name": "pk-plan",
