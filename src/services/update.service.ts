@@ -1,5 +1,4 @@
 import process from 'process';
-import { xlsParserConfig } from 'resources/Timetable';
 import {
   cuotRss,
   getLastTimetableUpdate,

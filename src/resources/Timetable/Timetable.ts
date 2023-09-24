@@ -1,6 +1,5 @@
 import { timetableIcsPath, timetableXlsPath } from 'config';
-import { ParserInterface, WriterInterface } from 'types';
-import { Lesson } from './types';
+import { Lesson, ParserInterface, WriterInterface } from 'types';
 
 export class Timetable {
   lessons: Lesson[];

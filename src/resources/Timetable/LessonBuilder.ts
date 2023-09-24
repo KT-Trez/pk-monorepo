@@ -1,4 +1,4 @@
-import { Duration, Lesson } from './types';
+import { Duration, Lesson } from '../../types';
 
 export class LessonBuilder {
   get details(): string {
