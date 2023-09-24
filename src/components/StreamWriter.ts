@@ -3,7 +3,7 @@
 import fs from 'fs';
 import { Readable } from 'stream';
 import { finished } from 'stream/promises';
-import { WriterInterface } from 'types';
+import { WriterInterface } from '../types';
 
 export class StreamWriter implements WriterInterface<URL> {
   async write(streamURL: URL, streamFilePath: string) {

@@ -1,14 +1,14 @@
-import { LockfileWriter } from 'components';
+import fs from 'fs';
+import process from 'process';
+import Parser from 'rss-parser';
+import { LockfileWriter } from '../components';
 import {
   cuotRssOrigin,
   cuotTimeTableOrigin,
   timetableLockfilePath,
-} from 'config';
-import fs from 'fs';
-import process from 'process';
-import { Rss } from 'resources/Rss';
-import Parser from 'rss-parser';
-import { CuotFeed, CuotItem } from 'types';
+} from '../config';
+import { Rss } from '../resources/Rss';
+import { CuotFeed, CuotItem } from '../types';
 
 export const cuotRss = new Rss<CuotFeed, CuotItem>(cuotRssOrigin);
 

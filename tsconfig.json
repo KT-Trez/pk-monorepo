@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "baseUrl": "./src",
     "forceConsistentCasingInFileNames": true,
     "lib": [
       "es2022"

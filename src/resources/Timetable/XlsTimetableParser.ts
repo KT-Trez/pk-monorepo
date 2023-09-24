@@ -1,5 +1,5 @@
-import { XlsParser } from 'components';
-import { Duration, Lesson, ParserInterface } from 'types';
+import { XlsParser } from '../../components';
+import { Duration, Lesson, ParserInterface } from '../../types';
 import { LessonBuilder } from './LessonBuilder';
 
 export type xlsTimetable = {

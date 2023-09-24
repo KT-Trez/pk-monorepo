@@ -1,6 +1,6 @@
 import process from 'process';
 import Parser from 'rss-parser';
-import { WriterInterface } from 'types';
+import { WriterInterface } from '../../types';
 
 export class Rss<Feed, Item> {
   private readonly origin: string;

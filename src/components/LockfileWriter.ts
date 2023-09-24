@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { WriterInterface } from 'types';
+import { WriterInterface } from '../types';
 
 export class LockfileWriter implements WriterInterface<string> {
   write(pubDate: string, lockfilePath: string) {

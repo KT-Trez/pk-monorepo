@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { createEvents, EventAttributes } from 'ics';
-import { WriterInterface } from 'types';
+import { WriterInterface } from '../types';
 
 export class IcsWriter implements WriterInterface<EventAttributes[]> {
   write(events: EventAttributes[], icsPath: string) {

@@ -1,6 +1,6 @@
 // noinspection JSUnresolvedReference
 
-import { ParserInterface } from 'types';
+import { ParserInterface } from '../types';
 
 export class CuotTimetableOriginParser
   implements ParserInterface<Promise<string[]>>
