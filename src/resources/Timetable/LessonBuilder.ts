@@ -1,32 +1,35 @@
 import { Duration, Lesson } from '../../types';
 
 export class LessonBuilder {
-  get details(): string {
-    return this._details;
-  }
-
-  get duration(): { hours: number; minutes: number } {
-    return this._duration;
-  }
-
-  get group(): string {
-    return this._group;
-  }
-
-  get startsAt(): Date {
-    return this._startsAt;
-  }
-
-  private _details: string;
-  private _duration: Duration;
-  private _group: string;
-  private _startsAt: Date;
-
   constructor() {
     this._duration = { hours: 0, minutes: 0 };
     this._group = '';
     this._details = '';
     this._startsAt = new Date(0);
+  }
+
+  private _details: string;
+
+  get details(): string {
+    return this._details;
+  }
+
+  private _duration: Duration;
+
+  get duration(): { hours: number; minutes: number } {
+    return this._duration;
+  }
+
+  private _group: string;
+
+  get group(): string {
+    return this._group;
+  }
+
+  private _startsAt: Date;
+
+  get startsAt(): Date {
+    return this._startsAt;
   }
 
   build(): Lesson {

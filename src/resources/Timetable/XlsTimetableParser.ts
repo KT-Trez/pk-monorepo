@@ -30,16 +30,16 @@ export class XlsTimetableParser
       .flat();
   }
 
-  #hasHours(row: (number | string | Date)[]) {
-    const hours = row.at(this.config.hourIndex);
-    return typeof hours === 'string' && this.config.hourRegex.test(hours);
-  }
-
   parse() {
     return {
       lessons: this.#parseLessons(),
       year: this.#parseYear(),
     };
+  }
+
+  #hasHours(row: (number | string | Date)[]) {
+    const hours = row.at(this.config.hourIndex);
+    return typeof hours === 'string' && this.config.hourRegex.test(hours);
   }
 
   #parseDateAndDuration(
