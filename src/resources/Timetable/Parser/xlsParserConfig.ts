@@ -1,6 +1,6 @@
-import { ScheduleParserConfig } from '../XlsScheduleParser';
+import { xlsTimetable } from '../XlsTimetableParser';
 
-export const xlsParserConfig: ScheduleParserConfig = {
+export const xlsParserConfig: xlsTimetable = {
   dateIndex: 0,
   hourIndex: 1,
   hourRegex: /\d?\d:\d\d-\d?\d:\d\d/i,

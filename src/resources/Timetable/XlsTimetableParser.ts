@@ -1,9 +1,8 @@
 import { XlsParser } from 'components';
-import { ParserInterface } from 'types';
+import { Duration, Lesson, ParserInterface } from 'types';
 import { LessonBuilder } from './LessonBuilder';
-import { Duration, Lesson } from './types';
 
-export type ScheduleParserConfig = {
+export type xlsTimetable = {
   dateIndex: number;
   hourIndex: number;
   hourRegex: RegExp;
@@ -15,13 +14,14 @@ export type ScheduleParserConfig = {
   yearRegex: RegExp;
 };
 
-export class XlsScheduleParser
+// todo: refactor
+export class XlsTimetableParser
   implements ParserInterface<{ lessons: Lesson[]; year: string }>
 {
-  private readonly config: ScheduleParserConfig;
+  private readonly config: xlsTimetable;
   private readonly data: (number | string | Date)[][];
 
-  constructor(config: ScheduleParserConfig, scheduleFile: string) {
+  constructor(config: xlsTimetable, scheduleFile: string) {
     this.config = config;
     this.data = new XlsParser<number | string | Date>()
       .parse(scheduleFile)
@@ -106,6 +106,7 @@ export class XlsScheduleParser
   ): { content: string; group: string }[] {
     const contents = this.config.lessons
       .map(({ group, index }) => ({
+        // fixme: groups
         group,
         content: row.at(index),
       }))

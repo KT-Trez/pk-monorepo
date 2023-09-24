@@ -1,13 +1,13 @@
 import { DateArray, DurationObject } from 'ics';
-import { Lesson } from './types';
+import { Lesson } from '../../types';
 
 export class LessonToIcsAdapter {
-  description: string;
+  description: string; // todo: implement
   duration: DurationObject;
   location: string;
   start: DateArray;
-  title: string;
-  geo?: { lat: number; lon: number };
+  title: string; // todo: refactor
+  geo?: { lat: number; lon: number }; // todo: implement
 
   constructor(lesson: Lesson) {
     this.description = '';

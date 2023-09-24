@@ -2,13 +2,13 @@ import { CuotTimetableOriginParser, IcsWriter, StreamWriter } from 'components';
 import { cuotOrigin, timetableXlsPath } from 'config';
 import process from 'process';
 import {
-  Lesson,
   LessonToIcsAdapter,
-  ScheduleParserConfig,
   Timetable,
-  XlsScheduleParser,
+  xlsTimetable,
+  XlsTimetableParser,
 } from 'resources/Timetable';
 import { URL } from 'url';
+import { Lesson } from '../types';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -33,8 +33,8 @@ export const parseDownloadURLFromWeb = async () => {
   return new URL(timetablePath, cuotOrigin);
 };
 
-export const parseFromXls = (config: ScheduleParserConfig) => {
-  const parser = new XlsScheduleParser(config, timetableXlsPath);
+export const parseFromXls = (config: xlsTimetable) => {
+  const parser = new XlsTimetableParser(config, timetableXlsPath);
   return new Timetable().parse(parser);
 };
 
