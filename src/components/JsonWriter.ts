@@ -7,6 +7,8 @@ export class JsonWriter<T> implements WriterInterface<T> {
       fs.rmSync(jsonPath);
     }
 
-    fs.writeFileSync(jsonPath, JSON.stringify(dataT), { encoding: 'utf-8' });
+    fs.writeFileSync(jsonPath, JSON.stringify(dataT).replace(/\s{2,}/gm, ' '), {
+      encoding: 'utf-8',
+    });
   }
 }

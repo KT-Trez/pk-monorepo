@@ -13,6 +13,6 @@ if (!fs.existsSync(resourcesDir)) {
   fs.mkdirSync(resourcesDir);
 }
 
-cron.schedule('0 21 * * *', updateResources, {
+cron.schedule('37 21 * * *', updateResources, {
   timezone: 'Europe/Warsaw',
 });

@@ -72,18 +72,20 @@ export class XlsTimetableParser
     const schoolDays: SchoolDay[] = [];
 
     const date: Date = new Date();
-    let schoolDay: SchoolDay = new SchoolDay(date);
+    let schoolDay: SchoolDay | undefined;
 
     for (const row of rows) {
       const parsedDate = this.#parseDate(date, row);
-      if (parsedDate !== date) {
+      if (parsedDate !== date && schoolDay) {
         schoolDays.push(schoolDay);
+      }
+      if (parsedDate !== date) {
         schoolDay = new SchoolDay(parsedDate);
       }
 
       const lessonBlock = this.#parseLessonBlock(row);
       if (lessonBlock) {
-        schoolDay.addLessonBlock(lessonBlock);
+        schoolDay!.addLessonBlock(lessonBlock);
       }
 
       this.#parseYear(row);
