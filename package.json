@@ -3,6 +3,7 @@
     "dotenv": "^16.3.1",
     "ics": "^3.5.0",
     "node-cron": "^3.0.2",
+    "node-xlsx": "^0.23.0",
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
 export type Sheet<T> = {
-  data: T[][];
+  data: T[];
   name: string;
 };

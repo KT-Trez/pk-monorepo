@@ -1,4 +1,5 @@
 import process from 'process';
+import { secondYearConfig } from '../resources/Timetable';
 import {
   cuotRss,
   getLastTimetableUpdate,
@@ -26,7 +27,7 @@ export const updateResources = async () => {
     await downloadToXls(await parseDownloadURLFromWeb());
     await updateCuotTimetableLockfile();
 
-    const timetable = parseFromXls(xlsParserConfig);
+    const timetable = parseFromXls(secondYearConfig);
     writeToIcs(timetable);
   }
 };

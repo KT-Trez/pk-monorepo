@@ -15,7 +15,7 @@ export class XlsParser<T> implements ParserInterface<Sheet<T>[]> {
     for (const sheet of sheets) {
       const { data, name } = sheet;
       parsed.push({
-        data: (data as T[][]).filter((datum) => !!datum),
+        data: (data as T[]).filter((datum) => !!datum),
         name,
       });
     }
