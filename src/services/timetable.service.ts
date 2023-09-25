@@ -1,28 +1,23 @@
 import { NodeSSH } from 'node-ssh';
 import process from 'process';
 import { URL } from 'url';
+import { CuotTimetableOriginParser, IcsWriter, StreamWriter } from '../components';
+import { JsonWriter } from "../components/JsonWriter";
 import {
-  CuotTimetableOriginParser,
-  IcsWriter,
-  StreamWriter,
-} from '../components';
-import { JsonWriter } from '../components/JsonWriter';
+  Timetable,
+  XlsTimetableParser,
+} from '../resources/Timetable';
+import { SchoolDay } from '../resources/Timetable/SchoolDay';
 import {
   cuotOrigin,
   cuotTimeTableOrigin,
-  timetableIcsPath,
-  timetableJsonPath,
+  timetableIcsPath, timetableJsonPath,
   timetableXlsPath,
   torusOrigin,
-  torusUploadPath,
-} from '../config';
-import {
-  LessonToIcsAdapter,
-  Timetable,
-  xlsTimetable,
-  XlsTimetableParser,
-} from '../resources/Timetable';
-import { Lesson } from '../types';
+  torusUploadPath
+} from "../config";
+import { XlsParserConfig } from '../resources/Timetable/xlsParser/types';
+import { SchoolDayToIcsAdapter } from '../resources/Timetable/Adapters';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -48,8 +43,8 @@ export const parseDownloadURLFromWeb = async () => {
   return new URL(timetablePath, cuotOrigin);
 };
 
-export const parseFromXls = (config: xlsTimetable) => {
-  const parser = new XlsTimetableParser(config, timetableXlsPath);
+export const parseFromXls = (parserConfig: XlsParserConfig) => {
+  const parser = new XlsTimetableParser(parserConfig);
   return new Timetable().parse(parser);
 };
 
@@ -80,8 +75,9 @@ export const writeToIcs = (timetable: Timetable) => {
     console.info('Saving timetable to .ics');
   }
 
-  const icsAdapter = (lessons: Lesson[]) =>
-    lessons.map((lesson) => new LessonToIcsAdapter(lesson));
+  // todo: make more readable
+  const icsAdapter = (schoolDays: SchoolDay[]) =>
+    schoolDays.map((day) => SchoolDayToIcsAdapter(day)).flat();
   const writer = new IcsWriter();
   timetable.writeToFile(icsAdapter, timetableIcsPath, writer);
 };
@@ -91,7 +87,7 @@ export const writeToJson = (timetable: Timetable) => {
     console.info('Saving timetable to .json');
   }
 
-  const jsonAdapter = (lessons: Lesson[]) => lessons;
-  const writer = new JsonWriter<Lesson[]>();
+  const jsonAdapter = (lessons: SchoolDay[]) => lessons;
+  const writer = new JsonWriter<SchoolDay[]>();
   timetable.writeToFile(jsonAdapter, timetableJsonPath, writer);
 };

@@ -1,29 +1,30 @@
 import { timetableXlsPath } from '../../config';
-import { Lesson, ParserInterface, WriterInterface } from '../../types';
+import { ParserInterface, WriterInterface } from '../../types';
+import { SchoolDay } from './SchoolDay';
 
 export class Timetable {
-  lessons: Lesson[];
+  schoolDays: SchoolDay[];
   year: string;
 
   constructor() {
-    this.lessons = [];
+    this.schoolDays = [];
     this.year = '[UNKNOWN]';
   }
 
-  parse(parser: ParserInterface<{ lessons: Lesson[]; year: string }>) {
+  parse(parser: ParserInterface<{ schoolDays: SchoolDay[]; year: string }>) {
     // todo: change to dynamic path
-    const { lessons, year } = parser.parse(timetableXlsPath);
-    this.lessons = lessons;
+    const { schoolDays, year } = parser.parse(timetableXlsPath);
+    this.schoolDays = schoolDays;
     this.year = year;
     return this;
   }
 
   writeToFile<T>(
-    dataAdapter: (lessons: Lesson[]) => T[],
+    dataAdapter: (schoolDays: SchoolDay[]) => T[],
     path: string,
     writer: WriterInterface<T[]>,
   ) {
-    writer.write(dataAdapter(this.lessons), path);
+    writer.write(dataAdapter(this.schoolDays), path);
     return this;
   }
 }
