@@ -36,8 +36,8 @@ export const updateResources = async () => {
 
     if (process.env.UPLOAD)
       await uploadToTorus([
-        { name: 'timetable.ics', path: timetableIcsPath },
-        { name: 'timetable.json', path: timetableJsonPath },
+        { localPath: timetableIcsPath, remoteName: 'timetable.ics' },
+        { localPath: timetableJsonPath, remoteName: 'timetable.json' },
       ]);
   }
 

@@ -1,23 +1,28 @@
 import { NodeSSH } from 'node-ssh';
 import process from 'process';
 import { URL } from 'url';
-import { CuotTimetableOriginParser, IcsWriter, StreamWriter } from '../components';
-import { JsonWriter } from "../components/JsonWriter";
 import {
+  CuotTimetableOriginParser,
+  IcsWriter,
+  StreamWriter,
+} from '../components';
+import { JsonWriter } from '../components/JsonWriter';
+import {
+  cuotOrigin,
+  cuotTimeTableOrigin,
+  timetableIcsPath,
+  timetableJsonPath,
+  timetableXlsPath,
+  torusOrigin,
+  torusUploadPath,
+} from '../config';
+import {
+  SchoolDayToIcsAdapter,
   Timetable,
   XlsTimetableParser,
 } from '../resources/Timetable';
 import { SchoolDay } from '../resources/Timetable/SchoolDay';
-import {
-  cuotOrigin,
-  cuotTimeTableOrigin,
-  timetableIcsPath, timetableJsonPath,
-  timetableXlsPath,
-  torusOrigin,
-  torusUploadPath
-} from "../config";
 import { XlsParserConfig } from '../resources/Timetable/xlsParser/types';
-import { SchoolDayToIcsAdapter } from '../resources/Timetable/Adapters';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -49,7 +54,7 @@ export const parseFromXls = (parserConfig: XlsParserConfig) => {
 };
 
 export const uploadToTorus = async (
-  files: { name: string; path: string }[],
+  files: { localPath: string; remoteName: string }[],
 ) => {
   if (process.env.DEBUG) {
     console.info('Uploading to torus');
@@ -63,9 +68,9 @@ export const uploadToTorus = async (
   });
 
   await ssh.putFiles(
-    files.map(({ name, path }) => ({
-      local: path,
-      remote: `${torusUploadPath}/${name}`,
+    files.map(({ remoteName, localPath }) => ({
+      local: localPath,
+      remote: `${torusUploadPath}/${remoteName}`,
     })),
   );
 };
