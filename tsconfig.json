@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "baseUrl": "./src",
     "forceConsistentCasingInFileNames": true,
     "lib": [
       "es2022"
@@ -22,10 +21,5 @@
   ],
   "include": [
     "src"
-  ],
-  "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ]
-  }
+  ]
 }

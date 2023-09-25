@@ -1,5 +1,5 @@
-import { ParserInterface } from 'types';
 import { XlsParser } from '../../../components';
+import { ParserInterface } from '../../../types';
 import { SchoolDay } from '../SchoolDay';
 import { LessonBlock } from './LessonBlock';
 import { XlsFormat, XlsParserConfig } from './types';

@@ -1,4 +1,5 @@
 import process from 'process';
+import { timetableIcsPath, timetableJsonPath } from '../config';
 import { secondYearConfig } from '../resources/Timetable';
 import {
   cuotRss,
@@ -10,7 +11,9 @@ import {
   downloadToXls,
   parseDownloadURLFromWeb,
   parseFromXls,
+  uploadToTorus,
   writeToIcs,
+  writeToJson,
 } from './timetable.service';
 
 export const updateResources = async () => {
@@ -29,5 +32,16 @@ export const updateResources = async () => {
 
     const timetable = parseFromXls(secondYearConfig);
     writeToIcs(timetable);
+    writeToJson(timetable);
+
+    if (process.env.UPLOAD)
+      await uploadToTorus([
+        { localPath: timetableIcsPath, remoteName: 'timetable.ics' },
+        { localPath: timetableJsonPath, remoteName: 'timetable.json' },
+      ]);
+  }
+
+  if (process.env.DEBUG) {
+    console.info('All done');
   }
 };

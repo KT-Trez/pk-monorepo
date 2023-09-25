@@ -1,5 +1,5 @@
-import { timetableIcsPath, timetableXlsPath } from 'config';
-import { ParserInterface, WriterInterface } from 'types';
+import { timetableXlsPath } from '../../config';
+import { ParserInterface, WriterInterface } from '../../types';
 import { SchoolDay } from './SchoolDay';
 
 export class Timetable {
@@ -21,10 +21,10 @@ export class Timetable {
 
   writeToFile<T>(
     dataAdapter: (schoolDays: SchoolDay[]) => T[],
+    path: string,
     writer: WriterInterface<T[]>,
   ) {
-    // todo: change to dynamic path
-    writer.write(dataAdapter(this.schoolDays), timetableIcsPath);
+    writer.write(dataAdapter(this.schoolDays), path);
     return this;
   }
 }

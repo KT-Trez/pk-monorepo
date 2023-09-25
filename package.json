@@ -3,6 +3,7 @@
     "dotenv": "^16.3.1",
     "ics": "^3.5.0",
     "node-cron": "^3.0.2",
+    "node-ssh": "^13.1.0",
     "node-xlsx": "^0.23.0",
     "rss-parser": "^3.13.0"
   },
@@ -17,7 +18,6 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   },
   "engines": {
