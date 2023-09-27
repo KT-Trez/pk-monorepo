@@ -2,8 +2,8 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-COPY dist ./
+COPY dist ./dist
 COPY package*.json ./
 RUN npm ci
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "start"]

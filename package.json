@@ -30,7 +30,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .tsc",
     "serve": "nodemon",
-    "start": "npm run build && node dist/index.js"
+    "start": "node dist/index.js"
   },
   "version": "0.5.1"
 }
