@@ -32,5 +32,5 @@
     "serve": "nodemon",
     "start": "npm run build && node dist/index.js"
   },
-  "version": "1.0.0"
+  "version": "0.5.1"
 }
