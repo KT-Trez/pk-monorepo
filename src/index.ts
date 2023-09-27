@@ -3,7 +3,7 @@ import fs from 'fs';
 import cron from 'node-cron';
 import process from 'process';
 import { resourcesDir } from './config';
-import { updateResources } from './services/update.service';
+import { updateResources } from './services';
 
 if (process.env.DEBUG) {
   console.info('Starting cron');

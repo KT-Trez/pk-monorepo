@@ -5,18 +5,23 @@ export type LabelValue<T> = {
   value: T;
 };
 
-export type LessonType = {
+export type ClassType = {
   details: string;
   group: string;
 };
 
-export type LessonBlockType = {
+export type ClassesBlockType = {
+  classes: ClassType[];
   duration: LabelValue<Duration>;
-  lessons: LessonType[];
   startsAt: LabelValue<Date>;
 };
 
-export type SchoolDayType = {
+export type UniDayType = {
+  classesBlock: ClassesBlockType[];
   date: Date;
-  lessonBlock: LessonBlockType[];
+};
+
+export type TimetableEndpoint = {
+  pubDate: Date;
+  timetable: UniDayType[];
 };

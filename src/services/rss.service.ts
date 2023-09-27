@@ -7,7 +7,7 @@ import {
   cuotTimeTableOrigin,
   timetableLockfilePath,
 } from '../config';
-import { Rss } from '../resources/Rss';
+import { Rss } from '../resources';
 import { CuotFeed, CuotItem } from '../types';
 
 export const cuotRss = new Rss<CuotFeed, CuotItem>(cuotRssOrigin);

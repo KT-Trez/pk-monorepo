@@ -1,7 +1,7 @@
-export { LessonTypeToIcsAdapter, SchoolDayToIcsAdapter } from './Adapters';
-export { Timetable } from './Timetable';
+export * from './xlsParser';
 export {
-  XlsTimetableParser,
-  xlsTimetable,
-} from './xlsParser/XlsTimetableParser';
-export { secondYearConfig } from './xlsParser/xlsParserConfig';
+  ClassTypeToIcsEventAdapter,
+  UniDayToIcsEventAdapter,
+} from './Adapters';
+export { Timetable } from './Timetable';
+export { UniDay } from './UniDay';

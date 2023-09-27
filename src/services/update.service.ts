@@ -1,6 +1,6 @@
 import process from 'process';
 import { timetableIcsPath, timetableJsonPath } from '../config';
-import { secondYearConfig } from '../resources/Timetable';
+import { secondYearConfig } from '../resources';
 import {
   cuotRss,
   getLastTimetableUpdate,

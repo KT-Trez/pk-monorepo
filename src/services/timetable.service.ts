@@ -4,9 +4,9 @@ import { URL } from 'url';
 import {
   CuotTimetableOriginParser,
   IcsWriter,
+  JsonWriter,
   StreamWriter,
 } from '../components';
-import { JsonWriter } from '../components/JsonWriter';
 import {
   cuotOrigin,
   cuotTimeTableOrigin,
@@ -17,12 +17,14 @@ import {
   torusUploadPath,
 } from '../config';
 import {
-  SchoolDayToIcsAdapter,
   Timetable,
+  UniDay,
+  UniDayToIcsEventAdapter,
+  XlsParserConfig,
   XlsTimetableParser,
-} from '../resources/Timetable';
-import { SchoolDay } from '../resources/Timetable/SchoolDay';
-import { XlsParserConfig } from '../resources/Timetable/xlsParser/types';
+} from '../resources';
+import { TimetableEndpoint } from '../types';
+import { readTimetableLockfile } from './rss.service';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -81,8 +83,8 @@ export const writeToIcs = (timetable: Timetable) => {
   }
 
   // todo: make more readable
-  const icsAdapter = (schoolDays: SchoolDay[]) =>
-    schoolDays.map((day) => SchoolDayToIcsAdapter(day)).flat();
+  const icsAdapter = (schoolDays: UniDay[]) =>
+    schoolDays.map((day) => UniDayToIcsEventAdapter(day)).flat();
   const writer = new IcsWriter();
   timetable.writeToFile(icsAdapter, timetableIcsPath, writer);
 };
@@ -92,7 +94,12 @@ export const writeToJson = (timetable: Timetable) => {
     console.info('Saving timetable to .json');
   }
 
-  const jsonAdapter = (lessons: SchoolDay[]) => lessons;
-  const writer = new JsonWriter<SchoolDay[]>();
+  const pubDate = new Date(Date.parse(readTimetableLockfile()));
+
+  const jsonAdapter = (classes: UniDay[]): TimetableEndpoint => ({
+    pubDate,
+    timetable: classes,
+  });
+  const writer = new JsonWriter<TimetableEndpoint>();
   timetable.writeToFile(jsonAdapter, timetableJsonPath, writer);
 };

@@ -1,8 +1,8 @@
 import { DateArray, DurationObject, EventAttributes } from 'ics';
-import { Duration, LessonType } from '../../types';
-import { SchoolDay } from './SchoolDay';
+import { ClassType, Duration } from '../../types';
+import { UniDay } from './UniDay';
 
-export class LessonTypeToIcsAdapter {
+export class ClassTypeToIcsEventAdapter {
   description: string; // todo: implement
   duration: DurationObject;
   location: string;
@@ -11,10 +11,10 @@ export class LessonTypeToIcsAdapter {
   // noinspection JSUnusedGlobalSymbols
   geo?: { lat: number; lon: number }; // todo: implement
 
-  constructor(duration: Duration, lesson: LessonType, startsAt: Date) {
+  constructor(duration: Duration, classT: ClassType, startsAt: Date) {
     this.description = '';
     this.duration = duration;
-    this.location = lesson.details.match(/s\.\s.*\d/i)?.at(0) ?? '';
+    this.location = classT.details.match(/s\.\s.*\d/i)?.at(0) ?? '';
     this.start = [
       startsAt.getFullYear(),
       startsAt.getMonth() + 1,
@@ -22,20 +22,24 @@ export class LessonTypeToIcsAdapter {
       startsAt.getHours(),
       startsAt.getMinutes(),
     ];
-    this.title = lesson.details;
+    this.title = classT.details;
   }
 }
 
 // todo: make it more readable
-export const SchoolDayToIcsAdapter = ({
-  lessonBlock,
-}: SchoolDay): EventAttributes[] =>
-  lessonBlock
-    .map(({ duration, lessons, startsAt }) =>
-      lessons
+export const UniDayToIcsEventAdapter = ({
+  classesBlock,
+}: UniDay): EventAttributes[] =>
+  classesBlock
+    .map(({ duration, classes, startsAt }) =>
+      classes
         .map(
           (lesson) =>
-            new LessonTypeToIcsAdapter(duration.value, lesson, startsAt.value),
+            new ClassTypeToIcsEventAdapter(
+              duration.value,
+              lesson,
+              startsAt.value,
+            ),
         )
         .flat(),
     )
