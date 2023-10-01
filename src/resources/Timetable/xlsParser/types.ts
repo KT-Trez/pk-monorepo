@@ -1,8 +1,3 @@
-export type GroupConfig = Map<
-  'lecture' | 'exercises' | 'laboratories' | 'language',
-  string[]
->;
-
 export type XlsFormat = [
   Date,
   string,
@@ -19,11 +14,10 @@ export type XlsFormat = [
 ];
 
 export type XlsParserConfig = {
+  classes: number[];
   dateIndex: number;
-  groups: GroupConfig;
   hourIndex: number;
   hourRegex: RegExp;
-  lessons: number[];
   yearIndex: number;
   yearRegex: RegExp;
 };

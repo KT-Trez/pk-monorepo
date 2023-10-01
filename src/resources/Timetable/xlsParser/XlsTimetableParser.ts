@@ -1,5 +1,10 @@
 import { XlsParser } from '../../../components';
-import { ParserInterface } from '../../../types';
+import {
+  GROUP_TYPE,
+  GROUP_TYPE_CONST,
+  LabelValue,
+  ParserInterface,
+} from '../../../types';
 import { UniDay } from '../UniDay';
 import { ClassesBlock } from './ClassesBlock';
 import { XlsFormat, XlsParserConfig } from './types';
@@ -24,27 +29,51 @@ export class XlsTimetableParser
     return { uniDays: this.#uniDays, year: this.#year };
   }
 
-  #parseClassesBlock(row: XlsFormat) {
+  #parseClasses(row: XlsFormat): ({
+    details: string;
+    group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+  } | null)[] {
+    return this.#config.classes.map(classT => {
+      const classCell = row[classT];
+      if (typeof classCell === 'string') {
+        const groupIndex = this.#config.classes.indexOf(classT);
+        const groupType = this.#pickGroup(classCell);
+
+        return {
+          details: classCell,
+          group: {
+            label: `${groupType}${groupIndex}`,
+            value: {
+              index: groupIndex,
+              type: groupType,
+            },
+          },
+        };
+      }
+      return null;
+    });
+  }
+
+  #parseClassesBlock(row: XlsFormat, date: Date) {
     const startsAtCell = row[this.#config.hourIndex];
     if (
       typeof startsAtCell === 'string' &&
       this.#config.hourRegex.test(startsAtCell)
     ) {
+      const { hours, minutes } = this.#parseTime(
+        startsAtCell.split('-').at(0) ?? '00:00',
+      );
+      const startsAt = new Date(date);
+      startsAt.setHours(hours, minutes);
+
       const classesBlock = new ClassesBlock(
         '',
-        { hours: 0, minutes: 0 },
+        { hours: 2, minutes: 30 },
         startsAtCell,
-        new Date(),
+        startsAt,
       );
 
-      this.#config.lessons.forEach((lesson) => {
-        const lessonCell = row[lesson];
-        if (typeof lessonCell === 'string') {
-          const indexOfLessonCell = this.#config.lessons.indexOf(lesson);
-          const group = this.#pickGroup(lessonCell, indexOfLessonCell);
-          classesBlock.addLesson(lessonCell, group);
-        }
-      });
+      classesBlock.addClasses(this.#parseClasses(row));
 
       return classesBlock;
     }
@@ -74,9 +103,9 @@ export class XlsTimetableParser
         uniDay = new UniDay(parsedDate);
       }
 
-      const lessonBlock = this.#parseClassesBlock(row);
-      if (lessonBlock) {
-        uniDay!.addLessonBlock(lessonBlock);
+      const classesBlock = this.#parseClassesBlock(row, uniDay?.date ?? date);
+      if (classesBlock) {
+        uniDay!.addLessonBlock(classesBlock);
       }
 
       this.#parseYear(row);
@@ -85,10 +114,18 @@ export class XlsTimetableParser
     this.#uniDays = uniDays;
   }
 
+  #parseTime(text: string): { hours: number; minutes: number } {
+    const timeParts = text.split(':');
+    return {
+      hours: parseInt(timeParts.at(0) ?? '0'),
+      minutes: parseInt(timeParts.at(1) ?? '0'),
+    };
+  }
+
   #parseXls(filePath: string) {
     return new XlsParser<XlsFormat>()
       .parse(filePath)
-      .map((sheet) => sheet.data)
+      .map(sheet => sheet.data)
       .flat();
   }
 
@@ -99,16 +136,17 @@ export class XlsTimetableParser
     }
   }
 
-  // todo: add  english groups
-  #pickGroup(details: string, labelIndex: number) {
-    if (/wyk[lł]ad/i.test(details)) {
-      return this.#config.groups.get('lecture')![labelIndex]!;
+  #pickGroup(details: string): GROUP_TYPE {
+    if (/ang(ielski)?/i.test(details)) {
+      return GROUP_TYPE_CONST.LANGUAGE;
     } else if (/[cć]wiczenia/i.test(details)) {
-      return this.#config.groups.get('exercises')![labelIndex]!;
+      return GROUP_TYPE_CONST.EXERCISE;
     } else if (/lab/i.test(details)) {
-      return this.#config.groups.get('laboratories')![labelIndex]!;
+      return GROUP_TYPE_CONST.LABORATORY;
+    } else if (/wyk[lł]ad/i.test(details) || /dzia[lł]ownia/i.test(details)) {
+      return GROUP_TYPE_CONST.LECTURE;
     } else {
-      return 'UNKNOWN';
+      return GROUP_TYPE_CONST.UNKNOWN;
     }
   }
 }

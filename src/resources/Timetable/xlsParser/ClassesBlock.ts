@@ -2,11 +2,12 @@ import {
   ClassesBlockType,
   ClassType,
   Duration,
+  GROUP_TYPE,
   LabelValue,
 } from '../../../types';
 
 export class ClassesBlock implements ClassesBlockType {
-  classes: ClassType[];
+  classes: (ClassType | null)[];
   duration: LabelValue<Duration>;
   startsAt: LabelValue<Date>;
 
@@ -27,8 +28,13 @@ export class ClassesBlock implements ClassesBlockType {
     };
   }
 
-  addLesson(details: string, group: string) {
-    this.classes.push({ details, group });
+  addClasses(
+    classes: ({
+      details: string;
+      group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+    } | null)[],
+  ) {
+    this.classes = classes;
     return this;
   }
 }
