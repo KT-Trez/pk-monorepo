@@ -7,6 +7,7 @@ export class ClassTypeToIcsEventAdapter {
   duration: DurationObject;
   location: string;
   start: DateArray;
+  startOutputType: 'local' | 'utc';
   title: string; // todo: refactor
   geo?: { lat: number; lon: number };
 
@@ -22,6 +23,7 @@ export class ClassTypeToIcsEventAdapter {
       startsAt.getHours(),
       startsAt.getMinutes(),
     ];
+    this.startOutputType = 'local';
     this.title = classT.details.replace(/\s{2,}/gm, ' ');
   }
 
