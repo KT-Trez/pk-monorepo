@@ -24,11 +24,12 @@ import {
   XlsTimetableParser,
 } from '../resources';
 import { TimetableEndpoint } from '../types';
+import { logger } from './logging.service';
 import { readTimetableLockfile } from './rss.service';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
-    console.info('Downloading XLS timetable');
+    logger.log('Downloading XLS timetable');
   }
 
   await new StreamWriter().write(timetableURL, timetableXlsPath);
@@ -59,7 +60,7 @@ export const uploadToTorus = async (
   files: { localPath: string; remoteName: string }[],
 ) => {
   if (process.env.DEBUG) {
-    console.info('Uploading to torus');
+    logger.log('Uploading to torus');
   }
 
   const ssh = new NodeSSH();
@@ -79,19 +80,19 @@ export const uploadToTorus = async (
 
 export const writeToIcs = (timetable: Timetable) => {
   if (process.env.DEBUG) {
-    console.info('Saving timetable to .ics');
+    logger.log('Saving timetable to .ics');
   }
 
   // todo: make more readable
   const icsAdapter = (schoolDays: UniDay[]) =>
-    schoolDays.map((day) => UniDayToIcsEventAdapter(day)).flat();
+    schoolDays.map(day => UniDayToIcsEventAdapter(day)).flat();
   const writer = new IcsWriter();
   timetable.writeToFile(icsAdapter, timetableIcsPath, writer);
 };
 
 export const writeToJson = (timetable: Timetable) => {
   if (process.env.DEBUG) {
-    console.info('Saving timetable to .json');
+    logger.log('Saving timetable to .json');
   }
 
   const pubDate = new Date(Date.parse(readTimetableLockfile()));
