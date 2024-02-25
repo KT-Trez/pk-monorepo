@@ -1,22 +1,23 @@
-export type Duration = { hours: number; minutes: number };
-
-export type LabelValue<T> = {
-  label: string;
-  value: T;
+export type Group = {
+  number: number;
+  // columnIndex: number;
+  year: number;
+  type: GroupTypeValues;
 };
 
-export type LessonType = {
+export const GroupType = {
+  ENGLISH: 'gang',
+  EXERCISE: 'gc',
+  LECTURE: 'gw',
+  LABORATORY: 'gl',
+  UNKNOWN: 'g-unknown',
+} as const;
+
+export type GroupTypeValues = (typeof GroupType)[keyof typeof GroupType];
+
+export type Lesson = {
   details: string;
-  group: string;
-};
-
-export type LessonBlockType = {
-  duration: LabelValue<Duration>;
-  lessons: LessonType[];
-  startsAt: LabelValue<Date>;
-};
-
-export type SchoolDayType = {
-  date: Date;
-  lessonBlock: LessonBlockType[];
+  end: Date;
+  group: Group;
+  start: Date;
 };
