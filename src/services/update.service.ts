@@ -1,6 +1,5 @@
 import process from 'process';
 import { timetableIcsPath, timetableJsonPath } from '../config';
-import { secondYearConfig } from '../resources/Timetable';
 import {
   cuotRss,
   getLastTimetableUpdate,
@@ -10,10 +9,7 @@ import {
 import {
   downloadToXls,
   parseDownloadURLFromWeb,
-  parseFromXls,
   uploadToTorus,
-  writeToIcs,
-  writeToJson,
 } from './timetable.service';
 
 export const updateResources = async () => {
@@ -30,9 +26,9 @@ export const updateResources = async () => {
     await downloadToXls(await parseDownloadURLFromWeb());
     await updateCuotTimetableLockfile();
 
-    const timetable = parseFromXls(secondYearConfig);
-    writeToIcs(timetable);
-    writeToJson(timetable);
+    // const timetable = parseFromXls(secondYearConfig);
+    // writeToIcs(timetable);
+    // writeToJson(timetable);
 
     if (process.env.UPLOAD)
       await uploadToTorus([
