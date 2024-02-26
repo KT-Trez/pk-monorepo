@@ -2,8 +2,8 @@ import { CuotTimetableOriginParser, StreamWriter } from '@components';
 import { NodeSSH } from 'node-ssh';
 import process from 'process';
 import { URL } from 'url';
-import { logger } from './logging.service';
 import { cuotOrigin, cuotTimeTableOrigin, timetableXlsPath, torusOrigin, torusUploadPath } from '../config';
+import { logger } from './logging.service';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -27,10 +27,6 @@ export const parseDownloadURLFromWeb = async () => {
 };
 
 export const uploadToTorus = async (files: { path: string; remoteFilename: string }[]) => {
-  if (process.env.DEBUG) {
-    logger.log('Uploading to torus');
-  }
-
   const ssh = new NodeSSH();
   await ssh.connect({
     host: torusOrigin,

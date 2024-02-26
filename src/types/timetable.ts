@@ -24,8 +24,7 @@ export const GROUP_TYPE_CONST = {
   UNKNOWN: 'UNKNOWN',
 } as const;
 
-export type GROUP_TYPE =
-  (typeof GROUP_TYPE_CONST)[keyof typeof GROUP_TYPE_CONST];
+export type GROUP_TYPE = (typeof GROUP_TYPE_CONST)[keyof typeof GROUP_TYPE_CONST];
 
 export type UniDayType = {
   classesBlock: ClassesBlockType[];

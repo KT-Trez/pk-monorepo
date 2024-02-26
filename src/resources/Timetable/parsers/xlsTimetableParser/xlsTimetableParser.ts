@@ -1,5 +1,6 @@
 import type { EndStartTime, Lesson, ParserInterfaceV2, RowType } from '@types';
 import xlsx from 'node-xlsx';
+import { logger } from '../../../../services/logging.service';
 import type { TimetableParserArgs, TimetableParserReturn } from '../../types';
 import { GroupsParser } from './GroupsParser';
 import { LessonTime } from './LessonTime';
@@ -76,7 +77,10 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimetableParserArgs
 
       const group = this.#groups.groupsMap.get(groupKey);
       if (!group) {
-        if (process.env.DEBUG_MISSING_KEYS) console.warn(`Missing key [${groupKey}] for: ${content}`);
+        if (process.env.DEBUG_MISSING_KEYS) {
+          const normalizedContent = content.replace(/\n*/, ' ');
+          logger.log(`Missing key [${groupKey}] for: ${normalizedContent}`, 'WARNING');
+        }
         continue;
       }
 

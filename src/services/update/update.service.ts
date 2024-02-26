@@ -10,6 +10,7 @@ import {
   timetableXlsPath,
 } from '../../config';
 import type { TimetableQueryArgs } from '../../resources/Timetable/types';
+import { logger } from '../logging.service';
 import { cuotRss, getLastTimetableUpdate, readTimetableLockfile, updateCuotTimetableLockfile } from '../rss.service';
 import { downloadToXls, parseDownloadURLFromWeb, uploadToTorus } from '../timetable.service';
 import { groupsQuery } from './constants';
@@ -23,9 +24,7 @@ const getTimetable = () => {
 };
 
 export const updateResources = async () => {
-  if (process.env.DEBUG) {
-    console.info('Updating resources');
-  }
+  if (process.env.DEBUG) logger.log('Updating ...');
 
   await cuotRss.reload();
 
@@ -43,12 +42,12 @@ export const updateResources = async () => {
     if (process.env.UPLOAD) await uploadResources(groupsQuery);
   }
 
-  if (process.env.DEBUG) {
-    console.info('All done');
-  }
+  if (process.env.DEBUG) logger.log('Updating finished', 'SUCCESS');
 };
 
 const parsePerAllGroups = (timetable: Timetable, year: number) => {
+  if (process.env.DEBUG) logger.log('Parsing per all groups ...');
+
   const icsWriter = new TimetableIcsWriter({ path: timetableIcsPath });
   const jsonWriter = new TimetableJsonWriter({ path: timetableJsonPath });
 
@@ -61,6 +60,8 @@ const parsePerAllGroups = (timetable: Timetable, year: number) => {
 };
 
 const parsePerGroup = (groups: GroupQuery[], timetable: Timetable, year: number) => {
+  if (process.env.DEBUG) logger.log('Parsing per group ...');
+
   for (const group of groups) {
     const icsWriter = new TimetableIcsWriter({ path: timetableForGroupIcsPath(group[GroupType.LABORATORY]) });
     const jsonWriter = new TimetableJsonWriter({ path: timetableForGroupJsonPath(group[GroupType.LABORATORY]) });
@@ -77,6 +78,8 @@ const parsePerGroup = (groups: GroupQuery[], timetable: Timetable, year: number)
 };
 
 const uploadResources = async (groups: GroupQuery[]) => {
+  if (process.env.DEBUG) logger.log('Uploading ...');
+
   const files: { path: string; remoteFilename: string }[] = [];
 
   for (const group of groups) {
@@ -89,4 +92,6 @@ const uploadResources = async (groups: GroupQuery[]) => {
   files.push({ path: timetableJsonPath, remoteFilename: 'timetable.xls' });
 
   await uploadToTorus(files);
+
+  if (process.env.DEBUG) logger.log('Uploading finished', 'SUCCESS');
 };

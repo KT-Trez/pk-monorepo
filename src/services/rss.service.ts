@@ -10,9 +10,7 @@ import { logger } from './logging.service';
 export const cuotRss = new Rss<CuotFeed, CuotItem>(cuotRssOrigin);
 
 export const getLastTimetableUpdate = () => {
-  return cuotRss.feed?.items.find(
-    item => item.link.trim() === cuotTimeTableOrigin,
-  );
+  return cuotRss.feed?.items.find((item) => item.link.trim() === cuotTimeTableOrigin);
 };
 
 export const readTimetableLockfile = () => {
@@ -32,8 +30,7 @@ export const updateCuotTimetableLockfile = async (reload?: boolean) => {
   }
 
   const dataExtractor = (feed: CuotFeed & Parser.Output<CuotItem>) =>
-    feed.items.find(item => item.link.trim() === cuotTimeTableOrigin)
-      ?.pubDate ?? new Date().getTime();
+    feed.items.find((item) => item.link.trim() === cuotTimeTableOrigin)?.pubDate ?? new Date().getTime();
 
   const writer = new LockfileWriter();
   cuotRss.writeLockfile(dataExtractor, timetableLockfilePath, writer);

@@ -17,3 +17,5 @@ if (!fs.existsSync(resourcesDir)) {
 cron.schedule('37 21 * * *', updateResources, {
   timezone: 'Europe/Warsaw',
 });
+
+if (!process.env.UPDATE_ON_START) updateResources();
