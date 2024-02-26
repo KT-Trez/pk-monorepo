@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { createEvents, EventAttributes } from 'ics';
+import { logger } from '../services/logging.service';
 import { WriterInterface } from '../types';
 
 export class IcsWriter implements WriterInterface<EventAttributes[]> {
@@ -11,7 +12,7 @@ export class IcsWriter implements WriterInterface<EventAttributes[]> {
     const { error, value } = createEvents(events);
 
     if (error) {
-      console.warn('Failed to write ics file');
+      logger.log('Failed to write ics file', 'WARNING');
     }
 
     if (value) {

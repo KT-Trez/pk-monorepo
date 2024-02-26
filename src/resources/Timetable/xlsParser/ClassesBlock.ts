@@ -1,13 +1,14 @@
 import {
+  ClassesBlockType,
+  ClassType,
   Duration,
+  GROUP_TYPE,
   LabelValue,
-  LessonBlockType,
-  LessonType,
 } from '../../../types';
 
-export class LessonBlock implements LessonBlockType {
+export class ClassesBlock implements ClassesBlockType {
+  classes: (ClassType | null)[];
   duration: LabelValue<Duration>;
-  lessons: LessonType[];
   startsAt: LabelValue<Date>;
 
   constructor(
@@ -16,19 +17,24 @@ export class LessonBlock implements LessonBlockType {
     startsAtLabel: string,
     startsAtValue: Date,
   ) {
+    this.classes = [];
     this.duration = {
       label: durationLabel,
       value: durationValue,
     };
-    this.lessons = [];
     this.startsAt = {
       label: startsAtLabel,
       value: startsAtValue,
     };
   }
 
-  addLesson(details: string, group: string) {
-    this.lessons.push({ details, group });
+  addClasses(
+    classes: ({
+      details: string;
+      group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+    } | null)[],
+  ) {
+    this.classes = classes;
     return this;
   }
 }

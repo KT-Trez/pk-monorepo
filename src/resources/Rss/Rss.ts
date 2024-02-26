@@ -1,5 +1,6 @@
 import process from 'process';
 import Parser from 'rss-parser';
+import { logger } from '../../services/logging.service';
 import { WriterInterface } from '../../types';
 
 export class Rss<Feed, Item> {
@@ -17,7 +18,7 @@ export class Rss<Feed, Item> {
 
   async reload() {
     if (process.env.DEBUG) {
-      console.info(`Reloading rss: ${this.origin}`);
+      logger.log(`Reloading rss: ${this.origin}`);
     }
 
     const parser: Parser<Feed, Item> = new Parser();

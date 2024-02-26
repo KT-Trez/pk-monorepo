@@ -1,36 +1,83 @@
 import { XlsParser } from '../../../components';
-import { ParserInterface } from '../../../types';
-import { SchoolDay } from '../SchoolDay';
-import { LessonBlock } from './LessonBlock';
+import {
+  GROUP_TYPE,
+  GROUP_TYPE_CONST,
+  LabelValue,
+  ParserInterface,
+} from '../../../types';
+import { UniDay } from '../UniDay';
+import { ClassesBlock } from './ClassesBlock';
 import { XlsFormat, XlsParserConfig } from './types';
-
-export type xlsTimetable<T extends number[]> = {
-  dateIndex: number;
-  hourIndex: number;
-  hourRegex: RegExp;
-  lessons: T;
-  yearIndex: number;
-  yearRegex: RegExp;
-};
 
 // todo: improve
 export class XlsTimetableParser
-  implements ParserInterface<{ schoolDays: SchoolDay[]; year: string }>
+  implements ParserInterface<{ uniDays: UniDay[]; year: string }>
 {
   #config: XlsParserConfig;
-  #schoolDays: SchoolDay[];
+  #uniDays: UniDay[];
   #year: string;
 
   constructor(config: XlsParserConfig) {
     this.#config = config;
-    this.#schoolDays = [];
+    this.#uniDays = [];
     this.#year = '';
   }
 
-  parse(filePath: string): { schoolDays: SchoolDay[]; year: string } {
+  parse(filePath: string): { uniDays: UniDay[]; year: string } {
     const rows = this.#parseXls(filePath);
     this.#parseRows(rows);
-    return { schoolDays: this.#schoolDays, year: this.#year };
+    return { uniDays: this.#uniDays, year: this.#year };
+  }
+
+  #parseClasses(row: XlsFormat): ({
+    details: string;
+    group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+  } | null)[] {
+    return this.#config.classes.map(classT => {
+      const classCell = row[classT];
+      if (typeof classCell === 'string') {
+        const groupIndex = this.#config.classes.indexOf(classT);
+        const groupType = this.#pickGroup(classCell);
+
+        return {
+          details: classCell,
+          group: {
+            label: `${groupType}${groupIndex}`,
+            value: {
+              index: groupIndex,
+              type: groupType,
+            },
+          },
+        };
+      }
+      return null;
+    });
+  }
+
+  #parseClassesBlock(row: XlsFormat, date: Date) {
+    const startsAtCell = row[this.#config.hourIndex];
+    if (
+      typeof startsAtCell === 'string' &&
+      this.#config.hourRegex.test(startsAtCell)
+    ) {
+      const { hours, minutes } = this.#parseTime(
+        startsAtCell.split('-').at(0) ?? '00:00',
+      );
+      const startsAt = new Date(date);
+      startsAt.setHours(hours, minutes);
+
+      const classesBlock = new ClassesBlock(
+        '',
+        { hours: 2, minutes: 30 },
+        startsAtCell,
+        startsAt,
+      );
+
+      classesBlock.addClasses(this.#parseClasses(row));
+
+      return classesBlock;
+    }
+    return undefined;
   }
 
   #parseDate(previousDate: Date, row: XlsFormat) {
@@ -41,61 +88,44 @@ export class XlsTimetableParser
     return previousDate;
   }
 
-  #parseLessonBlock(row: XlsFormat) {
-    const startsAtCell = row[this.#config.hourIndex];
-    if (
-      typeof startsAtCell === 'string' &&
-      this.#config.hourRegex.test(startsAtCell)
-    ) {
-      const lessonBlock = new LessonBlock(
-        '',
-        { hours: 0, minutes: 0 },
-        startsAtCell,
-        new Date(),
-      );
-
-      this.#config.lessons.forEach((lesson) => {
-        const lessonCell = row[lesson];
-        if (typeof lessonCell === 'string') {
-          const indexOfLessonCell = this.#config.lessons.indexOf(lesson);
-          const group = this.#pickGroup(lessonCell, indexOfLessonCell);
-          lessonBlock.addLesson(lessonCell, group);
-        }
-      });
-
-      return lessonBlock;
-    }
-    return undefined;
-  }
-
   #parseRows(rows: XlsFormat[]) {
-    const schoolDays: SchoolDay[] = [];
+    const uniDays: UniDay[] = [];
 
     const date: Date = new Date();
-    let schoolDay: SchoolDay = new SchoolDay(date);
+    let uniDay: UniDay | undefined;
 
     for (const row of rows) {
       const parsedDate = this.#parseDate(date, row);
+      if (parsedDate !== date && uniDay) {
+        uniDays.push(uniDay);
+      }
       if (parsedDate !== date) {
-        schoolDays.push(schoolDay);
-        schoolDay = new SchoolDay(parsedDate);
+        uniDay = new UniDay(parsedDate);
       }
 
-      const lessonBlock = this.#parseLessonBlock(row);
-      if (lessonBlock) {
-        schoolDay.addLessonBlock(lessonBlock);
+      const classesBlock = this.#parseClassesBlock(row, uniDay?.date ?? date);
+      if (classesBlock) {
+        uniDay!.addLessonBlock(classesBlock);
       }
 
       this.#parseYear(row);
     }
 
-    this.#schoolDays = schoolDays;
+    this.#uniDays = uniDays;
+  }
+
+  #parseTime(text: string): { hours: number; minutes: number } {
+    const timeParts = text.split(':');
+    return {
+      hours: parseInt(timeParts.at(0) ?? '0'),
+      minutes: parseInt(timeParts.at(1) ?? '0'),
+    };
   }
 
   #parseXls(filePath: string) {
     return new XlsParser<XlsFormat>()
       .parse(filePath)
-      .map((sheet) => sheet.data)
+      .map(sheet => sheet.data)
       .flat();
   }
 
@@ -106,16 +136,17 @@ export class XlsTimetableParser
     }
   }
 
-  // todo: add  english groups
-  #pickGroup(details: string, labelIndex: number) {
-    if (/wyk[lł]ad/i.test(details)) {
-      return this.#config.groups.get('lecture')![labelIndex]!;
-    } else if (/[cć]siczenia/i.test(details)) {
-      return this.#config.groups.get('exercises')![labelIndex]!;
+  #pickGroup(details: string): GROUP_TYPE {
+    if (/ang(ielski)?/i.test(details)) {
+      return GROUP_TYPE_CONST.LANGUAGE;
+    } else if (/[cć]wiczenia/i.test(details)) {
+      return GROUP_TYPE_CONST.EXERCISE;
     } else if (/lab/i.test(details)) {
-      return this.#config.groups.get('laboratories')![labelIndex]!;
+      return GROUP_TYPE_CONST.LABORATORY;
+    } else if (/wyk[lł]ad/i.test(details) || /dzia[lł]ownia/i.test(details)) {
+      return GROUP_TYPE_CONST.LECTURE;
     } else {
-      return 'UNKNOWN';
+      return GROUP_TYPE_CONST.UNKNOWN;
     }
   }
 }

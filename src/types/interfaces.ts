@@ -1,3 +1,7 @@
+export type LoggerInterface<T> = {
+  log(message: string, options?: T): void;
+};
+
 export type ParserInterface<T> = {
   parse(filePath: string): T;
 };

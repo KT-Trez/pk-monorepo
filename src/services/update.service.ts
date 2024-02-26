@@ -1,6 +1,7 @@
 import process from 'process';
 import { timetableIcsPath, timetableJsonPath } from '../config';
-import { secondYearConfig } from '../resources/Timetable';
+import { secondYearConfig } from '../resources';
+import { logger } from './logging.service';
 import {
   cuotRss,
   getLastTimetableUpdate,
@@ -18,7 +19,7 @@ import {
 
 export const updateResources = async () => {
   if (process.env.DEBUG) {
-    console.info('Updating resources');
+    logger.log('Updating resources');
   }
 
   await cuotRss.reload();
@@ -42,6 +43,6 @@ export const updateResources = async () => {
   }
 
   if (process.env.DEBUG) {
-    console.info('All done');
+    logger.log('All done', 'SUCCESS');
   }
 };
