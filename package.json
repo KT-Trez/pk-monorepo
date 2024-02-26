@@ -5,7 +5,8 @@
     "node-cron": "^3.0.2",
     "node-ssh": "^13.1.0",
     "node-xlsx": "^0.23.0",
-    "rss-parser": "^3.13.0"
+    "rss-parser": "^3.13.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
@@ -28,9 +29,10 @@
   "private": true,
   "scripts": {
     "build": "tsc",
+    "build:watch": "tsc -w",
     "lint": "eslint . --ext .tsc",
-    "serve": "nodemon",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node -r tsconfig-paths/register dist/index.js",
+    "start:watch": "nodemon"
   },
   "version": "1.0.0"
 }
