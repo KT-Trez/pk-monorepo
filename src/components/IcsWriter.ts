@@ -1,6 +1,7 @@
 import type { WriterInterfaceV2 } from '@types';
 import fs from 'fs';
 import { createEvents, type EventAttributes } from 'ics';
+import { logger } from '../services/logging.service';
 
 export type IcsWriterV2Config = {
   bufor?: EventAttributes[];
@@ -24,7 +25,7 @@ export class IcsWriterV2<TInput> implements WriterInterfaceV2<TInput, EventAttri
     const { error, value } = createEvents(this.bufor);
 
     if (error) {
-      console.warn('Failed to write ics file');
+      logger.log('Failed to write ics file', 'WARNING');
     }
 
     if (value) {
