@@ -49,6 +49,6 @@ export class Row {
       return null;
     }
 
-    return item.replace(/\s{2}/g, ' ');
+    return item.replace(/\s{2,}/g, ' ');
   }
 }

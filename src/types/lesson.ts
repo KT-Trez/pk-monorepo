@@ -1,16 +1,15 @@
 export type Group = {
   number: number;
-  // columnIndex: number;
   year: number;
   type: GroupTypeValues;
 };
 
 export const GroupType = {
-  ENGLISH: 'gang',
-  EXERCISE: 'gc',
-  LECTURE: 'gw',
-  LABORATORY: 'gl',
-  UNKNOWN: 'g-unknown',
+  ENGLISH: 'GANG',
+  EXERCISE: 'GC',
+  LABORATORY: 'GL',
+  LECTURE: 'GW',
+  UNKNOWN: 'GU',
 } as const;
 
 export type GroupTypeValues = (typeof GroupType)[keyof typeof GroupType];

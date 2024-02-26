@@ -1,12 +1,12 @@
 import type { EndStartTime, Lesson, ParserInterfaceV2, RowType } from '@types';
 import xlsx from 'node-xlsx';
-import type { TimeTableParserArgs, TimeTableParserReturn } from '../../types';
+import type { TimetableParserArgs, TimetableParserReturn } from '../../types';
 import { GroupsParser } from './GroupsParser';
 import { LessonTime } from './LessonTime';
 import { Row } from './Row';
 import type { Groups, GroupTypeAndRowIndexKey } from './types';
 
-export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs, TimeTableParserReturn> {
+export class XlsTimetableParser implements ParserInterfaceV2<TimetableParserArgs, TimetableParserReturn> {
   rows: Row[];
   #groups: Groups = {
     groupsIndexes: [],
@@ -28,8 +28,6 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs
       if (newRow.isValid && this.#groups.groupsMap.size === 0 && GroupsParser.isGroupRow(rowData)) {
         const parser = new GroupsParser();
         this.#groups = parser.parse(rowData);
-
-        console.log(this.#groups);
       }
 
       return acc;
@@ -38,7 +36,7 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs
     this.rows = rows || [];
   }
 
-  parse(): TimeTableParserReturn {
+  parse(): TimetableParserReturn {
     const lessons: Lesson[] = [];
 
     let date: Date = new Date(0);
@@ -49,7 +47,7 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs
       if (row.hasHour()) hour = row.getHour();
 
       if (row.hasHour()) {
-        lessons.concat(this.#readLessons(date, hour, row));
+        lessons.push(...this.#readLessons(date, hour, row));
       }
     }
 
@@ -78,7 +76,7 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs
 
       const group = this.#groups.groupsMap.get(groupKey);
       if (!group) {
-        console.log(groupKey, content);
+        if (process.env.DEBUG_MISSING_KEYS) console.warn(`Missing key [${groupKey}] for: ${content}`);
         continue;
       }
 
@@ -90,7 +88,6 @@ export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs
       });
     }
 
-    // console.log(lessons);
     return lessons;
   }
 }

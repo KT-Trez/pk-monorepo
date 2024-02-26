@@ -1,21 +1,34 @@
+import type { WriterInterfaceV2 } from '@types';
 import fs from 'fs';
-import { createEvents, EventAttributes } from 'ics';
-import { WriterInterface } from '../types';
+import { createEvents, type EventAttributes } from 'ics';
 
-export class IcsWriter implements WriterInterface<EventAttributes[]> {
-  write(events: EventAttributes[], icsPath: string) {
-    if (fs.existsSync(icsPath)) {
-      fs.rmSync(icsPath);
+export type IcsWriterV2Config = {
+  bufor?: EventAttributes[];
+  path?: string;
+};
+
+export class IcsWriterV2<TInput> implements WriterInterfaceV2<TInput, EventAttributes[]> {
+  bufor: EventAttributes[];
+  readonly #path: string;
+
+  constructor({ bufor, path }: IcsWriterV2Config) {
+    this.bufor = bufor || [];
+    this.#path = path || '';
+  }
+
+  write() {
+    if (fs.existsSync(this.#path)) {
+      fs.rmSync(this.#path);
     }
 
-    const { error, value } = createEvents(events);
+    const { error, value } = createEvents(this.bufor);
 
     if (error) {
       console.warn('Failed to write ics file');
     }
 
     if (value) {
-      fs.writeFileSync(icsPath, value);
+      fs.writeFileSync(this.#path, value);
     }
   }
 }

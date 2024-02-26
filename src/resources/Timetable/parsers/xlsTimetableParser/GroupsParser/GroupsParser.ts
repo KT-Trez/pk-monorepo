@@ -11,10 +11,11 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
     };
 
     const regExps: GroupRegexesConfig = {
-      [GroupType.ENGLISH]: combineRegexes(/ang/i, regexesConfig?.[GroupType.ENGLISH]),
-      [GroupType.EXERCISE]: combineRegexes(/[cć]wiczenia/i, regexesConfig?.[GroupType.EXERCISE]),
-      [GroupType.LABORATORY]: combineRegexes(/lab/i, regexesConfig?.[GroupType.LABORATORY]),
+      // try to parse from the smallest group
+      [GroupType.LABORATORY]: combineRegexes([/lab/i, /\sp\s/i], regexesConfig?.[GroupType.LABORATORY]),
+      [GroupType.EXERCISE]: combineRegexes(/[cć]w(iczenia)?/i, regexesConfig?.[GroupType.EXERCISE]),
       [GroupType.LECTURE]: combineRegexes([/wyk[lł]ad/i, /zdalnie/i], regexesConfig?.[GroupType.LECTURE]),
+      [GroupType.ENGLISH]: combineRegexes(/ang/i, regexesConfig?.[GroupType.ENGLISH]),
     };
 
     for (const [group, regexes] of Object.entries(regExps)) {

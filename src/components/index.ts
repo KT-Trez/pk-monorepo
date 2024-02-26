@@ -1,5 +1,5 @@
 export { CuotTimetableOriginParser } from './CuotTimetableOriginParser';
-export { IcsWriter } from './IcsWriter';
+export * from './IcsWriter';
+export * from './JsonWriter';
 export { LockfileWriter } from './LockfileWriter';
 export { StreamWriter } from './StreamWriter';
-export { XlsParser } from './XlsParser';

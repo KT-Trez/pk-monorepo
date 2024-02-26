@@ -1,7 +1,7 @@
+import { CuotTimetableOriginParser, StreamWriter } from '@components';
 import { NodeSSH } from 'node-ssh';
 import process from 'process';
 import { URL } from 'url';
-import { CuotTimetableOriginParser, StreamWriter } from '../components';
 import { cuotOrigin, cuotTimeTableOrigin, timetableXlsPath, torusOrigin, torusUploadPath } from '../config';
 
 export const downloadToXls = async (timetableURL: URL) => {
@@ -25,7 +25,7 @@ export const parseDownloadURLFromWeb = async () => {
   return new URL(timetablePath, cuotOrigin);
 };
 
-export const uploadToTorus = async (files: { localPath: string; remoteName: string }[]) => {
+export const uploadToTorus = async (files: { path: string; remoteFilename: string }[]) => {
   if (process.env.DEBUG) {
     console.info('Uploading to torus');
   }
@@ -38,9 +38,9 @@ export const uploadToTorus = async (files: { localPath: string; remoteName: stri
   });
 
   await ssh.putFiles(
-    files.map(({ remoteName, localPath }) => ({
-      local: localPath,
-      remote: `${torusUploadPath}/${remoteName}`,
+    files.map(({ remoteFilename, path }) => ({
+      local: path,
+      remote: `${torusUploadPath}/${remoteFilename}`,
     })),
   );
 };

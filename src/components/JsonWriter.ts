@@ -1,12 +1,27 @@
+import type { WriterInterfaceV2 } from '@types';
 import fs from 'fs';
-import { WriterInterface } from '../types';
 
-export class JsonWriter<T> implements WriterInterface<T> {
-  write(dataT: T, jsonPath: string) {
-    if (fs.existsSync(jsonPath)) {
-      fs.rmSync(jsonPath);
+export type JsonWriterConfig<TOutput> = {
+  data?: TOutput;
+  path?: string;
+};
+
+export class JsonWriter<TInput, TOutput extends Array<Record<string, unknown>> | Record<string, unknown>>
+  implements WriterInterfaceV2<TInput, TOutput>
+{
+  bufor: TOutput;
+  readonly #path: string;
+
+  constructor({ data, path }: JsonWriterConfig<TOutput>) {
+    this.bufor = data || ({} as TOutput);
+    this.#path = path || '';
+  }
+
+  write() {
+    if (fs.existsSync(this.#path)) {
+      fs.rmSync(this.#path);
     }
 
-    fs.writeFileSync(jsonPath, JSON.stringify(dataT), { encoding: 'utf-8' });
+    fs.writeFileSync(this.#path, JSON.stringify(this.bufor), { encoding: 'utf-8' });
   }
 }
