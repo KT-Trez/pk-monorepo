@@ -1,16 +1,7 @@
 import process from 'process';
 import { timetableIcsPath, timetableJsonPath } from '../config';
-import {
-  cuotRss,
-  getLastTimetableUpdate,
-  readTimetableLockfile,
-  updateCuotTimetableLockfile,
-} from './rss.service';
-import {
-  downloadToXls,
-  parseDownloadURLFromWeb,
-  uploadToTorus,
-} from './timetable.service';
+import { cuotRss, getLastTimetableUpdate, readTimetableLockfile, updateCuotTimetableLockfile } from './rss.service';
+import { downloadToXls, parseDownloadURLFromWeb, uploadToTorus } from './timetable.service';
 
 export const updateResources = async () => {
   if (process.env.DEBUG) {

@@ -25,11 +25,7 @@ export class Row {
   }
 
   getHour(): EndStartTime {
-    return new LessonTime(
-      this.#content,
-      this.#config.hourIndex,
-      this.#config.hourRegExp,
-    );
+    return new LessonTime(this.#content, this.#config.hourIndex, this.#config.hourRegExp);
   }
 
   hasDate(): boolean {

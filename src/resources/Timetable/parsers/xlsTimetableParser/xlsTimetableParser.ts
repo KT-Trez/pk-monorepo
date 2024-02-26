@@ -6,9 +6,7 @@ import { LessonTime } from './LessonTime';
 import { Row } from './Row';
 import type { Groups, GroupTypeAndRowIndexKey } from './types';
 
-export class XlsTimetableParser
-  implements ParserInterfaceV2<TimeTableParserArgs, TimeTableParserReturn>
-{
+export class XlsTimetableParser implements ParserInterfaceV2<TimeTableParserArgs, TimeTableParserReturn> {
   rows: Row[];
   #groups: Groups = {
     groupsIndexes: [],
@@ -27,11 +25,7 @@ export class XlsTimetableParser
         acc.push(newRow);
       }
 
-      if (
-        newRow.isValid &&
-        this.#groups.groupsMap.size === 0 &&
-        GroupsParser.isGroupRow(rowData)
-      ) {
+      if (newRow.isValid && this.#groups.groupsMap.size === 0 && GroupsParser.isGroupRow(rowData)) {
         const parser = new GroupsParser();
         this.#groups = parser.parse(rowData);
 

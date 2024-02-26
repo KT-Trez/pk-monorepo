@@ -15,8 +15,6 @@ export class StreamWriter implements WriterInterface<URL> {
     // @ts-ignore
     const stream = await fetch(streamURL.toString());
 
-    await finished(
-      Readable.fromWeb(stream.body).pipe(fs.createWriteStream(streamFilePath)),
-    );
+    await finished(Readable.fromWeb(stream.body).pipe(fs.createWriteStream(streamFilePath)));
   }
 }

@@ -5,6 +5,4 @@ export type Groups = {
   groupsMap: Map<GroupTypeAndRowIndexKey, Group>;
 };
 
-export type GroupTypeAndRowIndexKey =
-  | `${GroupTypeValues}-${number}`
-  | typeof GroupType.UNKNOWN;
+export type GroupTypeAndRowIndexKey = `${GroupTypeValues}-${number}` | typeof GroupType.UNKNOWN;

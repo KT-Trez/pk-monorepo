@@ -2,13 +2,7 @@ import { NodeSSH } from 'node-ssh';
 import process from 'process';
 import { URL } from 'url';
 import { CuotTimetableOriginParser, StreamWriter } from '../components';
-import {
-  cuotOrigin,
-  cuotTimeTableOrigin,
-  timetableXlsPath,
-  torusOrigin,
-  torusUploadPath,
-} from '../config';
+import { cuotOrigin, cuotTimeTableOrigin, timetableXlsPath, torusOrigin, torusUploadPath } from '../config';
 
 export const downloadToXls = async (timetableURL: URL) => {
   if (process.env.DEBUG) {
@@ -19,11 +13,8 @@ export const downloadToXls = async (timetableURL: URL) => {
 };
 
 export const parseDownloadURLFromWeb = async () => {
-  const downloads = await new CuotTimetableOriginParser().parse(
-    cuotTimeTableOrigin,
-  );
-  const isComputerScienceTimetable = (path: string) =>
-    /informatyka/i.test(path) && /niestacjonarn[ea]/i.test(path);
+  const downloads = await new CuotTimetableOriginParser().parse(cuotTimeTableOrigin);
+  const isComputerScienceTimetable = (path: string) => /informatyka/i.test(path) && /niestacjonarn[ea]/i.test(path);
 
   const timetablePath = downloads.find(isComputerScienceTimetable);
 
@@ -34,9 +25,7 @@ export const parseDownloadURLFromWeb = async () => {
   return new URL(timetablePath, cuotOrigin);
 };
 
-export const uploadToTorus = async (
-  files: { localPath: string; remoteName: string }[],
-) => {
+export const uploadToTorus = async (files: { localPath: string; remoteName: string }[]) => {
   if (process.env.DEBUG) {
     console.info('Uploading to torus');
   }
