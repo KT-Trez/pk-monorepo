@@ -89,7 +89,7 @@ const uploadResources = async (groups: GroupQuery[]) => {
   }
 
   files.push({ path: timetableIcsPath, remoteFilename: 'timetable.ics' });
-  files.push({ path: timetableJsonPath, remoteFilename: 'timetable.xls' });
+  files.push({ path: timetableJsonPath, remoteFilename: 'timetable.json' });
 
   await uploadToTorus(files);
 

@@ -25,13 +25,13 @@
     "node": ">=18.0.0"
   },
   "main": "src/main.ts",
-  "name": "pk-plan",
+  "name": "@pk/timetable-parser-service",
   "private": true,
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
     "lint": "eslint -c .eslintrc.json --ext .ts src/",
-    "start": "npm run build && TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/main.js",
+    "start": "TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/main.js",
     "start:watch": "nodemon"
   },
   "version": "0.6.0-0"
