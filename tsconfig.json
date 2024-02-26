@@ -13,10 +13,20 @@
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
     "paths": {
+      "@components": [
+        "components"
+      ],
+      "@resources": [
+        "resources"
+      ],
+      "@services": [
+        "services"
+      ],
       "@types": [
         "types"
       ]
     },
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
