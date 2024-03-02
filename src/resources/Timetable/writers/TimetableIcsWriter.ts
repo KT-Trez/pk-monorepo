@@ -10,6 +10,7 @@ class LessonToEventAttributesAdapter implements AdapterImplementation {
   geo: { lat: number; lon: number } | undefined;
   location: string | undefined;
   start: DateArray;
+  startInputType: 'local' | 'utc';
   startOutputType: 'local' | 'utc';
   title: string;
 
@@ -19,7 +20,8 @@ class LessonToEventAttributesAdapter implements AdapterImplementation {
     this.geo = this.#parseLocation(lesson.details);
     this.location = lesson.details.match(/(s\..*[\dn])|zdalnie/i)?.at(0);
     this.start = this.#parseDateArray(lesson.start);
-    this.startOutputType = 'local';
+    this.startInputType = 'local';
+    this.startOutputType = 'utc';
     this.title = lesson.details;
   }
 
@@ -54,6 +56,6 @@ export class TimetableIcsWriter extends IcsWriterV2<Lesson[]> {
   }
 
   transform(lessons: Lesson[]): void {
-    super.bufor = lessons.map((lesson) => new LessonToEventAttributesAdapter(lesson));
+    super.bufor = lessons.map(lesson => new LessonToEventAttributesAdapter(lesson));
   }
 }
