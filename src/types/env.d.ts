@@ -3,6 +3,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      ALWAYS_PARSE?: string;
       DEBUG?: string;
       DEBUG_MISSING_KEYS?: string;
       npm_package_version: string;

@@ -1,6 +1,5 @@
 import { Timetable, TimetableIcsWriter, TimetableJsonWriter, XlsTimetableParser } from '@resources';
 import { GroupType } from '@types';
-import process from 'process';
 import {
   currentYear,
   timetableForGroupIcsPath,
@@ -31,7 +30,7 @@ export const updateResources = async () => {
   const timetableLastUpdate = getLastTimetableUpdate();
   const timetableLockfile = readTimetableLockfile();
 
-  if (timetableLastUpdate?.pubDate !== timetableLockfile) {
+  if (timetableLastUpdate?.pubDate !== timetableLockfile || process.env.ALWAYS_PARSE) {
     await downloadToXls(await parseDownloadURLFromWeb());
     await updateCuotTimetableLockfile();
 

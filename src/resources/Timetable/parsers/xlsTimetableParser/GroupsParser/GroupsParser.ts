@@ -19,7 +19,7 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
     };
 
     for (const [group, regexes] of Object.entries(regExps)) {
-      if (regexes.some((regex) => regex.test(text))) {
+      if (regexes.some(regex => regex.test(text))) {
         return group as GroupTypeValues;
       }
     }
@@ -28,7 +28,7 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
   }
 
   static isGroupRow(row: RowType, groupRegExp = /[1234]\d/): boolean {
-    return row.some((cell) => {
+    return row.some(cell => {
       const isNumber = typeof cell === 'number';
       const hasCorrectFormat = groupRegExp.test(String(cell));
 
@@ -51,8 +51,10 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
       const groupYear = groupString.at(0);
       if (!exerciseGroupNumber || !groupYear) continue;
 
-      extractGroup(columnIndex, exerciseGroupNumber, groupYear);
-      extractGroupColumnIndex(columnIndex);
+      const hasTwoLabGroups = !row.at(columnIndex + 1);
+
+      extractGroup(columnIndex, exerciseGroupNumber, groupYear, hasTwoLabGroups);
+      extractGroupColumnIndex(columnIndex, hasTwoLabGroups);
     }
 
     return {
@@ -64,12 +66,12 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
   #createGroupColumnIndexExtractor() {
     const groupsColumnIndexes: number[] = [];
 
-    return (columnIndex?: number) => {
+    return (columnIndex?: number, hasTwoLabGroups?: boolean) => {
       if (!columnIndex) return groupsColumnIndexes;
 
       if (!groupsColumnIndexes.includes(columnIndex)) {
         groupsColumnIndexes.push(columnIndex);
-        groupsColumnIndexes.push(columnIndex + 1);
+        hasTwoLabGroups && groupsColumnIndexes.push(columnIndex + 1);
       }
 
       return groupsColumnIndexes;
@@ -81,7 +83,7 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
     const mappedExerciseGroups: string[] = [];
     const mappedYears: string[] = [];
 
-    return (columnIndex?: number, exerciseGroupNumber?: string, groupYear?: string) => {
+    return (columnIndex?: number, exerciseGroupNumber?: string, groupYear?: string, hasTwoLabGroups?: boolean) => {
       if (!columnIndex || !exerciseGroupNumber || !groupYear) return groupsMap;
 
       const key = (groupType: GroupTypeValues, providedColumnIndex?: number): GroupsMapKey =>
@@ -109,7 +111,7 @@ export class GroupsParser implements ParserInterfaceV2<GroupsParserArgs, GroupsP
 
         groupsMap.set(key(GroupType.EXERCISE), exerciseGroup);
         groupsMap.set(key(GroupType.LABORATORY), firstLabGroup);
-        groupsMap.set(key(GroupType.LABORATORY, columnIndex + 1), secondLabGroup);
+        hasTwoLabGroups && groupsMap.set(key(GroupType.LABORATORY, columnIndex + 1), secondLabGroup);
 
         mappedExerciseGroups.push(exerciseGroupId);
       }
