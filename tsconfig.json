@@ -12,15 +12,31 @@
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
     "paths": {
-      "@types": [
-        "types"
+      "components/*": [
+        "components/*"
+      ],
+      "config": [
+        "config.ts"
+      ],
+      "services/*": [
+        "services/*"
+      ],
+      "types/*": [
+        "types/*"
+      ],
+      "utils/*": [
+        "utils/*"
       ]
     },
     "removeComments": true,
     "sourceMap": true,
     "sourceRoot": "src",
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ]
   },
   "exclude": [
     "node_modules"
