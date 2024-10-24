@@ -1,18 +1,24 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "forceConsistentCasingInFileNames": true,
+    "alwaysStrict": true,
+    "baseUrl": "src",
+    "esModuleInterop": true,
     "lib": [
       "es2022"
     ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "moduleDetection": "force",
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
-    "skipLibCheck": true,
+    "paths": {
+      "@types": [
+        "types"
+      ]
+    },
+    "removeComments": true,
     "sourceMap": true,
+    "sourceRoot": "src",
     "strict": true,
     "target": "ES2022"
   },
