@@ -1,23 +1,12 @@
-import {
-  ClassesBlockType,
-  ClassType,
-  Duration,
-  GROUP_TYPE,
-  LabelValue,
-} from '../../../types';
+import { Duration, GroupTypes, LabeledInfo, Lesson, Lessons } from '../../../types';
 
-export class ClassesBlock implements ClassesBlockType {
-  classes: (ClassType | null)[];
-  duration: LabelValue<Duration>;
-  startsAt: LabelValue<Date>;
+export class ClassesBlock implements Lessons {
+  data: (Lesson | null)[];
+  duration: LabeledInfo<Duration>;
+  startsAt: LabeledInfo<Date>;
 
-  constructor(
-    durationLabel: string,
-    durationValue: Duration,
-    startsAtLabel: string,
-    startsAtValue: Date,
-  ) {
-    this.classes = [];
+  constructor(durationLabel: string, durationValue: Duration, startsAtLabel: string, startsAtValue: Date) {
+    this.data = [];
     this.duration = {
       label: durationLabel,
       value: durationValue,
@@ -31,10 +20,10 @@ export class ClassesBlock implements ClassesBlockType {
   addClasses(
     classes: ({
       details: string;
-      group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+      group: LabeledInfo<{ index: number; type: GroupTypes }>;
     } | null)[],
   ) {
-    this.classes = classes;
+    this.data = classes;
     return this;
   }
 }

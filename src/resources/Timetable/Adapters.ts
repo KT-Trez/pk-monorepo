@@ -1,5 +1,5 @@
 import { DateArray, DurationObject, EventAttributes } from 'ics';
-import { ClassType, Duration } from '../../types';
+import { Duration, Lesson } from '../../types';
 import { UniDay } from './UniDay';
 
 export class ClassTypeToIcsEventAdapter {
@@ -11,7 +11,7 @@ export class ClassTypeToIcsEventAdapter {
   title: string; // todo: refactor
   geo?: { lat: number; lon: number };
 
-  constructor(duration: Duration, classT: ClassType, startsAt: Date) {
+  constructor(duration: Duration, classT: Lesson, startsAt: Date) {
     this.description = '';
     this.duration = duration;
     this.geo = this.#getLocation(classT.details);
@@ -49,21 +49,12 @@ export class ClassTypeToIcsEventAdapter {
 }
 
 // todo: make it more readable
-export const UniDayToIcsEventAdapter = ({
-  classesBlock,
-}: UniDay): EventAttributes[] =>
-  classesBlock
-    .map(({ duration, classes, startsAt }) =>
-      classes
-        .filter((classT): classT is ClassType => !!classT)
-        .map(
-          classT =>
-            new ClassTypeToIcsEventAdapter(
-              duration.value,
-              classT,
-              startsAt.value,
-            ),
-        )
+export const UniDayToIcsEventAdapter = ({ lessons }: UniDay): EventAttributes[] =>
+  lessons
+    .map(({ duration, data, startsAt }) =>
+      data
+        .filter((classT): classT is Lesson => !!classT)
+        .map(classT => new ClassTypeToIcsEventAdapter(duration.value, classT, startsAt.value))
         .flat(),
     )
     .flat();

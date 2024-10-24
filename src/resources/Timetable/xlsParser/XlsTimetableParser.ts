@@ -1,18 +1,11 @@
 import { XlsParser } from '../../../components';
-import {
-  GROUP_TYPE,
-  GROUP_TYPE_CONST,
-  LabelValue,
-  ParserInterface,
-} from '../../../types';
+import { GroupType, GroupTypes, LabeledInfo, ParserInterface } from '../../../types';
 import { UniDay } from '../UniDay';
 import { ClassesBlock } from './ClassesBlock';
 import { XlsFormat, XlsParserConfig } from './types';
 
 // todo: improve
-export class XlsTimetableParser
-  implements ParserInterface<{ uniDays: UniDay[]; year: string }>
-{
+export class XlsTimetableParser implements ParserInterface<{ uniDays: UniDay[]; year: string }> {
   #config: XlsParserConfig;
   #uniDays: UniDay[];
   #year: string;
@@ -31,7 +24,7 @@ export class XlsTimetableParser
 
   #parseClasses(row: XlsFormat): ({
     details: string;
-    group: LabelValue<{ index: number; type: GROUP_TYPE }>;
+    group: LabeledInfo<{ index: number; type: GroupTypes }>;
   } | null)[] {
     return this.#config.classes.map(classT => {
       const classCell = row[classT];
@@ -56,22 +49,12 @@ export class XlsTimetableParser
 
   #parseClassesBlock(row: XlsFormat, date: Date) {
     const startsAtCell = row[this.#config.hourIndex];
-    if (
-      typeof startsAtCell === 'string' &&
-      this.#config.hourRegex.test(startsAtCell)
-    ) {
-      const { hours, minutes } = this.#parseTime(
-        startsAtCell.split('-').at(0) ?? '00:00',
-      );
+    if (typeof startsAtCell === 'string' && this.#config.hourRegex.test(startsAtCell)) {
+      const { hours, minutes } = this.#parseTime(startsAtCell.split('-').at(0) ?? '00:00');
       const startsAt = new Date(date);
       startsAt.setHours(hours, minutes);
 
-      const classesBlock = new ClassesBlock(
-        '',
-        { hours: 2, minutes: 30 },
-        startsAtCell,
-        startsAt,
-      );
+      const classesBlock = new ClassesBlock('', { hours: 2, minutes: 30 }, startsAtCell, startsAt);
 
       classesBlock.addClasses(this.#parseClasses(row));
 
@@ -136,17 +119,17 @@ export class XlsTimetableParser
     }
   }
 
-  #pickGroup(details: string): GROUP_TYPE {
+  #pickGroup(details: string): GroupTypes {
     if (/ang(ielski)?/i.test(details)) {
-      return GROUP_TYPE_CONST.LANGUAGE;
+      return GroupType.LANGUAGE;
     } else if (/[cć]wiczenia/i.test(details)) {
-      return GROUP_TYPE_CONST.EXERCISE;
+      return GroupType.EXERCISE;
     } else if (/lab/i.test(details)) {
-      return GROUP_TYPE_CONST.LABORATORY;
+      return GroupType.LABORATORY;
     } else if (/wyk[lł]ad/i.test(details) || /dzia[lł]ownia/i.test(details)) {
-      return GROUP_TYPE_CONST.LECTURE;
+      return GroupType.LECTURE;
     } else {
-      return GROUP_TYPE_CONST.UNKNOWN;
+      return GroupType.UNKNOWN;
     }
   }
 }

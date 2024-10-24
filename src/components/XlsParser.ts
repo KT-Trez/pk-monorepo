@@ -1,25 +1,26 @@
-import xlsx from 'node-xlsx';
-import { ParserInterface, Sheet } from '../types';
+import { Readable } from 'node:stream';
+import XLSX, { type WorkBook, type WorkSheet } from 'xlsx';
 
-export class XlsParser<T> implements ParserInterface<Sheet<T>[]> {
-  parse(xlsPath: string): Sheet<T>[] {
-    const sheets = xlsx.parse(xlsPath, {
-      cellDates: true,
-    });
-    if (!sheets) {
-      throw Error('Sheet does not exist');
+type XlsParserOptions = {
+  file: Buffer;
+  skipRows?: number;
+};
+
+export class XlsParser extends Readable {
+  #sheet: WorkSheet;
+  #skipRows: number;
+  #workbook: WorkBook;
+
+  constructor({ file, skipRows }: XlsParserOptions) {
+    super();
+    this.#skipRows = skipRows || 0;
+    this.#workbook = XLSX.read(file, { type: 'buffer', UTC: false });
+    const firstSheet = this.#workbook.SheetNames[0];
+
+    if (!firstSheet) {
+      throw new Error('No sheets found');
     }
 
-    const parsed: Sheet<T>[] = [];
-
-    for (const sheet of sheets) {
-      const { data, name } = sheet;
-      parsed.push({
-        data: (data as T[]).filter(datum => !!datum),
-        name,
-      });
-    }
-
-    return parsed;
+    this.#sheet = this.#workbook.Sheets[firstSheet] as WorkSheet;
   }
 }

@@ -1,15 +1,15 @@
-import { ClassesBlockType, UniDayType } from '../../types';
+import { Day, Lessons } from '../../types';
 
-export class UniDay implements UniDayType {
-  classesBlock: ClassesBlockType[];
+export class UniDay implements Day {
+  lessons: Lessons[];
   date: Date;
 
   constructor(date: Date) {
     this.date = date;
-    this.classesBlock = [];
+    this.lessons = [];
   }
 
-  addLessonBlock(lessonBlock: ClassesBlockType) {
-    this.classesBlock.push(lessonBlock);
+  addLessonBlock(lessonBlock: Lessons) {
+    this.lessons.push(lessonBlock);
   }
 }

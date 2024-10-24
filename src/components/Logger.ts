@@ -1,20 +1,18 @@
-/* eslint-disable no-console */
-import { LoggerInterface } from '../../types';
-import { exhaustiveCheck } from '../../utils/exhaustiveCheck';
+import type { ConstAssertion } from 'types/helpers';
+import { exhaustiveCheck } from 'utils/exhaustiveCheck';
 
-export const LOG_LEVEL_CONST = {
+export const LogLevel = {
   DEBUG: 'DEBUG',
   ERROR: 'ERROR',
   INFO: 'INFO',
   SUCCESS: 'SUCCESS',
   WARNING: 'WARNING',
 } as const;
-
-export type LOG_LEVEL = (typeof LOG_LEVEL_CONST)[keyof typeof LOG_LEVEL_CONST];
+export type LogLevels = ConstAssertion<typeof LogLevel>;
 
 // todo: refactor
-export class Logger implements LoggerInterface<LOG_LEVEL> {
-  static labels: Record<LOG_LEVEL, string> = {
+export class Logger {
+  static labels: Record<LogLevels, string> = {
     DEBUG: 'DEBUG',
     ERROR: 'ERROR',
     INFO: 'INFO',
@@ -22,9 +20,9 @@ export class Logger implements LoggerInterface<LOG_LEVEL> {
     WARNING: 'WARNING',
   };
 
-  static labelsLength: number = 7;
+  static labelsLength = 7;
 
-  static palette: Record<LOG_LEVEL, string> = {
+  static palette: Record<LogLevels, string> = {
     DEBUG: '\u001b[30;1m',
     ERROR: '\u001b[31;1m',
     INFO: '\u001b[36;1m',
@@ -32,11 +30,11 @@ export class Logger implements LoggerInterface<LOG_LEVEL> {
     WARNING: '\u001b[33;1m',
   };
 
-  color(message: string, severity: LOG_LEVEL) {
+  color(message: string, severity: LogLevels) {
     return `${Logger.palette[severity]}${message}\u001b[0m`;
   }
 
-  log(message: string, options: LOG_LEVEL = LOG_LEVEL_CONST.INFO): void {
+  log(message: string, options: LogLevels = LogLevel.INFO): void {
     const timestamp = new Intl.DateTimeFormat('en-GB', {
       // todo: check if locale can be auto-selected
       day: '2-digit',
@@ -48,26 +46,23 @@ export class Logger implements LoggerInterface<LOG_LEVEL> {
       second: '2-digit',
       year: 'numeric',
     }).format(new Date());
-    const pad = ''.padEnd(
-      Logger.labelsLength - Logger.labels[options].length,
-      ' ',
-    );
+    const pad = ''.padEnd(Logger.labelsLength - Logger.labels[options].length, ' ');
     const severity = this.color(Logger.labels[options], options);
 
     switch (options) {
-      case LOG_LEVEL_CONST.DEBUG:
+      case LogLevel.DEBUG:
         console.debug(`${timestamp}${pad} [${severity}] ${message}`);
         break;
-      case LOG_LEVEL_CONST.ERROR:
+      case LogLevel.ERROR:
         console.error(`${timestamp}${pad} [${severity}] ${message}`);
         break;
-      case LOG_LEVEL_CONST.INFO:
+      case LogLevel.INFO:
         console.info(`${timestamp}${pad} [${severity}] ${message}`);
         break;
-      case LOG_LEVEL_CONST.SUCCESS:
+      case LogLevel.SUCCESS:
         console.info(`${timestamp}${pad} [${severity}] ${message}`);
         break;
-      case LOG_LEVEL_CONST.WARNING:
+      case LogLevel.WARNING:
         console.warn(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       default:
