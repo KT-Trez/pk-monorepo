@@ -1,36 +1,51 @@
 {
+  "author": {
+    "email": "bartlomiej.p.was@gmail.pl",
+    "name": "Bartłomiej 'Trez' Wąś",
+    "url": "https://was.org.pl"
+  },
+  "bugs": {
+    "email": "bartlomiej.p.was+bugs@gmail.pl",
+    "url": "https://github.com/KT-Trez/pk-plan/issues"
+  },
   "dependencies": {
     "dotenv": "^16.3.1",
     "ics": "^3.5.0",
     "node-cron": "^3.0.2",
     "node-ssh": "^13.1.0",
-    "node-xlsx": "^0.23.0",
-    "rss-parser": "^3.13.0"
+    "node-xlsx": "^0.4.0",
+    "rss-parser": "^3.13.0",
+    "tsconfig-paths": "^4.2.0"
   },
+  "description": "",
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.6.3",
     "@types/node-cron": "^3.0.8",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.49.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
+  "keywords": [],
+  "license": "GPL-3.0-or-later",
   "main": "src/index.ts",
-  "name": "pk-plan",
+  "name": "@pk/plan",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:KT-Trez/pk-plan.git"
+  },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .tsc",
-    "serve": "nodemon",
-    "start": "node dist/index.js"
+    "build:watch": "tsc -w",
+    "lint": "biome check",
+    "start": "TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/main.js",
+    "start:watch": "nodemon",
+    "test": "jest"
   },
   "version": "0.5.3"
 }
