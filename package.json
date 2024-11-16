@@ -9,6 +9,7 @@
     "url": "https://github.com/KT-Trez/pk-plan/issues"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "dotenv": "^16.3.1",
     "ics": "^3.5.0",
     "node-cron": "^3.0.2",

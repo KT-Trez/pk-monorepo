@@ -18,6 +18,9 @@
       "config": [
         "config.ts"
       ],
+      "@models/*": [
+        "models/*"
+      ],
       "services/*": [
         "services/*"
       ],
