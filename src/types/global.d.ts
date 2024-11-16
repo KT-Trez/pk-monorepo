@@ -1,5 +1,3 @@
-// noinspection JSUnusedGlobalSymbols
-
 declare global {
   namespace NodeJS {
     interface ProcessEnv {

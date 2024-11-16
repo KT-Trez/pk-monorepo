@@ -4,7 +4,7 @@
     "baseUrl": "src",
     "esModuleInterop": true,
     "lib": [
-      "es2022"
+      "es2022",
     ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -12,22 +12,22 @@
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
     "paths": {
-      "components/*": [
+      "@components/*": [
         "components/*"
       ],
-      "config": [
+      "@config": [
         "config.ts"
       ],
       "@models/*": [
         "models/*"
       ],
-      "services/*": [
+      "@services/*": [
         "services/*"
       ],
       "types/*": [
         "types/*"
       ],
-      "utils/*": [
+      "@utils/*": [
         "utils/*"
       ]
     },
@@ -36,14 +36,11 @@
     "sourceRoot": "src",
     "strict": true,
     "target": "ES2022",
-    "typeRoots": [
-      "node_modules/@types",
-      "src/types"
-    ]
+    "types": [
+      "node"
+    ],
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": [],
   "include": [
     "src"
   ]

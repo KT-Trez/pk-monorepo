@@ -1,5 +1,5 @@
+import { exhaustiveCheck } from '@utils/exhaustiveCheck';
 import type { ConstAssertion } from 'types/helpers';
-import { exhaustiveCheck } from 'utils/exhaustiveCheck';
 
 export const LogLevel = {
   DEBUG: 'DEBUG',
