@@ -1,12 +1,12 @@
-import { Day } from "@models/Day";
-import { Lesson } from "@models/Lesson";
-import { differenceInMinutes, format, parse } from "date-fns";
-import { Transform, type TransformCallback } from "node:stream";
-import type { Duration, PartialExcept } from "types/helpers";
-import { Severity } from "types/severity";
-import type { LogStrategy } from "types/strategies";
-import { GroupType, type GroupTypes, type Lesson as ILesson, type Lessons } from "types/timetable";
-import type { CellData } from "types/xls";
+import { Transform, type TransformCallback } from 'node:stream';
+import { Day } from '@models/Day';
+import { Lesson } from '@models/Lesson';
+import { differenceInMinutes, format, parse } from 'date-fns';
+import type { Duration, PartialExcept } from 'types/helpers';
+import { Severity } from 'types/severity';
+import type { LogStrategy } from 'types/strategies';
+import { GroupType, type GroupTypes, type Lesson as ILesson, type Lessons } from 'types/timetable';
+import type { CellData } from 'types/xls';
 import BufferEncoding = NodeJS.BufferEncoding;
 
 const EXERCISE_REGEX = /[cć]w(iczenia)?/i;
@@ -54,24 +54,24 @@ export class XlsTimetableParser extends Transform {
     logger,
     timeRangeColumn,
     timeRangeFormat,
-    timeRangeRegex
-  }: PartialExcept<XlsTimetableParserOptions, "logger">) {
+    timeRangeRegex,
+  }: PartialExcept<XlsTimetableParserOptions, 'logger'>) {
     super({ objectMode: true });
 
     // parsing config
-    this.#dateColumn = dateColumn ?? "A";
-    this.#groupColumn = groupColumn ?? "B";
+    this.#dateColumn = dateColumn ?? 'A';
+    this.#groupColumn = groupColumn ?? 'B';
     this.groupRegexes = {
       [GroupType.EXERCISE]: groupRegexes?.[GroupType.EXERCISE] ?? EXERCISE_REGEX,
       [GroupType.LABORATORY]: groupRegexes?.[GroupType.LABORATORY] ?? LABORATORY_REGEX,
       [GroupType.LANGUAGE]: groupRegexes?.[GroupType.LANGUAGE] ?? LANGUAGE_REGEX,
       [GroupType.LECTURE]: groupRegexes?.[GroupType.LECTURE] ?? LECTURE_REGEX,
-      [GroupType.UNKNOWN]: groupRegexes?.[GroupType.UNKNOWN] ?? UNKNOWN_REGEX
+      [GroupType.UNKNOWN]: groupRegexes?.[GroupType.UNKNOWN] ?? UNKNOWN_REGEX,
     };
     this.#groupRowRegex = groupRowRegex ?? GROUP_ROW_REGEX;
     this.#logger = logger;
-    this.#timeRangeColumn = timeRangeColumn ?? "B";
-    this.#timeRangeFormat = timeRangeFormat ?? "HH:mm";
+    this.#timeRangeColumn = timeRangeColumn ?? 'B';
+    this.#timeRangeFormat = timeRangeFormat ?? 'HH:mm';
     this.#timeRangeRegex = timeRangeRegex ?? TIME_REGEX;
 
     // parsing state
@@ -83,13 +83,13 @@ export class XlsTimetableParser extends Transform {
       [GroupType.LABORATORY]: {},
       [GroupType.LANGUAGE]: {},
       [GroupType.LECTURE]: {},
-      [GroupType.UNKNOWN]: {}
+      [GroupType.UNKNOWN]: {},
     };
-    this.#timeRange = "00:00-00:00";
+    this.#timeRange = '00:00-00:00';
   }
 
   #parseDate(): Date {
-    const [startTime] = this.#timeRange.split("-");
+    const [startTime] = this.#timeRange.split('-');
 
     if (!startTime) {
       return this.#date;
@@ -99,7 +99,7 @@ export class XlsTimetableParser extends Transform {
   }
 
   #parseDuration(): Duration {
-    const [startTime, endTime] = this.#timeRange.split("-");
+    const [startTime, endTime] = this.#timeRange.split('-');
 
     if (!(startTime && endTime)) {
       return { hours: 0, minutes: 0 };
@@ -123,7 +123,7 @@ export class XlsTimetableParser extends Transform {
       }
 
       const description = this.#chunk[column];
-      if (typeof description !== "string") {
+      if (typeof description !== 'string') {
         continue;
       }
 
@@ -175,7 +175,7 @@ export class XlsTimetableParser extends Transform {
     const lessons: Lessons = {
       duration: { label: this.#timeRange, value: duration },
       items,
-      startsAt: { label: format(date, "yyyy-MM-dd HH:mm"), value: date }
+      startsAt: { label: format(date, 'yyyy-MM-dd HH:mm'), value: date },
     };
 
     if (items.length > 0) {
@@ -190,7 +190,7 @@ export class XlsTimetableParser extends Transform {
       }
 
       const group = this.#chunk[column];
-      if (typeof group !== "number") {
+      if (typeof group !== 'number') {
         continue;
       }
 
@@ -230,11 +230,11 @@ export class XlsTimetableParser extends Transform {
       this.#day = new Day(date);
     }
 
-    if (typeof group === "string" && this.#groupRowRegex.test(group)) {
+    if (typeof group === 'string' && this.#groupRowRegex.test(group)) {
       this.#parseGroups();
     }
 
-    if (typeof time === "string" && this.#timeRangeRegex.test(time)) {
+    if (typeof time === 'string' && this.#timeRangeRegex.test(time)) {
       this.#timeRange = time;
       this.#parseLessons();
     }
@@ -242,7 +242,7 @@ export class XlsTimetableParser extends Transform {
     if (canPushMoreData) {
       callback();
     } else {
-      this.once("drain", callback);
+      this.once('drain', callback);
     }
   }
 }
