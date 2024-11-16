@@ -1,12 +1,12 @@
 import { Transform, type TransformCallback } from 'node:stream';
-import { Day } from '@models/Day';
-import { Lesson } from '@models/Lesson';
+import { Day } from '@/models/Day';
+import { Lesson } from '@/models/Lesson';
+import type { Duration, PartialExcept } from '@/types/helpers';
+import { Severity } from '@/types/severity';
+import type { LogStrategy } from '@/types/strategies';
+import { GroupType, type GroupTypes, type Lesson as ILesson, type Lessons } from '@/types/timetable';
+import type { CellData } from '@/types/xls';
 import { differenceInMinutes, format, parse } from 'date-fns';
-import type { Duration, PartialExcept } from 'types/helpers';
-import { Severity } from 'types/severity';
-import type { LogStrategy } from 'types/strategies';
-import { GroupType, type GroupTypes, type Lesson as ILesson, type Lessons } from 'types/timetable';
-import type { CellData } from 'types/xls';
 import BufferEncoding = NodeJS.BufferEncoding;
 
 const EXERCISE_REGEX = /[cć]w(iczenia)?/i;

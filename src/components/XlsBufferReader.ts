@@ -1,6 +1,6 @@
 import { Readable } from 'node:stream';
-import type { PartialExcept } from 'types/helpers';
-import type { RowData } from 'types/xls';
+import type { PartialExcept } from '@/types/helpers';
+import type { RowData } from '@/types/xls';
 import XLSX, { type WorkBook, type WorkSheet } from 'xlsx';
 
 type XlsBufferReaderOptions = {

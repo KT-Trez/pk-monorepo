@@ -1,9 +1,9 @@
 import type { URL } from 'node:url';
+import type { PartialBy } from '@/types/helpers';
+import type { CuotFeed, CuotItem } from '@/types/rss';
+import { Severity } from '@/types/severity';
+import type { LogStrategy } from '@/types/strategies';
 import Parser from 'rss-parser';
-import type { PartialBy } from 'types/helpers';
-import type { CuotFeed, CuotItem } from 'types/rss';
-import { Severity } from 'types/severity';
-import type { LogStrategy } from 'types/strategies';
 
 type ReadCuotRssArgs = {
   itemOrigin: string;

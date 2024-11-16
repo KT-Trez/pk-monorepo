@@ -1,5 +1,5 @@
-import type { Collection } from './api';
-import type { ConstAssertion, Duration, LabeledInfo } from './helpers';
+import type { Collection } from './api.ts';
+import type { ConstAssertion, Duration, LabeledInfo } from './helpers.ts';
 
 export type Day = {
   date: Date;

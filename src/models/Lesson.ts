@@ -1,5 +1,5 @@
-import type { LabeledInfo } from 'types/helpers';
-import type { GroupTypes, Lesson as ILesson } from 'types/timetable';
+import type { LabeledInfo } from '@/types/helpers';
+import type { GroupTypes, Lesson as ILesson } from '@/types/timetable';
 
 export class Lesson implements ILesson {
   description: string;

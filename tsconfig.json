@@ -12,22 +12,22 @@
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
     "paths": {
-      "@components/*": [
+      "@/components/*": [
         "components/*"
       ],
-      "@config": [
+      "@/config": [
         "config.ts"
       ],
-      "@models/*": [
+      "@/models/*": [
         "models/*"
       ],
-      "@services/*": [
+      "@/services/*": [
         "services/*"
       ],
-      "types/*": [
+      "@/types/*": [
         "types/*"
       ],
-      "@utils/*": [
+      "@/utils/*": [
         "utils/*"
       ]
     },

@@ -1,4 +1,4 @@
-import type { Day as IDay, Lessons } from 'types/timetable';
+import type { Day as IDay, Lessons } from '@/types/timetable';
 
 export class Day implements IDay {
   date: Date;

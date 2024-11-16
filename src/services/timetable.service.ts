@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { torusOrigin, torusUploadPath } from 'config';
+import { torusOrigin, torusUploadPath } from '@/config';
 import { NodeSSH } from 'node-ssh';
 import { logger } from './logging.service';
 

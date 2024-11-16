@@ -1,4 +1,4 @@
-import type { ConstAssertion } from 'types/helpers';
+import type { ConstAssertion } from '@/types/helpers';
 
 export const Severity = {
   DEBUG: 'DEBUG',

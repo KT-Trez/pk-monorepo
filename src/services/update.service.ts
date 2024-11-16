@@ -1,12 +1,12 @@
 import fs, { createWriteStream, readFileSync } from 'node:fs';
 import { Readable, Transform, type TransformCallback } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { XlsBufferReader } from '@components/XlsBufferReader';
-import { XlsTimetableParser } from '@components/XlsTimetableParser';
-import type { Day } from '@models/Day';
-import { cuotTimetableOrigin } from 'config';
-import { Severity } from 'types/severity';
-import type { LogStrategy } from 'types/strategies';
+import { XlsBufferReader } from '@/components/XlsBufferReader';
+import { XlsTimetableParser } from '@/components/XlsTimetableParser';
+import { cuotTimetableOrigin } from '@/config';
+import type { Day } from '@/models/Day';
+import { Severity } from '@/types/severity';
+import type { LogStrategy } from '@/types/strategies';
 import BufferEncoding = NodeJS.BufferEncoding;
 
 type UpdateTimetableArgs = {

@@ -1,5 +1,5 @@
-import { exhaustiveCheck } from '@utils/exhaustiveCheck';
-import type { ConstAssertion } from 'types/helpers';
+import type { ConstAssertion } from '@/types/helpers';
+import { exhaustiveCheck } from '@/utils/exhaustiveCheck';
 
 export const LogLevel = {
   DEBUG: 'DEBUG',
@@ -51,18 +51,23 @@ export class Logger {
 
     switch (options) {
       case LogLevel.DEBUG:
+        // biome-ignore lint/suspicious/noConsole: this is a logger
         console.debug(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       case LogLevel.ERROR:
+        // biome-ignore lint/suspicious/noConsole: this is a logger
         console.error(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       case LogLevel.INFO:
+        // biome-ignore lint/suspicious/noConsole: this is a logger
         console.info(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       case LogLevel.SUCCESS:
+        // biome-ignore lint/suspicious/noConsole: this is a logger
         console.info(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       case LogLevel.WARNING:
+        // biome-ignore lint/suspicious/noConsole: this is a logger
         console.warn(`${timestamp}${pad} [${severity}] ${message}`);
         break;
       default:
