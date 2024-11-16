@@ -16,8 +16,8 @@ export const GroupType = {
 export type GroupTypes = ConstAssertion<typeof GroupType>;
 
 export type Lesson = {
-  details: string;
-  group: LabeledInfo<{ index: number; type: GroupTypes }>;
+  description: string;
+  group: LabeledInfo<{ index: number; type: GroupTypes; year: number }>;
 };
 
 export type Lessons = {

@@ -6,3 +6,5 @@ export type LabeledInfo<T> = {
   label: string;
   value: T;
 };
+
+export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
