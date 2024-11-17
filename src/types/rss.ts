@@ -1,16 +1,31 @@
 export type CuotFeed = {
-  category: string;
   description: string;
-  docs: string;
+  feedUrl: string;
   generator: string;
+  image: {
+    height: string;
+    link: string;
+    title: string;
+    url: string;
+    width: string;
+  };
   language: string;
+  lastBuildDate: string;
   link: string;
-  managingEditor: string;
+  paginationLinks: Record<string, string>;
   title: string;
 };
 
 export type CuotItem = {
-  description: string;
+  categories: string[];
+  content: string;
+  'content:encoded': string;
+  'content:encodedSnippet': string;
+  contentSnippet: string;
+  creator: string;
+  'dc:creator': string;
+  guid: string;
+  isoDate: string;
   link: string;
   pubDate: string;
   title: string;

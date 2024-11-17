@@ -1,6 +1,5 @@
-// noinspection JSUnusedGlobalSymbols
-
 declare global {
+  // biome-ignore lint/style/noNamespace: this declaration extends the global namespace
   namespace NodeJS {
     interface ProcessEnv {
       DEBUG?: string;
@@ -11,3 +10,5 @@ declare global {
     }
   }
 }
+
+export {};

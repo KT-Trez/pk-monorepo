@@ -1,24 +1,46 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "forceConsistentCasingInFileNames": true,
+    "alwaysStrict": true,
+    "baseUrl": "src",
+    "esModuleInterop": true,
     "lib": [
-      "es2022"
+      "es2022",
     ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "moduleDetection": "force",
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
-    "skipLibCheck": true,
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/config": [
+        "config.ts"
+      ],
+      "@/models/*": [
+        "models/*"
+      ],
+      "@/services/*": [
+        "services/*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ]
+    },
+    "removeComments": true,
     "sourceMap": true,
+    "sourceRoot": "src",
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "types": [
+      "node"
+    ],
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": [],
   "include": [
     "src"
   ]

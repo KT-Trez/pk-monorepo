@@ -1,38 +1,29 @@
-export type Duration = { hours: number; minutes: number };
+import type { Collection } from './api.ts';
+import type { ConstAssertion, Duration, LabeledInfo } from './helpers.ts';
 
-export type LabelValue<T> = {
-  label: string;
-  value: T;
+export type Day = {
+  date: Date;
+  items: Lessons[];
 };
 
-export type ClassType = {
-  details: string;
-  group: LabelValue<{ index: number; type: GROUP_TYPE }>;
-};
-
-export type ClassesBlockType = {
-  classes: (ClassType | null)[];
-  duration: LabelValue<Duration>;
-  startsAt: LabelValue<Date>;
-};
-
-export const GROUP_TYPE_CONST = {
+export const GroupType = {
   EXERCISE: 'GĆ',
   LABORATORY: 'GL',
   LANGUAGE: 'GANG',
   LECTURE: 'GW',
   UNKNOWN: 'UNKNOWN',
 } as const;
+export type GroupTypes = ConstAssertion<typeof GroupType>;
 
-export type GROUP_TYPE =
-  (typeof GROUP_TYPE_CONST)[keyof typeof GROUP_TYPE_CONST];
-
-export type UniDayType = {
-  classesBlock: ClassesBlockType[];
-  date: Date;
+export type Lesson = {
+  description: string;
+  group: LabeledInfo<{ index: number; type: GroupTypes; year: number }>;
 };
 
-export type TimetableEndpoint = {
-  pubDate: Date;
-  timetable: UniDayType[];
+export type Lessons = {
+  duration: LabeledInfo<Duration>;
+  items: Lesson[];
+  startsAt: LabeledInfo<Date>;
 };
+
+export type Timetable = Collection<Day, { modifiedDate: Date }>;
