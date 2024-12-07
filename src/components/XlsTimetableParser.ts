@@ -217,13 +217,11 @@ export class XlsTimetableParser extends Transform {
     const group = chunk[this.#groupColumn];
     const time = chunk[this.#timeRangeColumn];
 
-    let canPushMoreData = true;
-
     this.#chunk = chunk;
 
     if (date instanceof Date) {
       if (this.#day !== null) {
-        canPushMoreData = this.push(this.#day);
+        this.push(this.#day);
       }
 
       this.#date = date;
@@ -239,10 +237,7 @@ export class XlsTimetableParser extends Transform {
       this.#parseLessons();
     }
 
-    if (canPushMoreData) {
-      callback();
-    } else {
-      this.once('drain', callback);
-    }
+    // todo: implement backpressure
+    callback();
   }
 }

@@ -6,4 +6,4 @@ export const torusOrigin = 'torus.uck.pk.edu.pl';
 export const tempDir = 'tmp';
 export const timetableOutPath = path.resolve(tempDir, 'out.json');
 export const timetableXlsPath = path.resolve(tempDir, 'timetable.xls');
-export const torusUploadPath = 'public_html/pkplan';
+export const torusUploadDirectory = 'public_html/pkplan';

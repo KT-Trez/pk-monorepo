@@ -1,31 +1,40 @@
-import fs, { createWriteStream, readFileSync } from 'node:fs';
-import { Readable, Transform, type TransformCallback } from 'node:stream';
+import { createWriteStream, existsSync, readFileSync, rmSync } from 'node:fs';
+import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import { JsonArrayWriter } from '@/components/JsonArrayWriter';
 import { XlsBufferReader } from '@/components/XlsBufferReader';
 import { XlsTimetableParser } from '@/components/XlsTimetableParser';
-import { cuotTimetableOrigin } from '@/config';
-import type { Day } from '@/models/Day';
 import { Severity } from '@/types/severity';
 import type { LogStrategy } from '@/types/strategies';
-import BufferEncoding = NodeJS.BufferEncoding;
+import { type UploadItem, uploadToServer } from '@/utils/uploadToServer';
 
-type UpdateTimetableArgs = {
+export type UpdateTimetableArgs = {
   logger: LogStrategy;
   outputPath: string;
+  remoteDirectory: string;
+  remoteOrigin: string;
+  timetableOrigin: string;
   tmpPath: string;
 };
 
-export const updateTimetable = async ({ logger, outputPath, tmpPath }: UpdateTimetableArgs) => {
+export const updateTimetable = async ({
+  logger,
+  outputPath,
+  remoteDirectory,
+  remoteOrigin,
+  timetableOrigin,
+  tmpPath,
+}: UpdateTimetableArgs) => {
   logger.log('Cleaning up', Severity.INFO);
 
-  if (fs.existsSync(tmpPath)) {
-    fs.rmSync(tmpPath);
+  if (existsSync(tmpPath)) {
+    rmSync(tmpPath);
   }
 
   logger.log('Downloading timetable page', Severity.INFO);
 
   // @ts-expect-error fetch is not defined in types definition
-  const res = await fetch(cuotTimetableOrigin);
+  const res = await fetch(timetableOrigin);
   const timetablePage = await res.text();
 
   const links = timetablePage.match(/https:\/\/.+\/uploads\/.+niestacjonarne.+\.xls/gi);
@@ -39,55 +48,22 @@ export const updateTimetable = async ({ logger, outputPath, tmpPath }: UpdateTim
 
   // @ts-expect-error fetch is not defined in types definition
   const stream = await fetch(timetableUrl.toString());
-  await pipeline(Readable.fromWeb(stream.body), fs.createWriteStream(tmpPath));
+  await pipeline(Readable.fromWeb(stream.body), createWriteStream(tmpPath));
 
   logger.log('Parsing timetable', Severity.INFO);
 
   await pipeline(
     new XlsBufferReader({ file: readFileSync(tmpPath), range: 'A5:S500' }),
     new XlsTimetableParser({ logger }),
-    new Transform({
-      construct(callback: (error?: Error | null) => void) {
-        // @ts-expect-error isFirst is not defined in types definition
-        this.isFirst = true;
-        this.push('[');
-        callback();
-      },
-      final(callback: (error?: Error | null) => void) {
-        this.push(']');
-        callback();
-      },
-      objectMode: true,
-      transform(chunk: Day, _: BufferEncoding, callback: TransformCallback) {
-        let canPushMoreData = true;
-
-        // @ts-expect-error isFirst is not defined in types definition
-        if (this.isFirst) {
-          // @ts-expect-error isFirst is not defined in types definition
-          this.isFirst = false;
-        } else {
-          canPushMoreData = this.push(',');
-        }
-
-        if (canPushMoreData && this.push(JSON.stringify(chunk))) {
-          callback();
-        } else {
-          this.once('drain', callback);
-        }
-      },
-    }),
-    createWriteStream(outputPath),
+    new JsonArrayWriter(),
+    createWriteStream(outputPath, { encoding: 'utf8' }),
   );
 
-  logger.log('Timetable updated', Severity.SUCCESS);
+  logger.log('Timetable parsed and saved to .json', Severity.SUCCESS);
 
-  // const timetable = parseFromXls(secondYearConfig);
-  // writeToIcs(timetable);
-  // writeToJson(timetable);
-  //
-  // if (process.env.UPLOAD)
-  //   await uploadToTorus([
-  //     { localPath: timetableIcsPath, remoteName: 'timetable.ics' },
-  //     { localPath: timetableJsonPath, remoteName: 'timetable.json' },
-  //   ]);
+  if (process.env.UPLOAD) {
+    const files: UploadItem[] = [{ local: outputPath, remoteName: 'timetable.json' }];
+
+    await uploadToServer({ directory: remoteDirectory, files, host: remoteOrigin, logger });
+  }
 };

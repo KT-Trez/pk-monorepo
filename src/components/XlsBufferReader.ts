@@ -32,17 +32,14 @@ export class XlsBufferReader extends Readable {
       header: 'A',
       range,
     });
-
-    this.on('resume', this._read.bind(this));
   }
 
   _read() {
     if (this.#rowIndex < this.#rows.length) {
       const chunk = this.#rows[this.#rowIndex++];
 
-      if (!this.push(chunk)) {
-        this.pause();
-      }
+      // todo: implement backpressure
+      this.push(chunk);
     } else {
       this.push(null);
     }
