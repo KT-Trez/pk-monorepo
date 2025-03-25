@@ -4,7 +4,7 @@
     "baseUrl": "src",
     "esModuleInterop": true,
     "lib": [
-      "es2022",
+      "es2022"
     ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -16,7 +16,7 @@
         "components/*"
       ],
       "@/config": [
-        "config.ts"
+        "config"
       ],
       "@/models/*": [
         "models/*"
@@ -32,13 +32,14 @@
       ]
     },
     "removeComments": true,
+    "skipLibCheck": true,
     "sourceMap": true,
     "sourceRoot": "src",
     "strict": true,
     "target": "ES2022",
     "types": [
       "node"
-    ],
+    ]
   },
   "exclude": [],
   "include": [

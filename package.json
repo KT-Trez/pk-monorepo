@@ -33,7 +33,7 @@
   "keywords": [],
   "license": "GPL-3.0-or-later",
   "main": "src/main.ts",
-  "name": "@pk/plan",
+  "name": "@pk/plan-parser",
   "private": true,
   "repository": {
     "type": "git",
@@ -47,5 +47,5 @@
     "start:watch": "nodemon",
     "test": "jest"
   },
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

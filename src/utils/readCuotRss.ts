@@ -17,7 +17,7 @@ export const readCuotRss = async ({ itemOrigin, logger, url }: PartialBy<ReadCuo
   const parser = new Parser<CuotFeed, CuotItem>();
   const feed = await parser.parseURL(url.toString());
 
-  logger?.log('RSS parsed', Severity.INFO);
+  logger?.log('RSS parsed', Severity.SUCCESS);
 
   return feed.items.find(item => item.link.trim() === itemOrigin);
 };
