@@ -1,51 +1,23 @@
 {
-  "author": {
-    "email": "bartlomiej.p.was@gmail.pl",
-    "name": "Bartłomiej 'Trez' Wąś",
-    "url": "https://was.org.pl"
-  },
-  "bugs": {
-    "email": "bartlomiej.p.was+bugs@gmail.pl",
-    "url": "https://github.com/KT-Trez/pk-plan/issues"
-  },
-  "dependencies": {
-    "date-fns": "^4.1.0",
-    "dotenv": "^16.3.1",
-    "ics": "^3.5.0",
-    "node-cron": "^3.0.2",
-    "node-ssh": "^13.1.0",
-    "rss-parser": "^3.13.0",
-    "tsconfig-paths": "^4.2.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
-  },
-  "description": "",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^20.6.3",
-    "@types/node-cron": "^3.0.8",
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.1",
-    "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.2"
   },
-  "keywords": [],
   "license": "GPL-3.0-or-later",
-  "main": "src/main.ts",
-  "name": "@pk/plan-parser",
+  "name": "@pk/monorepo",
+  "packageManager": "npm@11.0.0",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:KT-Trez/pk-plan.git"
-  },
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc -w",
-    "lint": "biome check",
-    "start": "TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/main.js",
-    "start:watch": "nodemon",
-    "test": "jest"
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "serve": "turbo serve",
+    "typecheck": "turbo typecheck"
   },
-  "version": "1.1.0"
+  "version": "1.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
