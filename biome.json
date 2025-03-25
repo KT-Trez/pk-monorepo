@@ -1,7 +1,21 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "files": {
-    "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+    "include": [
+      "apps/**/*.js",
+      "apps/**/*.jsx",
+      "apps/**/*.json",
+      "apps/**/*.ts",
+      "apps/**/*.tsx",
+      "packages/**/*.js",
+      "packages/**/*.jsx",
+      "packages/**/*.json",
+      "packages/**/*.ts",
+      "packages/**/*.tsx",
+      "*.js",
+      "*.json",
+      "*.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -12,38 +26,29 @@
   },
   "javascript": {
     "formatter": {
+      "enabled": true,
       "arrowParentheses": "asNeeded",
       "quoteStyle": "single"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true
     }
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "complexity": {
-        "all": true
-      },
-      "correctness": {
-        "all": true,
-        "noNodejsModules": "off"
-      },
-      "performance": {
-        "all": true
-      },
-      "recommended": true,
-      "security": {
-        "all": true
-      },
-      "style": {
-        "all": true,
-        "useFilenamingConvention": "off",
-        "useNamingConvention": "off"
-      },
-      "suspicious": {
-        "all": true
-      }
+      "all": true
     }
   },
   "organizeImports": {
     "enabled": true
+  },
+  "vcs": {
+    "clientKind": "git",
+    "defaultBranch": "master",
+    "enabled": true,
+    "useIgnoreFile": true
   }
 }

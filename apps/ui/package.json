@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@pk/types": "*",
+    "@pk/utils": "*"
+  },
+  "devDependencies": {
+    "@pk/tsconfig": "*",
+    "vite": "^6.2.0"
+  },
+  "name": "@pk/ui",
+  "scripts": {
+    "build": "vite build",
+    "lint": "biome lint",
+    "lint:fix": "biome check --write",
+    "preview": "vite preview",
+    "serve": "vite",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module"
+}

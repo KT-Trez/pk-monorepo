@@ -1,10 +1,17 @@
+# artifacts
+/.turbo
+/**/*/.turbo
+/**/*/*.js
+/**/*/*.map
+/**/*/*.d.ts
+/**/*/*.tsbuildinfo
+
 # dependencies
-/.env
 /node_modules
+/**/*/node_modules
 
 # editors
 /.idea
 
-# temp
-/dist
-/tmp
+# environment
+/.env

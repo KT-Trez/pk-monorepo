@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@pk/types": "*",
+    "@pk/utils": "*"
+  },
+  "devDependencies": {
+    "@pk/tsconfig": "*",
+    "@types/node": "^22.13.9"
+  },
+  "main": "./src/main.ts",
+  "name": "@pk/server",
+  "scripts": {
+    "build": "tsc",
+    "lint": "biome lint",
+    "lint:fix": "biome check --write",
+    "serve": "node --experimental-strip-types --watch src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module"
+}
