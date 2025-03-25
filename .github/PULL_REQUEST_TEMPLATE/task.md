@@ -5,7 +5,7 @@
 
 ## Task
 
-https://github.com/KT-Trez/pk-monorepo/issues/<issue_number>
+#<issue_number>
 
 ## Screenshots
 
