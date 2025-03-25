@@ -5,7 +5,7 @@ export class WebServerResponse<TRequest extends IncomingMessage = IncomingMessag
     // biome-ignore lint/suspicious/noConsole: needed for error handling
     console.error(cause);
 
-    if (!this.headersSent) {
+    if (this.headersSent) {
       return;
     }
 
