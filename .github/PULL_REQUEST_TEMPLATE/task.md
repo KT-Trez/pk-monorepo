@@ -22,8 +22,14 @@
 1. ...
 2. ...
 
-## Checklist
+## Before submitting
 
 - [ ] I have tested the changes
 - [ ] I have updated the tests
 - [ ] I have updated the version
+
+## Before merging
+
+- [ ] The comments are resolved
+- [ ] The code is reviewed
+- [ ] The tests are passing
