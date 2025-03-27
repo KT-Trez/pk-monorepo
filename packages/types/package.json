@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@pk/tsconfig": "*"
+    "@pk/ts-config": "*"
   },
   "exports": {
     "./event.js": "./src/event.ts"
