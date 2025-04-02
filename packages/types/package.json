@@ -3,7 +3,11 @@
     "@pk/ts-config": "*"
   },
   "exports": {
-    "./event.js": "./src/event.ts"
+    "./api.js": "./src/api.ts",
+    "./event.js": "./src/event.ts",
+    "./fieldOfStudy.js": "./src/fieldOfStudy.ts",
+    "./group.js": "./src/group.ts",
+    "./helpers.js": "./src/helpers.ts"
   },
   "name": "@pk/types",
   "scripts": {

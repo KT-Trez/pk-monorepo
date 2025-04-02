@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "@pk/types": "*",
-    "@pk/utils": "*"
+    "@pk/utils": "*",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "@pk/ts-config": "*",
-    "@types/node": "^22.13.9"
+    "@types/node": "^22.13.9",
+    "@types/pg": "^8.11.11"
   },
   "main": "./src/main.ts",
   "name": "@pk/server",
@@ -13,7 +15,7 @@
     "build": "tsc",
     "lint": "biome lint",
     "lint:fix": "biome check --write",
-    "serve": "node --experimental-strip-types --watch src/main.ts",
+    "serve": "node --env-file=.env --experimental-strip-types --watch src/main.ts",
     "typecheck": "tsc --noEmit"
   },
   "type": "module"
