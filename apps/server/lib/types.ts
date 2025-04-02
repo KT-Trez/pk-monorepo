@@ -1,15 +1,23 @@
+import type { ConstValues } from '@pk/types/helpers.js';
+import type { ServerError } from './errors/ServerError.js';
 import type { WebServerRequest } from './WebServerRequest.js';
 import type { WebServerResponse } from './WebServerResponse.js';
 
-export type HttpHandler = RequestHandler | UseRequestHandler;
+export const AllowedMethods = {
+  all: '*',
+  delete: 'DELETE',
+  get: 'GET',
+  post: 'POST',
+  put: 'PUT',
+} as const;
+export type AllowedMethod = ConstValues<typeof AllowedMethods>;
 
-export type RequestHandler = (
-  req: WebServerRequest,
-  res: WebServerResponse,
-) => Error | Promise<Error> | Promise<undefined> | undefined;
+export type HttpHandler = RequestHandle | UseRequestHandle;
 
-export type UseRequestHandler = {
-  use(path: string, ...handlers: RequestHandler[]): void;
+export type NextFunction = (error: ServerError) => void;
+
+export type RequestHandle = (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => void;
+
+export type UseRequestHandle = {
+  _requestHandle(path: string, req: WebServerRequest, res: WebServerResponse): Promise<void>;
 };
-
-export type RequestMethods = '*' | 'DELETE' | 'GET' | 'POST' | 'PUT';

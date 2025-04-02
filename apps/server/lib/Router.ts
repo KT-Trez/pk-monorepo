@@ -1,67 +1,97 @@
+import { MethodNotAllowedError } from './errors/MethodNotAllowedError.ts';
+import { NotFoundError } from './errors/NotFoundError.ts';
+import { ServerError } from './errors/ServerError.ts';
+import type { AllowedMethod, HttpHandler, UseRequestHandle } from './types.js';
 import type { WebServerRequest } from './WebServerRequest.js';
 import type { WebServerResponse } from './WebServerResponse.js';
-import type { HttpHandler, RequestMethods, UseRequestHandler } from './types.js';
 
-export class Router implements UseRequestHandler {
-  #handlerMap: Record<RequestMethods, Map<string, HttpHandler[]>>;
+export class Router implements UseRequestHandle {
+  protected routes: Map<AllowedMethod, Map<string, HttpHandler[]>>;
 
   constructor() {
-    this.#handlerMap = {
-      '*': new Map(),
-      DELETE: new Map(),
-      GET: new Map(),
-      POST: new Map(),
-      PUT: new Map(),
-    };
+    this.routes = new Map();
+    this.routes.set('*', new Map());
+    this.routes.set('DELETE', new Map());
+    this.routes.set('GET', new Map());
+    this.routes.set('POST', new Map());
+    this.routes.set('PUT', new Map());
   }
 
   delete(path: string, ...handlers: HttpHandler[]) {
-    this.#registerHandler('DELETE', path, handlers);
+    this.registerHandler('DELETE', path, handlers);
   }
 
   get(path: string, ...handlers: HttpHandler[]) {
-    this.#registerHandler('GET', path, handlers);
+    this.registerHandler('GET', path, handlers);
   }
 
   post(path: string, ...handlers: HttpHandler[]) {
-    this.#registerHandler('POST', path, handlers);
+    this.registerHandler('POST', path, handlers);
   }
 
   put(path: string, ...handlers: HttpHandler[]) {
-    this.#registerHandler('PUT', path, handlers);
+    this.registerHandler('PUT', path, handlers);
   }
 
   use(path: string, ...handlers: HttpHandler[]) {
-    this.#registerHandler('*', path, handlers);
+    this.registerHandler('*', path, handlers);
   }
 
-  // biome-ignore lint/suspicious/useAwait: await will be added in a future PR
-  protected async handleRequest(path: string, req: WebServerRequest, res: WebServerResponse) {
+  async _requestHandle(path: string, req: WebServerRequest, res: WebServerResponse) {
     if (!req.method) {
-      res.setHeader('Allow', 'GET, POST, DELETE, PUT');
-      return res.error({ status: 405, message: 'Method Not Allowed' });
+      res.setHeader('Allow', 'DELETE, GET, POST, PUT');
+      return res.error(new MethodNotAllowedError(req.method));
     }
 
-    const globalHandlers = this.#handlerMap['*']?.get(path);
-    // even if the method is invalid, the undefined value will be handled normally
-    const methodHandlers = this.#handlerMap[req.method as RequestMethods]?.get(path);
+    // find the route handlers
+    const methodRoutes = this.routes.get(req.method as AllowedMethod)?.get(path);
+    const wildcardRoutes = this.routes.get('*')?.get(path);
 
-    const handlers = methodHandlers ?? globalHandlers;
+    const routes = methodRoutes ?? wildcardRoutes;
 
-    if (!handlers) {
-      return res.error({ status: 404, message: 'Not Found' });
+    if (!routes) {
+      return res.error(new NotFoundError(`path "${path}"`));
     }
 
     try {
-      for (const _handler of handlers) {
-        // todo: run the handler
+      // prepare the next function
+      let error: ServerError | null = null;
+      const next = (err: ServerError) => {
+        error = err;
+      };
+
+      // iterate and call the route handlers
+      for (const route of routes) {
+        if (error) {
+          break;
+        }
+
+        const isRouteHandle = typeof route === 'function';
+
+        if (isRouteHandle) {
+          route(req, res, next);
+        } else {
+          const nextPath = req.nextPath;
+
+          if (!nextPath) {
+            return res.error(new NotFoundError(`path "${path}"`));
+          }
+
+          route._requestHandle(nextPath, req, res);
+        }
+      }
+
+      if (error) {
+        res.error(error);
       }
     } catch (error) {
-      res.error({ cause: error, status: 500, message: 'Internal Server Error' });
+      res.error(new ServerError({ cause: error }));
     }
   }
 
-  #registerHandler(method: RequestMethods, path: string, handlers: HttpHandler[]) {
-    this.#handlerMap[method]?.set(path, handlers);
+  protected registerHandler(method: AllowedMethod, path: string, handlers: HttpHandler[]) {
+    const normalizedPath = path.startsWith('/') ? path.substring(1) : path;
+
+    this.routes.get(method)?.set(normalizedPath, handlers);
   }
 }
