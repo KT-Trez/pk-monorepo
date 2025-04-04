@@ -10,11 +10,11 @@ export class GroupDbAdapter extends AbstractDbAdapter<GroupApi, GroupDb> {
                      FROM groups
                      WHERE group_uid = ANY ($1::UUID[]);`;
 
-  getManyQuery = `SELECT field_of_study_id, group_uid, object_type_uid, name, year
+  getManyQuery = `SELECT field_of_study_id, group_uid, object_type_id, name, year
                   FROM groups
                   LIMIT $1 OFFSET $2`;
 
-  getOneQuery = `SELECT field_of_study_id, group_uid, object_type_uid, name, year
+  getOneQuery = `SELECT field_of_study_id, group_uid, object_type_id, name, year
                  FROM groups
                  WHERE group_uid = $1`;
 
@@ -25,7 +25,8 @@ export class GroupDbAdapter extends AbstractDbAdapter<GroupApi, GroupDb> {
       fieldOfStudyId: dbModel.field_of_study_id,
       groupUid: dbModel.group_uid,
       name: dbModel.name,
-      year: new Date(dbModel.year),
+      type: dbModel.object_type_id,
+      yearOfCreation: new Date(dbModel.year),
     };
   }
 
