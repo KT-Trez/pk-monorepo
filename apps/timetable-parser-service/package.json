@@ -4,7 +4,7 @@
     "@pk/utils": "*"
   },
   "devDependencies": {
-    "@pk/tsconfig": "*",
+    "@pk/ts-config": "*",
     "@types/node": "^22.13.9"
   },
   "main": "src/main.ts",

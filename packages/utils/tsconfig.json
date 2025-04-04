@@ -1,5 +1,5 @@
 {
-  "extends": "@pk/tsconfig/src/tsconfig.lib.json",
+  "extends": "@pk/ts-config/src/tsconfig.lib.json",
   "include": [
     "src"
   ]

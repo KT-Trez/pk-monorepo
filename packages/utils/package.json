@@ -3,7 +3,7 @@
     "@pk/types": "*"
   },
   "devDependencies": {
-    "@pk/tsconfig": "*"
+    "@pk/ts-config": "*"
   },
   "exports": {
     "./noop.js": "./src/noop.ts"

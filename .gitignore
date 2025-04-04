@@ -15,3 +15,4 @@
 
 # environment
 /.env
+/**/*/.env

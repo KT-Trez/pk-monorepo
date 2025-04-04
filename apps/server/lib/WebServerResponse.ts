@@ -1,20 +1,46 @@
-import { type IncomingMessage, ServerResponse } from 'node:http';
+import type { HttpStatus } from '@pk/types/api.js';
+import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
+import type { ServerError } from './errors/ServerError.js';
 
-export class WebServerResponse<TRequest extends IncomingMessage = IncomingMessage> extends ServerResponse<TRequest> {
-  error({ cause, status, message }: { cause?: unknown; status: number; message: string }) {
+export class WebServerResponse<Request extends IncomingMessage = IncomingMessage> extends ServerResponse<Request> {
+  readonly #headers: OutgoingHttpHeaders;
+  #status: HttpStatus;
+
+  constructor(req: Request) {
+    super(req);
+
+    this.#headers = {};
+    this.#status = 200;
+  }
+
+  addHeader(name: string, value: string | number | string[]) {
+    this.#headers[name] = value;
+
+    return this;
+  }
+
+  error(error: ServerError) {
+    // todo: use logger
     // biome-ignore lint/suspicious/noConsole: needed for error handling
-    console.error(cause);
+    console.error(`[ERROR] ${error.message} [CAUSE]`, error.cause);
 
     if (this.headersSent) {
       return;
     }
 
-    this.writeHead(status);
-    this.end(message);
+    this.setStatus(error.httpStatus);
+    this.json(error);
   }
 
   json(data: unknown) {
-    this.setHeader('Content-Type', 'application/json');
+    this.addHeader('Content-Type', 'application/json');
+    this.writeHead(this.#status, this.#headers);
     this.end(JSON.stringify(data));
+  }
+
+  setStatus(code: HttpStatus) {
+    this.#status = code;
+
+    return this;
   }
 }

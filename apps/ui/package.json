@@ -4,7 +4,7 @@
     "@pk/utils": "*"
   },
   "devDependencies": {
-    "@pk/tsconfig": "*",
+    "@pk/ts-config": "*",
     "vite": "^6.2.0"
   },
   "name": "@pk/ui",
