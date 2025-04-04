@@ -16,7 +16,6 @@ export class ServerError extends Error implements ErrorApi {
 
   constructor(args?: ServerErrorArgs) {
     const message = args?.message ?? 'Internal server error';
-
     super(message, { cause: args?.cause });
 
     this.httpStatus = args?.httpStatus ?? HttpStatuses.internalServerError;

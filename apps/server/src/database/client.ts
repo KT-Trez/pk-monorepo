@@ -1,8 +1,8 @@
-import pg from 'pg';
+import pg, { type QueryConfig, type QueryConfigValues, type QueryResultRow } from 'pg';
 
-const { Client } = pg;
+const { Pool } = pg;
 
-export const client = new Client({
+const pool = new Pool({
   database: process.env.PG_DATABASE ?? 'pk',
   host: process.env.PG_HOST ?? 'localhost',
   password: process.env.PG_PASSWORD ?? '',
@@ -11,4 +11,18 @@ export const client = new Client({
 });
 
 // todo: add logger
-client.connect().then(() => console.log('Connected'));
+pool.connect().then(() => console.log('Connected'));
+
+export const query = async <R extends QueryResultRow = unknown[], I = unknown[]>(
+    queryTextOrConfig: string | QueryConfig<I>,
+    values?: QueryConfigValues<I>,
+) => {
+  const start = performance.now();
+  const queryResult = await pool.query<R, I>(queryTextOrConfig, values);
+  const duration = performance.now() - start;
+
+  // todo: add logger
+  console.info(`Query took ${duration}ms`);
+
+  return queryResult;
+};

@@ -16,7 +16,7 @@ export type HttpHandler = RequestHandle | UseRequestHandle;
 
 export type NextFunction = (error: ServerError) => void;
 
-export type RequestHandle = (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => void;
+export type RequestHandle = (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => Promise<void>;
 
 export type UseRequestHandle = {
   _requestHandle(path: string, req: WebServerRequest, res: WebServerResponse): Promise<void>;

@@ -2,7 +2,25 @@ import type { GroupApi, GroupDb } from '@pk/types/group.js';
 import { AbstractDbAdapter } from './AbstractDbAdapter.ts';
 
 export class GroupDbAdapter extends AbstractDbAdapter<GroupApi, GroupDb> {
-  fromDatabase(dbModel: GroupDb): GroupApi {
+  deleteOneQuery = `DELETE
+                    FROM groups
+                    WHERE group_uid = $1::UUID`;
+
+  deleteManyQuery = `DELETE
+                     FROM groups
+                     WHERE group_uid = ANY ($1::UUID[]);`;
+
+  getManyQuery = `SELECT field_of_study_id, group_uid, object_type_uid, name, year
+                  FROM groups
+                  LIMIT $1 OFFSET $2`;
+
+  getOneQuery = `SELECT field_of_study_id, group_uid, object_type_uid, name, year
+                 FROM groups
+                 WHERE group_uid = $1`;
+
+  name = 'GROUP';
+
+  dbToApiObject(dbModel: GroupDb): GroupApi {
     return {
       fieldOfStudyId: dbModel.field_of_study_id,
       groupUid: dbModel.group_uid,
@@ -11,16 +29,7 @@ export class GroupDbAdapter extends AbstractDbAdapter<GroupApi, GroupDb> {
     };
   }
 
-  toDatabase(apiModel: GroupApi): GroupDb {
-    return {
-      // biome-ignore lint/style/useNamingConvention: this is a database field
-      field_of_study_id: apiModel.fieldOfStudyId,
-      // biome-ignore lint/style/useNamingConvention: this is a database field
-      group_uid: apiModel.groupUid,
-      // biome-ignore lint/style/useNamingConvention: this is a database field
-      object_type_uid: 'group',
-      name: apiModel.name,
-      year: apiModel.year.toISOString(),
-    };
+  getPrimaryKey(dbModel: GroupDb): string {
+    return dbModel.group_uid;
   }
 }

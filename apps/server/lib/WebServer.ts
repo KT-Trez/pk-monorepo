@@ -28,12 +28,12 @@ export class WebServer extends Router {
   #requestHandle(req: WebServerRequest, res: WebServerResponse) {
     req._process();
 
-    const nextPath = req.nextPath;
+    const path = req._getNextPath();
 
-    if (!nextPath) {
-      return res.error(new NotFoundError(`path "${nextPath}"`));
+    if (!path) {
+      return res.error(new NotFoundError(`[PATH] "${path}"`));
     }
 
-    super._requestHandle(nextPath, req, res).catch(console.error);
+    super._requestHandle(path, req, res).catch(console.error);
   }
 }

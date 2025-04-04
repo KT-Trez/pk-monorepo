@@ -50,7 +50,7 @@ export class Router implements UseRequestHandle {
     const routes = methodRoutes ?? wildcardRoutes;
 
     if (!routes) {
-      return res.error(new NotFoundError(`path "${path}"`));
+      return res.error(new NotFoundError(`[PATH] "${path}"`));
     }
 
     try {
@@ -69,15 +69,15 @@ export class Router implements UseRequestHandle {
         const isRouteHandle = typeof route === 'function';
 
         if (isRouteHandle) {
-          route(req, res, next);
+          await route(req, res, next);
         } else {
-          const nextPath = req.nextPath;
+          const path = req._getNextPath();
 
-          if (!nextPath) {
-            return res.error(new NotFoundError(`path "${path}"`));
+          if (!path) {
+            return res.error(new NotFoundError(`[PATH] "${path}"`));
           }
 
-          route._requestHandle(nextPath, req, res);
+          await route._requestHandle(path, req, res);
         }
       }
 
@@ -91,7 +91,6 @@ export class Router implements UseRequestHandle {
 
   protected registerHandler(method: AllowedMethod, path: string, handlers: HttpHandler[]) {
     const normalizedPath = path.startsWith('/') ? path.substring(1) : path;
-
     this.routes.get(method)?.set(normalizedPath, handlers);
   }
 }

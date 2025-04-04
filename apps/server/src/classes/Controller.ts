@@ -1,61 +1,77 @@
+import { HttpStatuses } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
-import type { Client } from 'pg';
-import { NotFoundError } from '../../lib/errors/NotFoundError.ts';
-import { ServerError } from '../../lib/errors/ServerError.ts';
+import { ActionFailure } from '../../lib/responses/ActionFailure.ts';
+import { ActionSuccess } from '../../lib/responses/ActionSuccess.ts';
 import type { NextFunction } from '../../lib/types.ts';
 import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
 import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
+import { query } from '../database/client.ts';
 import type { AbstractDbAdapter } from './adapters/AbstractDbAdapter.ts';
 import { Collection } from './Collection.ts';
 
 type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObject> = {
   dbAdapter: AbstractDbAdapter<ApiModel, DbModel>;
-  dbClient: Client;
 };
 
 export abstract class Controller<ApiModel extends UnknownObject, DbModel extends UnknownObject> {
-  abstract getManyQuery: string;
-  abstract getOneQuery: string;
   #dbAdapter: AbstractDbAdapter<ApiModel, DbModel>;
-  #dbClient: Client;
 
-  protected constructor({ dbAdapter, dbClient }: ControllerArgs<ApiModel, DbModel>) {
+  protected constructor({ dbAdapter }: ControllerArgs<ApiModel, DbModel>) {
     this.#dbAdapter = dbAdapter;
-    this.#dbClient = dbClient;
+  }
+
+  async deleteOne(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const uid = req.getSearchParam('uid');
+
+    const { rowCount } = await query(this.#dbAdapter.deleteOneQuery, [uid]);
+
+    if (rowCount === 0) {
+      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
+    }
+
+    res.json(new ActionSuccess([uid]));
+  }
+
+  async deleteMany(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const uidIn = req.getSearchParam('uid_in');
+    const normalizedUidIn = uidIn.split(',').map(uid => uid.trim().toLowerCase());
+
+    const { rows, rowCount } = await query<DbModel>(this.#dbAdapter.deleteManyQuery, [normalizedUidIn]);
+    const succeeded = rows.map(row => this.#dbAdapter.getPrimaryKey(row));
+
+    if (rowCount === 0) {
+      return next(new ActionFailure(normalizedUidIn, [], HttpStatuses.notFound));
+    }
+
+    if (rowCount !== normalizedUidIn.length) {
+      return next(new ActionFailure(normalizedUidIn, succeeded, HttpStatuses.unprocessableEntity));
+    }
+
+    res.json(new ActionSuccess(succeeded));
   }
 
   async getOne(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const uidParam = req.parsedURL.searchParams.get('uid');
+    const uid = req.getSearchParam('uid');
 
-    try {
-      const { rows } = await this.#dbClient.query<DbModel>(this.getOneQuery, [uidParam]);
-      const oneObject = rows.at(0);
+    const { rows } = await query<DbModel>(this.#dbAdapter.getOneQuery, [uid]);
+    const item = rows.at(0);
 
-      if (!oneObject) {
-        return next(new NotFoundError(`Object (${uidParam})`));
-      }
-
-      res.json(this.#dbAdapter.fromDatabase(oneObject));
-    } catch (err) {
-      next(new ServerError({ cause: err }));
+    if (!item) {
+      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
     }
+
+    res.json(this.#dbAdapter.dbToApiObject(item));
   }
 
-  async getMany(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    try {
-      const limitParam = req.parsedURL.searchParams.get('limit');
-      const offsetParam = req.parsedURL.searchParams.get('offset');
+  async getMany(req: WebServerRequest, res: WebServerResponse, _: NextFunction) {
+    const limit = req.getOptionalSearchParam('limit');
+    const normalizedLimit = limit ? Number.parseInt(limit) : 50;
+    const offset = req.getOptionalSearchParam('offset');
+    const normalizedOffset = offset ? Number.parseInt(offset) : 0;
 
-      const limit = limitParam ? Number.parseInt(limitParam) : 50;
-      const offset = offsetParam ? Number.parseInt(offsetParam) : 0;
+    const { rows } = await query<DbModel>(this.#dbAdapter.getManyQuery, [normalizedLimit, normalizedOffset]);
+    const items = rows.map(this.#dbAdapter.dbToApiObject);
 
-      const { rows } = await this.#dbClient.query<DbModel>(this.getManyQuery, [limit, offset]);
-
-      const items = rows.map(row => this.#dbAdapter.fromDatabase(row));
-
-      res.json(new Collection({ limit, items, offset }));
-    } catch (err) {
-      next(new ServerError({ cause: err }));
-    }
+    res.json(new Collection({ limit: normalizedLimit, items, offset: normalizedOffset }));
   }
 }

@@ -1,5 +1,15 @@
 import type { ConstValues, UnknownObject } from './helpers.js';
 
+export type ActionFailureApi = {
+  objects: Record<string, boolean>;
+  success: false;
+} & ErrorApi;
+
+export type ActionSuccessApi = {
+  objects: Record<string, true>;
+  success: true;
+};
+
 export type ErrorApi = {
   httpStatus: HttpStatus;
   message: string;
