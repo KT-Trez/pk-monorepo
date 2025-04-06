@@ -5,7 +5,11 @@ import { GroupTransformer } from '../transformers/GroupTransformer.ts';
 
 class GroupController extends BaseController<GroupApi, GroupDb, 'groups'> {
   constructor() {
-    super({ model: 'groups', orm, transformer: new GroupTransformer() });
+    super({
+      model: 'groups',
+      orm,
+      transformer: new GroupTransformer(),
+    });
   }
 }
 

@@ -1,4 +1,5 @@
 import type { GroupApi, GroupDb } from '@pk/types/group.js';
+import { ObjectType } from '@pk/types/objectType.js';
 import { AbstractObjectTransformer } from '../classes/AbstractObjectTransformer.ts';
 
 export class GroupTransformer extends AbstractObjectTransformer<GroupApi, GroupDb> {
@@ -14,11 +15,9 @@ export class GroupTransformer extends AbstractObjectTransformer<GroupApi, GroupD
 
   toDbObject(apiModel: Partial<GroupApi>): Partial<GroupDb> {
     return this.removeUndefined({
-      // biome-ignore lint/style/useNamingConvention: this is a database field
       field_of_study_id: apiModel.fieldOfStudyId,
       name: apiModel.name,
-      // biome-ignore lint/style/useNamingConvention: this is a database field
-      object_type_id: apiModel.type,
+      object_type_id: ObjectType.group,
     });
   }
 }

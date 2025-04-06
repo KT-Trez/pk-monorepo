@@ -22,6 +22,7 @@ groupRouter.post(
     '/one',
     new RequestValidatorBuilder()
         .body()
+        .addCheck(not(isEmpty), 'body must not be empty')
         .addCheck(
             isMatching<GroupApi>({
               fieldOfStudyId: [isNumber],
@@ -40,6 +41,7 @@ groupRouter.put(
     uidValidator,
     new RequestValidatorBuilder()
         .body()
+        .addCheck(not(isEmpty), 'body must not be empty')
         .addCheck(
             isMatching<GroupApi>({
               fieldOfStudyId: [optional(isNumber)],
