@@ -1,10 +1,11 @@
 import type { GroupApi, GroupDb } from '@pk/types/group.js';
-import { GroupDbAdapter } from '../classes/adapters/GroupDbAdapter.ts';
+import { GroupTransformer } from '../classes/adapters/GroupTransformer.ts';
 import { Controller } from '../classes/Controller.ts';
+import { orm } from '../database/orm.ts';
 
-class GroupController extends Controller<GroupApi, GroupDb> {
+class GroupController extends Controller<GroupApi, GroupDb, 'groups'> {
   constructor() {
-    super({ dbAdapter: new GroupDbAdapter() });
+    super({ model: 'groups', orm, transformer: new GroupTransformer() });
   }
 }
 

@@ -5,7 +5,7 @@ export class ActionSuccess implements ActionSuccessApi {
   success: true;
   objects: Record<string, true>;
 
-  constructor(all: string[]) {
+  constructor(all: string[] = []) {
     this.message = 'Action succeeded';
     this.objects = all.reduce<Record<string, true>>((acc, uid) => {
       acc[uid] = true;

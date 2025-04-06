@@ -1,12 +1,12 @@
 import type { FieldOfStudy } from './fieldOfStudy.js';
-import { ObjectType } from './objectType.js';
+import type { ObjectType } from './objectType.js';
 
 export type GroupApi = {
   fieldOfStudyId: FieldOfStudy;
-  groupUid: string;
   name: string;
   type: typeof ObjectType.group;
-  yearOfCreation: Date;
+  uid: string;
+  yearOfCreation: string;
 };
 
 export type GroupDb = {

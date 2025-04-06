@@ -5,7 +5,7 @@ export class ActionFailure extends ServerError implements ActionFailureApi {
   objects: Record<string, boolean>;
   success: false;
 
-  constructor(all: string[], succeeded: string[], httpStatus?: HttpStatus) {
+  constructor(all: string[] = [], succeeded: string[] = [], httpStatus?: HttpStatus) {
     super({ httpStatus, message: 'Action failed' });
 
     const objects: Record<string, boolean> = {};

@@ -5,8 +5,8 @@ export const groupRouter = new Router();
 
 groupRouter.delete('/one', groupController.deleteOne.bind(groupController));
 
-groupRouter.delete('/many', groupController.deleteMany.bind(groupController));
-
 groupRouter.get('/many', groupController.getMany.bind(groupController));
 
 groupRouter.get('/one', groupController.getOne.bind(groupController));
+
+groupRouter.post('/one', groupController.createOne.bind(groupController));
