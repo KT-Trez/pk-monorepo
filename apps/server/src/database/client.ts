@@ -1,4 +1,5 @@
 import pg, { type QueryConfig, type QueryConfigValues, type QueryResultRow } from 'pg';
+import type { QueryFunction } from '../types/database.js';
 
 const { Pool } = pg;
 
@@ -13,7 +14,7 @@ const pool = new Pool({
 // todo: add logger
 pool.connect().then(() => console.log('Connected'));
 
-export const query = async <R extends QueryResultRow = unknown[], I = unknown[]>(
+export const query: QueryFunction = async <R extends QueryResultRow = unknown[], I = unknown[]>(
     queryTextOrConfig: string | QueryConfig<I>,
     values?: QueryConfigValues<I>,
 ) => {
