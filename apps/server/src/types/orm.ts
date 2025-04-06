@@ -6,8 +6,7 @@ export type DeleteOptions<DbModel extends UnknownObject> = {
 };
 
 export type InsertOptions<DbModel extends UnknownObject> = {
-  attributes?: StringKey<DbModel>[];
-  values: Partial<DbModel>;
+  object: Partial<DbModel>;
 };
 
 export type SelectOptions<DbModel extends UnknownObject> = {
@@ -19,8 +18,7 @@ export type SelectOptions<DbModel extends UnknownObject> = {
 };
 
 export type UpdateOptions<DbModel extends UnknownObject> = {
-  attributes: Partial<DbModel>;
-  values: Partial<DbModel>;
+  object: Partial<DbModel>;
   where: Partial<DbModel>;
 };
 

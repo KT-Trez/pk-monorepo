@@ -3,16 +3,16 @@ import pg, { type QueryResult } from 'pg';
 import type { QueryFunction } from '../types/database.ts';
 import type { DeleteOptions, InsertOptions, IORM, SelectOptions, UpdateOptions } from '../types/orm.js';
 
-const { escapeLiteral } = pg;
+const { escapeLiteral, escapeIdentifier } = pg;
 
-type Model = {
+type ModelInfo = {
   attributes: string[];
   primaryKey: string;
 };
 
 // biome-ignore lint/style/useNamingConvention: ORM stands for Object Relational Mapping and is common shorthand
 export class ORM<Models extends string[]> implements IORM<Models> {
-  #models: Map<Models[number], Model>;
+  #models: Map<Models[number], ModelInfo>;
   readonly #query: QueryFunction;
 
   constructor(query: QueryFunction) {
@@ -56,14 +56,12 @@ export class ORM<Models extends string[]> implements IORM<Models> {
       name: Models[number],
       options: InsertOptions<DbModel>,
   ): Promise<QueryResult<DbModel>> {
-    const attributes: string[] = options.attributes ?? this.#models.get(name)?.attributes ?? [];
-    const params = Object.values(options.values);
-    const values = attributes.map((_, index) => `$${index + 1}`);
+    const { attributes, params, values } = this.#objectSerialize(name, options.object);
 
     return this.#query<DbModel>(
         `INSERT INTO ${name} (${attributes})
-         VALUES (${values})`,
-        params,
+         VALUES (${params})`,
+        values,
     );
   }
 
@@ -80,17 +78,16 @@ export class ORM<Models extends string[]> implements IORM<Models> {
     let paramIndex = 1;
 
     const limit = options.limit ? `LIMIT $${paramIndex++}` : '';
-    const offset = options.offset ? `OFFSET $${paramIndex++}` : '';
-    const orderBy = options.orderBy ? `ORDER BY $${paramIndex++}` : '';
-
     if (limit) {
       params.push(options.limit);
     }
 
+    const offset = options.offset ? `OFFSET $${paramIndex++}` : '';
     if (offset) {
       params.push(options.offset);
     }
 
+    const orderBy = options.orderBy ? `ORDER BY $${paramIndex++}` : '';
     if (orderBy) {
       params.push(options.orderBy);
     }
@@ -106,7 +103,36 @@ export class ORM<Models extends string[]> implements IORM<Models> {
       name: Models[number],
       options: UpdateOptions<DbModel>,
   ): Promise<QueryResult<DbModel>> {
-    throw new Error('Method not implemented.');
+    const { attributes, params, values } = this.#objectSerialize(name, options.object);
+
+    const updates = attributes.map((attribute, index) => `${attribute} = ${params[index]}`);
+
+    return this.#query<DbModel>(
+        `UPDATE ${name}
+         SET ${updates} ${this.#whereSerialize(options.where)}`,
+        values,
+    );
+  }
+
+  #objectSerialize<DbModel extends UnknownObject>(name: Models[number], object: Partial<DbModel>) {
+    const definedAttributes = new Set(this.#models.get(name)?.attributes ?? []);
+
+    const attributes: string[] = [];
+    const params: unknown[] = [];
+    const values: string[] = [];
+
+    for (const [attribute, value] of Object.entries(object)) {
+      // guard against properties that are not in the model
+      if (!definedAttributes.has(attribute)) {
+        continue;
+      }
+
+      attributes.push(escapeIdentifier(attribute));
+      params.push(`$${attributes.length}`);
+      values.push(value);
+    }
+
+    return { attributes, params, values };
   }
 
   #whereSerialize<DbModel extends UnknownObject>(where?: Partial<DbModel>) {

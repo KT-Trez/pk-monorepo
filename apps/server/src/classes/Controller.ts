@@ -1,14 +1,13 @@
 import { HttpStatuses } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
-import { ServerError } from '../../lib/errors/ServerError.ts';
-import { ActionFailure } from '../../lib/responses/ActionFailure.ts';
-import { ActionSuccess } from '../../lib/responses/ActionSuccess.ts';
 import type { NextFunction } from '../../lib/types.ts';
 import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
 import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
 import type { IORM } from '../types/orm.js';
-import type { AbstractObjectTransformer } from './adapters/AbstractObjectTransformer.ts';
-import { Collection } from './Collection.ts';
+import type { AbstractObjectTransformer } from './AbstractObjectTransformer.ts';
+import { ActionFailure } from './responses/ActionFailure.ts';
+import { ActionSuccess } from './responses/ActionSuccess.ts';
+import { Collection } from './responses/Collection.ts';
 
 type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObject, Model extends string> = {
   model: Model;
@@ -31,13 +30,10 @@ export abstract class Controller<ApiModel extends UnknownObject, DbModel extends
     const body = req.getBody<Partial<ApiModel>>();
     const dbObject = this.#transformer.toDbObject(body);
 
-    const { rowCount } = await this.#orm.insert<DbModel>(this.#model, {
-      attributes: Object.keys(dbObject),
-      values: dbObject,
-    });
+    const { rowCount } = await this.#orm.insert<DbModel>(this.#model, { object: dbObject });
 
     if (rowCount === 0) {
-      return next(new ServerError({ cause: 'Failed to create item' }));
+      return next(new ActionFailure());
     }
 
     res.json(new ActionSuccess());
@@ -78,6 +74,23 @@ export abstract class Controller<ApiModel extends UnknownObject, DbModel extends
     const items = rows.map(this.#transformer.toApiObject);
 
     res.json(new Collection({ limit: normalizedLimit, items, offset: normalizedOffset }));
+  }
+
+  async updateOne(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const body = req.getBody<Partial<ApiModel>>();
+    const uid = req.getSearchParam('uid');
+    const dbObject = this.#transformer.toDbObject(body);
+
+    const { rowCount } = await this.#orm.update<DbModel>(this.#model, {
+      object: dbObject,
+      where: this.#byPrimaryKey(uid),
+    });
+
+    if (rowCount === 0) {
+      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
+    }
+
+    res.json(new ActionSuccess([uid]));
   }
 
   #byPrimaryKey(value: string) {

@@ -1,5 +1,5 @@
 import type { GroupApi, GroupDb } from '@pk/types/group.js';
-import { AbstractObjectTransformer } from './AbstractObjectTransformer.ts';
+import { AbstractObjectTransformer } from '../classes/AbstractObjectTransformer.ts';
 
 export class GroupTransformer extends AbstractObjectTransformer<GroupApi, GroupDb> {
   toApiObject(dbModel: GroupDb): GroupApi {

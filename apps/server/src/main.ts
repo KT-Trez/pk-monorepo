@@ -1,6 +1,6 @@
 import { WebServer } from '../lib/WebServer.ts';
-import { groupRouter } from './routers/groupRouter.ts';
-import { userRouter } from './routers/userRouter.ts';
+import { groupRouter } from './routers/group.router.ts';
+import { userRouter } from './routers/user.router.ts';
 
 const app = new WebServer();
 

@@ -10,3 +10,5 @@ groupRouter.get('/many', groupController.getMany.bind(groupController));
 groupRouter.get('/one', groupController.getOne.bind(groupController));
 
 groupRouter.post('/one', groupController.createOne.bind(groupController));
+
+groupRouter.put('/one', groupController.updateOne.bind(groupController));
