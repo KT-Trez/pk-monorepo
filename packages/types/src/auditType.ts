@@ -21,7 +21,7 @@ export type AuditTypes = ConstValues<typeof AuditType>;
 
 export type AuditTypeDb = {
   description: null | string;
-  // biome-ignore lint/style/useNamingConvention: this is a format of the data from the API
+  // biome-ignore lint/style/useNamingConvention: this is a database field
   audit_type_id: AuditTypes;
   name: string;
 };

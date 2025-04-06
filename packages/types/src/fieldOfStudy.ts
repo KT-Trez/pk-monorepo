@@ -10,7 +10,7 @@ export type FieldOfStudy = ConstValues<typeof FieldsOfStudy>;
 
 export type FieldOfStudyDb = {
   description: null | string;
-  // biome-ignore lint/style/useNamingConvention: this is a format of the data from the API
+  // biome-ignore lint/style/useNamingConvention: this is a database field
   field_of_study_id: FieldOfStudy;
   name: string;
 };

@@ -1,4 +1,4 @@
-import type { HttpStatus } from '@pk/types/api.js';
+import { type HttpStatus, HttpStatuses } from '@pk/types/api.js';
 import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
 import type { ServerError } from './errors/ServerError.js';
 
@@ -10,7 +10,7 @@ export class WebServerResponse<Request extends IncomingMessage = IncomingMessage
     super(req);
 
     this.#headers = {};
-    this.#status = 200;
+    this.#status = HttpStatuses.ok;
   }
 
   addHeader(name: string, value: string | number | string[]) {
@@ -29,7 +29,7 @@ export class WebServerResponse<Request extends IncomingMessage = IncomingMessage
     }
 
     this.setStatus(error.httpStatus);
-    this.json(error);
+    this.json(error.toJSON());
   }
 
   json(data: unknown) {

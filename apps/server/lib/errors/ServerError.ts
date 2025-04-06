@@ -25,4 +25,13 @@ export class ServerError extends Error implements ErrorApi {
 
     Error.captureStackTrace(this, this.constructor);
   }
+
+  // biome-ignore lint/style/useNamingConvention: JSON stands for JavaScript Object Notation and is common shorthand
+  toJSON(): ErrorApi {
+    return {
+      httpStatus: this.httpStatus,
+      message: this.message,
+      meta: this.meta,
+    };
+  }
 }

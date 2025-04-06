@@ -15,7 +15,7 @@ type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObjec
   transformer: AbstractObjectTransformer<ApiModel, DbModel>;
 };
 
-export abstract class Controller<ApiModel extends UnknownObject, DbModel extends UnknownObject, Model extends string> {
+export abstract class BaseController<ApiModel extends UnknownObject, DbModel extends UnknownObject, Model extends string> {
   #model: Model;
   #orm: IORM;
   #transformer: AbstractObjectTransformer<ApiModel, DbModel>;

@@ -81,6 +81,7 @@ export class Router implements UseRequestHandle {
         }
       }
 
+      // if there was an error, call the error handler
       if (error) {
         res.error(error);
       }
