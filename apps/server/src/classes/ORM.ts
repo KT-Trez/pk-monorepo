@@ -10,7 +10,6 @@ type ModelInfo = {
   primaryKey: string;
 };
 
-// biome-ignore lint/style/useNamingConvention: ORM stands for Object Relational Mapping and is common shorthand
 export class ORM<Models extends string[]> implements IORM<Models> {
   #models: Map<Models[number], ModelInfo>;
   readonly #query: QueryFunction;
@@ -87,14 +86,9 @@ export class ORM<Models extends string[]> implements IORM<Models> {
       params.push(options.offset);
     }
 
-    const orderBy = options.orderBy ? `ORDER BY $${paramIndex++}` : '';
-    if (orderBy) {
-      params.push(options.orderBy);
-    }
-
     return this.#query<DbModel>(
         `SELECT ${attributes}
-         FROM ${name} ${this.#whereSerialize(options.where)} ${orderBy} ${limit} ${offset}`,
+         FROM ${name} ${this.#whereSerialize(options.where)} ${limit} ${offset}`,
         params,
     );
   }

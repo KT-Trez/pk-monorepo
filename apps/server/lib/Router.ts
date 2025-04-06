@@ -1,11 +1,11 @@
 import { MethodNotAllowedError } from './errors/MethodNotAllowedError.ts';
 import { NotFoundError } from './errors/NotFoundError.ts';
 import { ServerError } from './errors/ServerError.ts';
-import type { AllowedMethod, HttpHandler, UseHttpHandle } from './types.js';
+import type { AllowedMethod, HttpHandler, ImplementsHttpHandle } from './types.js';
 import type { WebServerRequest } from './WebServerRequest.js';
 import type { WebServerResponse } from './WebServerResponse.js';
 
-export class Router implements UseHttpHandle {
+export class Router implements ImplementsHttpHandle {
   protected routes: Map<AllowedMethod, Map<string, HttpHandler[]>>;
 
   constructor() {

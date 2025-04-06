@@ -13,7 +13,6 @@ export type SelectOptions<DbModel extends UnknownObject> = {
   attributes?: StringKey<DbModel>[];
   limit?: null | number;
   offset?: null | number;
-  orderBy?: string;
   where?: Partial<DbModel>;
 };
 
@@ -22,7 +21,6 @@ export type UpdateOptions<DbModel extends UnknownObject> = {
   where: Partial<DbModel>;
 };
 
-// biome-ignore lint/style/useNamingConvention: ORM stands for Object Relational Mapping and is common shorthand
 export type IORM<Models extends string[] = string[]> = {
   delete<DbModel extends UnknownObject>(
       name: Models[number],
