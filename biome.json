@@ -39,7 +39,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "all": true
+      "all": true,
+      "correctness": {
+        "noUndeclaredDependencies": "off"
+      },
+      "style": {
+        "useNamingConvention": "off"
+      }
     }
   },
   "organizeImports": {

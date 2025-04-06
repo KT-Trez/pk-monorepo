@@ -10,7 +10,7 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "@pk/tsconfig": "*",
+    "@pk/ts-config": "*",
     "@types/node": "^22.13.9",
     "@types/node-cron": "^3.0.8"
   },
