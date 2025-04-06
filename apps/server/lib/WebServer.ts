@@ -25,8 +25,8 @@ export class WebServer extends Router {
     this.#httpServer.listen(port, cb);
   }
 
-  #requestHandle(req: WebServerRequest, res: WebServerResponse) {
-    req._process();
+  async #requestHandle(req: WebServerRequest, res: WebServerResponse) {
+    await req._process();
 
     const path = req._getNextPath();
 
