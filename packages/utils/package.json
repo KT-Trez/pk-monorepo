@@ -6,7 +6,16 @@
     "@pk/ts-config": "*"
   },
   "exports": {
-    "./noop.js": "./src/noop.ts"
+    "./isEmpty.js": "./src/isEmpty.ts",
+    "./isGreaterOrEqualThan.js": "./src/isGreaterOrEqualThan.ts",
+    "./isLessOrEqualThan.js": "./src/isLessOrEqualThan.ts",
+    "./isMatching.js": "./src/isMatching.ts",
+    "./isNumber.js": "./src/isNumber.ts",
+    "./isString.js": "./src/isString.ts",
+    "./isUUID.js": "./src/isUUID.ts",
+    "./noop.js": "./src/noop.ts",
+    "./not": "./src/not.ts",
+    "./optional.js": "./src/optional.ts"
   },
   "name": "@pk/utils",
   "scripts": {

@@ -2,7 +2,6 @@ import { IncomingMessage } from 'node:http';
 import type { Socket } from 'node:net';
 
 export class WebServerRequest extends IncomingMessage {
-  // biome-ignore lint/style/useNamingConvention: URL is a built-in class
   #parsedURL: URL;
   #paths: string[] = [];
   #rawData: unknown;
@@ -15,6 +14,18 @@ export class WebServerRequest extends IncomingMessage {
     this.on('data', chunk => {
       this.#rawData += chunk;
     });
+  }
+
+  get body() {
+    if (!this.#rawData) {
+      return Object.freeze({});
+    }
+
+    return Object.freeze(JSON.parse(this.#rawData.toString()));
+  }
+
+  get parsedURL(): URL {
+    return Object.freeze(this.#parsedURL);
   }
 
   getBody<T>(): T {

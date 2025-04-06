@@ -1,11 +1,11 @@
 import { MethodNotAllowedError } from './errors/MethodNotAllowedError.ts';
 import { NotFoundError } from './errors/NotFoundError.ts';
 import { ServerError } from './errors/ServerError.ts';
-import type { AllowedMethod, HttpHandler, UseRequestHandle } from './types.js';
+import type { AllowedMethod, HttpHandler, UseHttpHandle } from './types.js';
 import type { WebServerRequest } from './WebServerRequest.js';
 import type { WebServerResponse } from './WebServerResponse.js';
 
-export class Router implements UseRequestHandle {
+export class Router implements UseHttpHandle {
   protected routes: Map<AllowedMethod, Map<string, HttpHandler[]>>;
 
   constructor() {
@@ -37,7 +37,7 @@ export class Router implements UseRequestHandle {
     this.registerHandler('*', path, handlers);
   }
 
-  async _requestHandle(path: string, req: WebServerRequest, res: WebServerResponse) {
+  async _httpHandle(path: string, req: WebServerRequest, res: WebServerResponse) {
     if (!req.method) {
       res.setHeader('Allow', 'DELETE, GET, POST, PUT');
       return res.error(new MethodNotAllowedError(req.method));
@@ -77,7 +77,7 @@ export class Router implements UseRequestHandle {
             return res.error(new NotFoundError(`[PATH] "${path}"`));
           }
 
-          await route._requestHandle(path, req, res);
+          await route._httpHandle(path, req, res);
         }
       }
 

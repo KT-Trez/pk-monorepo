@@ -7,7 +7,8 @@
     "./event.js": "./src/event.ts",
     "./fieldOfStudy.js": "./src/fieldOfStudy.ts",
     "./group.js": "./src/group.ts",
-    "./helpers.js": "./src/helpers.ts"
+    "./helpers.js": "./src/helpers.ts",
+    "./valueValidator.js": "./src/valueValidator.ts"
   },
   "name": "@pk/types",
   "scripts": {

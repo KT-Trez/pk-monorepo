@@ -12,12 +12,12 @@ export const AllowedMethods = {
 } as const;
 export type AllowedMethod = ConstValues<typeof AllowedMethods>;
 
-export type HttpHandler = RequestHandle | UseRequestHandle;
+export type HttpHandler = HttpHandle | UseHttpHandle;
 
 export type NextFunction = (error: ServerError) => void;
 
-export type RequestHandle = (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => Promise<void>;
+export type HttpHandle = (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => Promise<void>;
 
-export type UseRequestHandle = {
-  _requestHandle(path: string, req: WebServerRequest, res: WebServerResponse): Promise<void>;
+export type UseHttpHandle = {
+  _httpHandle(path: string, req: WebServerRequest, res: WebServerResponse): Promise<void>;
 };

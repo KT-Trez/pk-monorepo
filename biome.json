@@ -42,6 +42,9 @@
       "all": true,
       "correctness": {
         "noUndeclaredDependencies": "off"
+      },
+      "style": {
+        "useNamingConvention": "off"
       }
     }
   },

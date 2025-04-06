@@ -34,6 +34,6 @@ export class WebServer extends Router {
       return res.error(new NotFoundError(`[PATH] "${path}"`));
     }
 
-    super._requestHandle(path, req, res).catch(console.error);
+    super._httpHandle(path, req, res).catch(console.error);
   }
 }
