@@ -6,6 +6,7 @@
     "@pk/ts-config": "*"
   },
   "exports": {
+    "./isDate.js": "./src/isDate.ts",
     "./isEmpty.js": "./src/isEmpty.ts",
     "./isGreaterOrEqualThan.js": "./src/isGreaterOrEqualThan.ts",
     "./isLessOrEqualThan.js": "./src/isLessOrEqualThan.ts",

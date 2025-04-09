@@ -8,6 +8,7 @@
     "./fieldOfStudy.js": "./src/fieldOfStudy.ts",
     "./group.js": "./src/group.ts",
     "./helpers.js": "./src/helpers.ts",
+    "./objectType.js": "./src/objectType.ts",
     "./valueValidator.js": "./src/valueValidator.ts"
   },
   "name": "@pk/types",
