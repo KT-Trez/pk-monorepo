@@ -15,8 +15,8 @@ const pool = new Pool({
 pool.connect().then(() => console.log('Connected'));
 
 export const query: QueryFunction = async <R extends QueryResultRow = unknown[], I = unknown[]>(
-    queryTextOrConfig: string | QueryConfig<I>,
-    values?: QueryConfigValues<I>,
+  queryTextOrConfig: string | QueryConfig<I>,
+  values?: QueryConfigValues<I>,
 ) => {
   const start = performance.now();
   const queryResult = await pool.query<R, I>(queryTextOrConfig, values);

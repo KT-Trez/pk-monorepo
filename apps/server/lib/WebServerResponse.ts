@@ -1,5 +1,5 @@
-import { type HttpStatus, HttpStatuses } from '@pk/types/api.js';
 import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
+import { type HttpStatus, HttpStatuses } from '@pk/types/api.js';
 import type { ServerError } from './errors/ServerError.js';
 
 export class WebServerResponse<Request extends IncomingMessage = IncomingMessage> extends ServerResponse<Request> {

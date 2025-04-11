@@ -1,8 +1,8 @@
 import type { ValueValidator } from '@pk/types/valueValidator.js';
-import { BadRequestError } from '../../lib/errors/BadRequestError.ts';
-import type { HttpHandle, NextFunction } from '../../lib/types.ts';
 import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
 import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
+import { BadRequestError } from '../../lib/errors/BadRequestError.ts';
+import type { HttpHandle, NextFunction } from '../../lib/types.ts';
 
 type CheckFunction = (req: WebServerRequest) => readonly [string, boolean];
 

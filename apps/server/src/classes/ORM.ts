@@ -1,7 +1,7 @@
 import type { StringKey, UnknownObject } from '@pk/types/helpers.js';
 import pg, { type QueryResult } from 'pg';
 import type { QueryFunction } from '../types/database.ts';
-import type { DeleteOptions, InsertOptions, IORM, SelectOptions, UpdateOptions } from '../types/orm.js';
+import type { DeleteOptions, IORM, InsertOptions, SelectOptions, UpdateOptions } from '../types/orm.js';
 
 const { escapeLiteral, escapeIdentifier } = pg;
 
@@ -20,16 +20,16 @@ export class ORM<Models extends string[]> implements IORM<Models> {
   }
 
   define<DbModel extends UnknownObject>(
-      name: Models[number],
-      attributes: StringKey<DbModel>[],
-      primaryKey: StringKey<DbModel>,
+    name: Models[number],
+    attributes: StringKey<DbModel>[],
+    primaryKey: StringKey<DbModel>,
   ) {
     this.#models.set(name, { attributes, primaryKey });
   }
 
   delete<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: DeleteOptions<UnknownObject>,
+    name: Models[number],
+    options: DeleteOptions<UnknownObject>,
   ): Promise<QueryResult<DbModel>> {
     const primaryKey = this.#models.get(name)?.primaryKey;
 
@@ -52,21 +52,21 @@ export class ORM<Models extends string[]> implements IORM<Models> {
   }
 
   insert<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: InsertOptions<DbModel>,
+    name: Models[number],
+    options: InsertOptions<DbModel>,
   ): Promise<QueryResult<DbModel>> {
     const { attributes, params, values } = this.#objectSerialize(name, options.object);
 
     return this.#query<DbModel>(
-        `INSERT INTO ${name} (${attributes})
+      `INSERT INTO ${name} (${attributes})
          VALUES (${params})`,
-        values,
+      values,
     );
   }
 
   select<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: SelectOptions<DbModel>,
+    name: Models[number],
+    options: SelectOptions<DbModel>,
   ): Promise<QueryResult<DbModel>> {
     if (!this.#models.has(name)) {
       throw new Error(`Model ${name} not defined`);
@@ -87,24 +87,24 @@ export class ORM<Models extends string[]> implements IORM<Models> {
     }
 
     return this.#query<DbModel>(
-        `SELECT ${attributes}
+      `SELECT ${attributes}
          FROM ${name} ${this.#whereSerialize(options.where)} ${limit} ${offset}`,
-        params,
+      params,
     );
   }
 
   update<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: UpdateOptions<DbModel>,
+    name: Models[number],
+    options: UpdateOptions<DbModel>,
   ): Promise<QueryResult<DbModel>> {
     const { attributes, params, values } = this.#objectSerialize(name, options.object);
 
     const updates = attributes.map((attribute, index) => `${attribute} = ${params[index]}`);
 
     return this.#query<DbModel>(
-        `UPDATE ${name}
+      `UPDATE ${name}
          SET ${updates} ${this.#whereSerialize(options.where)}`,
-        values,
+      values,
     );
   }
 
@@ -135,8 +135,8 @@ export class ORM<Models extends string[]> implements IORM<Models> {
     }
 
     const fields = Object.entries(where)
-        .map(([key, value]) => `${key} = ${escapeLiteral(value.toString())}`)
-        .join(' AND ');
+      .map(([key, value]) => `${key} = ${escapeLiteral(value.toString())}`)
+      .join(' AND ');
 
     return `WHERE ${fields}`;
   }

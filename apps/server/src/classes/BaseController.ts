@@ -1,8 +1,8 @@
 import { HttpStatuses } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
-import type { NextFunction } from '../../lib/types.ts';
 import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
 import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
+import type { NextFunction } from '../../lib/types.ts';
 import type { IORM } from '../types/orm.js';
 import type { AbstractObjectTransformer } from './AbstractObjectTransformer.ts';
 import { ActionFailure } from './responses/ActionFailure.ts';
@@ -15,7 +15,11 @@ type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObjec
   transformer: AbstractObjectTransformer<ApiModel, DbModel>;
 };
 
-export abstract class BaseController<ApiModel extends UnknownObject, DbModel extends UnknownObject, Model extends string> {
+export abstract class BaseController<
+  ApiModel extends UnknownObject,
+  DbModel extends UnknownObject,
+  Model extends string,
+> {
   #model: Model;
   #orm: IORM;
   #transformer: AbstractObjectTransformer<ApiModel, DbModel>;

@@ -2,7 +2,7 @@ import type { UnknownObject } from '@pk/types/helpers.js';
 import type { ValueValidator } from '@pk/types/valueValidator.js';
 
 export const isMatching = <T extends UnknownObject>(
-    obj: Partial<Record<keyof T, ValueValidator[]>>,
+  obj: Partial<Record<keyof T, ValueValidator[]>>,
 ): ValueValidator => {
   return (value: unknown) => {
     if (typeof value !== 'object' || value === null) {

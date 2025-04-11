@@ -19,38 +19,38 @@ groupRouter.get('/many', limitValidator, offsetValidator, groupController.getMan
 groupRouter.get('/one', uidValidator, groupController.getOne.bind(groupController));
 
 groupRouter.post(
-    '/one',
-    new RequestValidatorBuilder()
-        .body()
-        .addCheck(not(isEmpty), 'body must not be empty')
-        .addCheck(
-            isMatching<GroupApi>({
-              fieldOfStudyId: [isNumber],
-              name: [isString, not(isEmpty)],
-              type: [isNumber],
-            }),
-            'must match the "group" object shape',
-        )
-        .end()
-        .build(),
-    groupController.createOne.bind(groupController),
+  '/one',
+  new RequestValidatorBuilder()
+    .body()
+    .addCheck(not(isEmpty), 'body must not be empty')
+    .addCheck(
+      isMatching<GroupApi>({
+        fieldOfStudyId: [isNumber],
+        name: [isString, not(isEmpty)],
+        type: [isNumber],
+      }),
+      'must match the "group" object shape',
+    )
+    .end()
+    .build(),
+  groupController.createOne.bind(groupController),
 );
 
 groupRouter.put(
-    '/one',
-    uidValidator,
-    new RequestValidatorBuilder()
-        .body()
-        .addCheck(not(isEmpty), 'body must not be empty')
-        .addCheck(
-            isMatching<GroupApi>({
-              fieldOfStudyId: [optional(isNumber)],
-              name: [optional(isString), optional(not(isEmpty))],
-              type: [optional(isNumber)],
-            }),
-            'must match the "group" object shape',
-        )
-        .end()
-        .build(),
-    groupController.updateOne.bind(groupController),
+  '/one',
+  uidValidator,
+  new RequestValidatorBuilder()
+    .body()
+    .addCheck(not(isEmpty), 'body must not be empty')
+    .addCheck(
+      isMatching<GroupApi>({
+        fieldOfStudyId: [optional(isNumber)],
+        name: [optional(isString), optional(not(isEmpty))],
+        type: [optional(isNumber)],
+      }),
+      'must match the "group" object shape',
+    )
+    .end()
+    .build(),
+  groupController.updateOne.bind(groupController),
 );

@@ -19,42 +19,42 @@ eventRouter.get('/many', limitValidator, offsetValidator, eventController.getMan
 eventRouter.get('/one', uidValidator, eventController.getOne.bind(eventController));
 
 eventRouter.post(
-    '/one',
-    new RequestValidatorBuilder()
-        .body()
-        .addCheck(not(isEmpty), 'body must not be empty')
-        .addCheck(
-            isMatching<EventApi>({
-              description: [optional(isString), optional(not(isEmpty))],
-              endDate: [isDate],
-              location: [optional(isString), optional(not(isEmpty))],
-              startDate: [isDate],
-              title: [isString, not(isEmpty)],
-            }),
-            'must match the "event" object shape',
-        )
-        .end()
-        .build(),
-    eventController.createOne.bind(eventController),
+  '/one',
+  new RequestValidatorBuilder()
+    .body()
+    .addCheck(not(isEmpty), 'body must not be empty')
+    .addCheck(
+      isMatching<EventApi>({
+        description: [optional(isString), optional(not(isEmpty))],
+        endDate: [isDate],
+        location: [optional(isString), optional(not(isEmpty))],
+        startDate: [isDate],
+        title: [isString, not(isEmpty)],
+      }),
+      'must match the "event" object shape',
+    )
+    .end()
+    .build(),
+  eventController.createOne.bind(eventController),
 );
 
 eventRouter.put(
-    '/one',
-    new RequestValidatorBuilder()
-        .body()
-        .addCheck(not(isEmpty), 'body must not be empty')
-        .addCheck(
-            isMatching<EventApi>({
-              description: [optional(isString), optional(not(isEmpty))],
-              endDate: [optional(isDate)],
-              location: [optional(isString), optional(not(isEmpty))],
-              startDate: [optional(isDate)],
-              title: [optional(isString), optional(not(isEmpty))],
-            }),
-            'must match the "event" object shape',
-        )
-        .end()
-        .build(),
-    uidValidator,
-    eventController.updateOne.bind(eventController),
+  '/one',
+  new RequestValidatorBuilder()
+    .body()
+    .addCheck(not(isEmpty), 'body must not be empty')
+    .addCheck(
+      isMatching<EventApi>({
+        description: [optional(isString), optional(not(isEmpty))],
+        endDate: [optional(isDate)],
+        location: [optional(isString), optional(not(isEmpty))],
+        startDate: [optional(isDate)],
+        title: [optional(isString), optional(not(isEmpty))],
+      }),
+      'must match the "event" object shape',
+    )
+    .end()
+    .build(),
+  uidValidator,
+  eventController.updateOne.bind(eventController),
 );

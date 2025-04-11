@@ -23,24 +23,24 @@ export type UpdateOptions<DbModel extends UnknownObject> = {
 
 export type IORM<Models extends string[] = string[]> = {
   delete<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: DeleteOptions<UnknownObject>,
+    name: Models[number],
+    options: DeleteOptions<UnknownObject>,
   ): Promise<QueryResult<DbModel>>;
 
   getPrimaryKey<DbModel extends UnknownObject>(model: Models[number]): StringKey<DbModel>;
 
   insert<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: InsertOptions<DbModel>,
+    name: Models[number],
+    options: InsertOptions<DbModel>,
   ): Promise<QueryResult<DbModel>>;
 
   select<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: SelectOptions<DbModel>,
+    name: Models[number],
+    options: SelectOptions<DbModel>,
   ): Promise<QueryResult<DbModel>>;
 
   update<DbModel extends UnknownObject>(
-      name: Models[number],
-      options: UpdateOptions<DbModel>,
+    name: Models[number],
+    options: UpdateOptions<DbModel>,
   ): Promise<QueryResult<DbModel>>;
 };
