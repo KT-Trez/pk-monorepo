@@ -1,5 +1,8 @@
 {
   "extends": "@pk/ts-config/src/tsconfig.lib.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true
+  },
   "include": [
     "src"
   ]
