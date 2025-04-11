@@ -1,25 +1,25 @@
 import { Readable } from 'node:stream';
-import type { PartialExcept } from '@/types/helpers';
-import type { RowData } from '@/types/xls';
 import XLSX, { type WorkBook, type WorkSheet } from 'xlsx';
+import type { XlsRowData } from '../types/xls.ts';
 
-type XlsBufferReaderOptions = {
+export type XlsBufferReaderOptions = {
   file: Buffer;
-  range: string;
-  skipRows: number;
+  range?: string;
+  skipRows?: number;
 };
 
-export class XlsBufferReader extends Readable {
+export class XlsBufferReaderStream extends Readable {
   readonly #sheet: WorkSheet;
   readonly #workbook: WorkBook;
-  readonly #rows: RowData;
+  readonly #rows: XlsRowData[];
 
   #rowIndex: number;
 
-  constructor({ file, range, skipRows }: PartialExcept<XlsBufferReaderOptions, 'file'>) {
+  constructor({ file, range, skipRows }: XlsBufferReaderOptions) {
     super({ objectMode: true });
-    this.#rowIndex = skipRows || 0;
+    this.#rowIndex = skipRows ?? 0;
     this.#workbook = XLSX.read(file, { cellDates: true, type: 'buffer', UTC: false });
+
     const firstSheet = this.#workbook.SheetNames[0];
 
     if (!firstSheet) {
@@ -27,8 +27,8 @@ export class XlsBufferReader extends Readable {
     }
 
     this.#sheet = this.#workbook.Sheets[firstSheet] as WorkSheet;
-    this.#rows = XLSX.utils.sheet_to_json<Record<string, number | string>>(this.#sheet, {
-      /* defval: null, */
+    this.#rows = XLSX.utils.sheet_to_json<XlsRowData>(this.#sheet, {
+      // defval: null,
       header: 'A',
       range,
     });
@@ -38,7 +38,6 @@ export class XlsBufferReader extends Readable {
     if (this.#rowIndex < this.#rows.length) {
       const chunk = this.#rows[this.#rowIndex++];
 
-      // todo: implement backpressure
       this.push(chunk);
     } else {
       this.push(null);
