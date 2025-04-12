@@ -1,6 +1,6 @@
 import process from 'node:process';
-import { Severity } from '@/types/severity';
-import type { LogStrategy } from '@/types/strategies';
+import type { LoggerFields } from '@pk/utils/Logger/Logger.js';
+import { type LoggerStrategy, type Severities, Severity } from '@pk/utils/Logger/types.js';
 import { NodeSSH } from 'node-ssh';
 
 export type UploadItem = {
@@ -12,11 +12,11 @@ type UploadToServerArgs = {
   directory: string;
   files: UploadItem[];
   host: string;
-  logger?: LogStrategy;
+  logger?: LoggerStrategy<Severities, LoggerFields>;
 };
 
 export const uploadToServer = async ({ directory, files, host, logger }: UploadToServerArgs) => {
-  logger?.log('Uploading files to server', Severity.INFO);
+  logger?.log({ message: 'Uploading files to server', severity: Severity.Info });
 
   const upload = files.map(({ local, remoteName }) => ({
     local,
@@ -33,8 +33,8 @@ export const uploadToServer = async ({ directory, files, host, logger }: UploadT
 
     await ssh.putFiles(upload);
 
-    logger?.log('Files uploaded', Severity.SUCCESS);
+    logger?.log({ message: 'Files uploaded:', severity: Severity.Success });
   } catch (err) {
-    logger?.log(`Error uploading files: ${err}`, Severity.ERROR);
+    logger?.log({ message: `Error uploading files: ${err}`, severity: Severity.Error });
   }
 };
