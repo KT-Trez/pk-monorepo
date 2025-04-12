@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@pk/types": "*",
-    "@pk/utils": "*"
+    "@pk/utils": "*",
+    "material-icons": "^1.13.14"
   },
   "devDependencies": {
     "@pk/ts-config": "*",

@@ -1,0 +1,47 @@
+.TextField-root {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 350px;
+    width: fit-content;
+}
+
+.TextField-root--fullWidth {
+    width: 100%;
+}
+
+.TextField-root > label {
+    color: var(--color-text-primary);
+    font-size: var(--text-caption-font-size);
+    font-weight: var(--text-caption-font-weight);
+}
+
+.TextField-control {
+    align-items: center;
+    background: var(--color-elevation-1);
+    border-radius: var(--size-border-radius);
+    display: flex;
+    flex-direction: row;
+    gap: var(--sizing-2);
+    padding-inline: var(--sizing-3);
+    padding-block: var(--sizing-2);
+    width: 100%;
+}
+
+.TextField-control:has(input:focus) {
+    outline: 2px solid var(--color-primary);
+}
+
+.TextField-control > input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.TextField-control > input[placeholder] {
+    color: var(--color-text-primary);
+    font-size: var(--text-body-1-font-size);
+    font-weight: var(--text-body-1-font-weight);
+    line-height: var(--text-body-1-line-height);
+}
