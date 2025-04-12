@@ -1,6 +1,0 @@
-{
-  "extends": "@pk/ts-config/src/tsconfig.node.json",
-  "include": [
-    "src"
-  ]
-}

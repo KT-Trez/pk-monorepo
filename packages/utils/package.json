@@ -6,6 +6,12 @@
     "@pk/ts-config": "*"
   },
   "exports": {
+    "./Logger/createDefaultLogger.js": "./src/Logger/createDefaultLogger.ts",
+    "./Logger/Logger.js": "./src/Logger/Logger.ts",
+    "./Logger/LoggerBuilder.js": "./src/Logger/LoggerBuilder.ts",
+    "./Logger/LoggerConsoleTransport.js": "./src/Logger/LoggerConsoleTransport.ts",
+    "./Logger/types.js": "./src/Logger/types.ts",
+    "./exhaustiveCheck.js": "./src/exhaustiveCheck.ts",
     "./isDate.js": "./src/isDate.ts",
     "./isEmpty.js": "./src/isEmpty.ts",
     "./isGreaterOrEqualThan.js": "./src/isGreaterOrEqualThan.ts",

@@ -1,7 +1,7 @@
 import type { ConstValues } from '@pk/types/helpers.js';
-import type { ServerError } from './errors/ServerError.js';
 import type { WebServerRequest } from './WebServerRequest.js';
 import type { WebServerResponse } from './WebServerResponse.js';
+import type { ServerError } from './errors/ServerError.js';
 
 export const AllowedMethods = {
   all: '*',

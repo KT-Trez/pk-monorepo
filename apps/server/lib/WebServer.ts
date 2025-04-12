@@ -1,8 +1,8 @@
 import { Server } from 'node:http';
-import { NotFoundError } from './errors/NotFoundError.ts';
 import { Router } from './Router.ts';
 import { WebServerRequest } from './WebServerRequest.ts';
 import { WebServerResponse } from './WebServerResponse.ts';
+import { NotFoundError } from './errors/NotFoundError.ts';
 
 export class WebServer extends Router {
   #httpServer: Server<typeof WebServerRequest, typeof WebServerResponse>;
@@ -11,13 +11,13 @@ export class WebServer extends Router {
     super();
 
     this.#httpServer = new Server(
-        {
-          // biome-ignore lint/style/useNamingConvention: IncomingMessage is a built-in class
-          IncomingMessage: WebServerRequest,
-          // biome-ignore lint/style/useNamingConvention: ServerResponse is a built-in class
-          ServerResponse: WebServerResponse,
-        },
-        this.#requestHandle.bind(this),
+      {
+        // biome-ignore lint/style/useNamingConvention: IncomingMessage is a built-in class
+        IncomingMessage: WebServerRequest,
+        // biome-ignore lint/style/useNamingConvention: ServerResponse is a built-in class
+        ServerResponse: WebServerResponse,
+      },
+      this.#requestHandle.bind(this),
     );
   }
 

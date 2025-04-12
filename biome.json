@@ -29,7 +29,10 @@
       "enabled": true,
       "arrowParentheses": "asNeeded",
       "quoteStyle": "single"
-    }
+    },
+    "globals": [
+      "BufferEncoding"
+    ]
   },
   "json": {
     "formatter": {
@@ -41,6 +44,7 @@
     "rules": {
       "all": true,
       "correctness": {
+        "noNodejsModules": "off",
         "noUndeclaredDependencies": "off"
       },
       "style": {

@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@pk/types": "*",
+    "@pk/utils": "*",
+    "date-fns": "^4.1.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@pk/ts-config": "*",
+    "@types/node": "^22.13.9"
+  },
+  "exports": {
+    "./classInfo.js": "./src/types/classInfo.ts",
+    "./XlsBufferReaderStream.js": "./src/components/XlsBufferReaderStream.ts",
+    "./XlsScheduleDownloader.js": "./src/components/XlsScheduleDownloader.ts",
+    "./XlsScheduleParserStream.js": "./src/components/XlsScheduleParser/XlsScheduleParserStream.ts",
+    "./ObjectCollectorStream.js": "./src/components/ObjectCollectorStream.ts"
+  },
+  "name": "@pk/timetable-parser-core",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module"
+}
