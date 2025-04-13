@@ -4,7 +4,7 @@ import { BaseComponent } from './BaseComponent.ts';
 export class Logo extends BaseComponent {
   #img: Component;
 
-  constructor(height?: number, width?: number) {
+  constructor(height?: string, width?: string) {
     super('div');
 
     this.setStyle({ textAlign: 'center' });
@@ -14,9 +14,8 @@ export class Logo extends BaseComponent {
         .setAttribute('src', '/public/wiit.png')
         .setStyle({
           aspectRatio: '1',
-          height: height ? `${height}px` : undefined,
-          margin: 'auto',
-          width: width ? `${width}px` : undefined,
+          height: height ? height : undefined,
+          width: width ? width : undefined,
         });
   }
 

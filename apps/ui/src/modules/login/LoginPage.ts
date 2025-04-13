@@ -27,7 +27,7 @@ export class LoginPage extends BaseComponent {
 
     this.#form = new Form().onSubmit(this.#handleFormSubmit).setMethod('POST');
 
-    this.#logo = new Logo(100);
+    this.#logo = new Logo('100px');
 
     this.#password = new TextField('password')
         .addIcon('lock', 'start')
@@ -47,6 +47,10 @@ export class LoginPage extends BaseComponent {
   #handleFormSubmit(formData: FormData) {
     const email = formData.get('email');
     const password = formData.get('password');
+
+    if (email === null || password === null) {
+      return console.error('"email" and "password" are required');
+    }
 
     console.log({ email, password });
   }
