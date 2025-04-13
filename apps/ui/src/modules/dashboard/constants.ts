@@ -4,11 +4,11 @@ export const navConfig: NavCategory[] = [
   {
     items: [
       {
-        href: '/admin/permissions',
+        href: '#/admin/permissions',
         name: 'Permissions',
       },
       {
-        href: '/admin/users',
+        href: '#/admin/users',
         name: 'Users',
       },
     ],
@@ -17,11 +17,11 @@ export const navConfig: NavCategory[] = [
   {
     items: [
       {
-        href: '/home/events',
+        href: '#/home/events',
         name: 'Events',
       },
       {
-        href: '/home/schedule',
+        href: '#/home/schedule',
         name: 'Schedule',
       },
     ],
@@ -30,7 +30,7 @@ export const navConfig: NavCategory[] = [
   {
     items: [
       {
-        href: '/settings/account',
+        href: '#/settings/account',
         name: 'Account',
       },
     ],
