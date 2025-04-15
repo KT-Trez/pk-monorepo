@@ -4,7 +4,7 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "lib": [
-      "ES2020",
+      "ES2024",
       "DOM",
       "DOM.Iterable"
     ],

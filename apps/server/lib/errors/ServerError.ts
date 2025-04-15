@@ -1,37 +1,39 @@
-import { type ErrorApi, type HttpStatus, HttpStatuses } from '@pk/types/api.js';
+import { type ErrorApi, HttpStatus, type HttpStatuses } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
 
 type ServerErrorArgs = {
-  httpStatus?: HttpStatus;
+  httpStatus?: HttpStatuses;
   message?: string;
   meta?: UnknownObject;
   cause?: unknown;
 };
 
 export class ServerError extends Error implements ErrorApi {
-  httpStatus: HttpStatus;
+  cause?: unknown;
+  code: HttpStatuses;
   message: string;
   meta?: UnknownObject;
-  cause?: unknown;
+  success: false;
 
   constructor(args?: ServerErrorArgs) {
-    const message = args?.message ?? 'Internal server error';
+    const message = args?.message ?? 'Error occurred';
     super(message, { cause: args?.cause });
 
-    this.httpStatus = args?.httpStatus ?? HttpStatuses.internalServerError;
+    this.code = args?.httpStatus ?? HttpStatus.InternalServerError;
+    this.cause = args?.cause;
     this.message = message;
     this.meta = args?.meta;
-    this.cause = args?.cause;
+    this.success = false;
 
     Error.captureStackTrace(this, this.constructor);
   }
 
-  // biome-ignore lint/style/useNamingConvention: JSON stands for JavaScript Object Notation and is common shorthand
   toJSON(): ErrorApi {
     return {
-      httpStatus: this.httpStatus,
+      code: this.code,
       message: this.message,
       meta: this.meta,
+      success: this.success,
     };
   }
 }

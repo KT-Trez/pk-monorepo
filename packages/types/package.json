@@ -9,6 +9,8 @@
     "./group.js": "./src/group.ts",
     "./helpers.js": "./src/helpers.ts",
     "./objectType.js": "./src/objectType.ts",
+    "./session.js": "./src/session.ts",
+    "./user.js": "./src/user.ts",
     "./valueValidator.js": "./src/valueValidator.ts"
   },
   "name": "@pk/types",

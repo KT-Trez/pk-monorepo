@@ -1,0 +1,15 @@
+.Form-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sizing-4);
+    grid-column: 5/9;
+    padding-inline: var(--sizing-8);
+}
+
+@media (max-width: 600px) {
+    .Form-root {
+        grid-column: 1;
+        padding-inline: var(--sizing-4);
+    }
+}

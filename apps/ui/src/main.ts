@@ -1,26 +1,27 @@
-import './style.css';
-import viteLogo from '/vite.svg';
-import { setupCounter } from './counter.ts';
-import typescriptLogo from './typescript.svg';
+import 'material-icons/iconfont/material-icons.css';
+import { PermissionsPage } from './modules/admin/permissions/PermissionsPage.ts';
+import { UsersPage } from './modules/admin/users/UsersPage.ts';
+import { DashboardPage } from './modules/dashboard/DashboardPage.ts';
+import { EventsPage } from './modules/home/events/EventsPage.ts';
+import { SchedulePage } from './modules/home/schedule/SchedulePage.ts';
+import { LoginPage } from './modules/login/LoginPage.ts';
+import { AccountPage } from './modules/settings/account/AccountPage.ts';
+import { ApiService } from './services/ApiService.ts';
+import { NavigationService } from './services/NavigationService.ts';
+import { NotificationService } from './services/NotificationService.ts';
+import { StoreService } from './services/StoreService.ts';
+import type { NavigationPaths } from './types/navigationPaths.ts';
+import type { StoreContent } from './types/store.ts';
 
-// biome-ignore lint/style/noNonNullAssertion: this is a demo app
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+export const client = new ApiService(window.location.origin);
+export const notifier = new NotificationService();
+export const store = new StoreService<StoreContent>();
 
-// biome-ignore lint/style/noNonNullAssertion: this is a demo app
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+new NavigationService<NavigationPaths>()
+    .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
+    .addRoute('/admin/permissions', { Component: PermissionsPage, Container: DashboardPage, parentSelector: 'main' })
+    .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })
+    .addRoute('/home/events', { Component: EventsPage, Container: DashboardPage, parentSelector: 'main' })
+    .addRoute('/home/schedule', { Component: SchedulePage, Container: DashboardPage, parentSelector: 'main' })
+    .addRoute('/settings/account', { Component: AccountPage, Container: DashboardPage, parentSelector: 'main' })
+    .start();
