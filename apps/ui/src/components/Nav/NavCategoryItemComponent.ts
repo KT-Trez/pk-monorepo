@@ -1,4 +1,5 @@
 import { BaseComponent } from '../BaseComponent.ts';
+import { Typography } from '../Typography/Typography.ts';
 import type { NavCategoryItem } from './types.ts';
 
 export class NavCategoryItemComponent extends BaseComponent {
@@ -7,10 +8,9 @@ export class NavCategoryItemComponent extends BaseComponent {
   constructor(config: NavCategoryItem) {
     super('li');
 
-    this.#link = new BaseComponent('a')
-        .addClasses(['NavCategory-item', 'typography-body-1'])
-        .setAttribute('href', config.href)
-        .setTextContent(config.name);
+    this.#link = new Typography({ tag: 'a', text: config.name })
+        .addClass('NavCategory-item')
+        .setAttribute('href', config.href);
   }
 
   render(): HTMLElement {

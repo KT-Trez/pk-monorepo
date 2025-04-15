@@ -11,7 +11,7 @@ export class Logo extends BaseComponent {
 
     this.#img = new BaseComponent('img')
         .setAttribute('alt', 'WIiT logo')
-        .setAttribute('src', '/public/wiit.png')
+        .setAttribute('src', '/wiit.png')
         .setStyle({
           aspectRatio: '1',
           height: height ? height : undefined,

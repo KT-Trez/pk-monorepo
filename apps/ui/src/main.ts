@@ -6,10 +6,16 @@ import { EventsPage } from './modules/home/events/EventsPage.ts';
 import { SchedulePage } from './modules/home/schedule/SchedulePage.ts';
 import { LoginPage } from './modules/login/LoginPage.ts';
 import { AccountPage } from './modules/settings/account/AccountPage.ts';
+import { ApiService } from './services/ApiService.ts';
 import { NavigationService } from './services/NavigationService.ts';
+import { NotificationService } from './services/NotificationService.ts';
+import { StoreService } from './services/StoreService.ts';
 import type { NavigationPaths } from './types/navigationPaths.ts';
+import type { StoreContent } from './types/store.ts';
 
-new NavigationService();
+export const client = new ApiService(window.location.origin);
+export const notifier = new NotificationService();
+export const store = new StoreService<StoreContent>();
 
 new NavigationService<NavigationPaths>()
     .addRoute('/', { Component: LoginPage, parentSelector: 'body' })

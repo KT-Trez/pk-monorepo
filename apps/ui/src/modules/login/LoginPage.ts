@@ -1,9 +1,12 @@
+import type { SessionApi } from '@pk/types/session.js';
 import { BaseComponent } from '../../components/BaseComponent.ts';
 import { Button } from '../../components/Button.ts';
 import { Form } from '../../components/Form.ts';
 import { Logo } from '../../components/Logo.ts';
 import { TextField } from '../../components/TextField.ts';
+import { client, notifier, store } from '../../main.ts';
 import type { Component } from '../../types/component.ts';
+import { navigate } from '../../utils/navigate.ts';
 
 export class LoginPage extends BaseComponent {
   #email: Component;
@@ -44,7 +47,7 @@ export class LoginPage extends BaseComponent {
     return this.children(this.#form.children([this.#logo, this.#email, this.#password, this.#submit])).root;
   }
 
-  #handleFormSubmit(formData: FormData) {
+  async #handleFormSubmit(formData: FormData) {
     const email = formData.get('email');
     const password = formData.get('password');
 
@@ -52,6 +55,14 @@ export class LoginPage extends BaseComponent {
       return console.error('"email" and "password" are required');
     }
 
-    console.log({ email, password });
+    try {
+      const session = await client.post<SessionApi>('/v1/session', { email, password });
+
+      store.set('session', session);
+      navigate('#/home/events');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notifier.notify({ text: message, severity: 'error' });
+    }
   }
 }

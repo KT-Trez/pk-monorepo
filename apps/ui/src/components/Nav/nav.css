@@ -15,8 +15,9 @@
 }
 
 .NavCategory-header {
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
+    /* fixme: https://github.com/KT-Trez/pk-monorepo/issues/22: color inheritance for Typography variants  */
+    color: var(--color-primary) !important;
+    font-weight: var(--font-weight-bold) !important;
 }
 
 .NavCategory-items {
@@ -28,7 +29,7 @@
 }
 
 .NavCategory-item {
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium) !important;
     text-decoration: none;
 }
 

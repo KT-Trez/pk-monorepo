@@ -1,5 +1,7 @@
 import type { CanBeDisabled, Component } from '../types/component.ts';
 import { BaseComponent } from './BaseComponent.ts';
+import { Icon } from './Icon/Icon.ts';
+import { Typography } from './Typography/Typography.ts';
 
 type TextFieldTypeAttribute =
     | 'date'
@@ -46,7 +48,7 @@ export class TextField extends BaseComponent implements CanBeDisabled {
   }
 
   addIcon(icon: string, position: 'start' | 'end') {
-    this.#icons[position] = new BaseComponent('span').addClass('material-icons').setTextContent(icon);
+    this.#icons[position] = new Icon(icon);
     return this;
   }
 
@@ -68,7 +70,7 @@ export class TextField extends BaseComponent implements CanBeDisabled {
   }
 
   setLabel(label: string) {
-    this.#label = new BaseComponent('label').setAttribute('for', this.#name).setTextContent(label);
+    this.#label = new Typography({ tag: 'label', text: label, variant: 'caption' }).setAttribute('for', this.#name);
     return this;
   }
 

@@ -10,12 +10,6 @@
     width: 100%;
 }
 
-.TextField-root > label {
-    color: var(--color-text-primary);
-    font-size: var(--text-caption-font-size);
-    font-weight: var(--text-caption-font-weight);
-}
-
 .TextField-control {
     align-items: center;
     background: var(--color-elevation-1);

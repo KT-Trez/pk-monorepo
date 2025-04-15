@@ -1,5 +1,6 @@
 import type { Component } from '../../types/component.ts';
 import { BaseComponent } from '../BaseComponent.ts';
+import { Typography } from '../Typography/Typography.ts';
 import { NavCategoryItemComponent } from './NavCategoryItemComponent.ts';
 import type { NavCategory } from './types.ts';
 
@@ -11,9 +12,7 @@ export class NavCategoryComponent extends BaseComponent {
     super('div');
     this.addClass('NavCategory-root');
 
-    this.#header = new BaseComponent('h3')
-        .addClasses(['NavCategory-header', '.typography-body-1'])
-        .setTextContent(config.name);
+    this.#header = new Typography({ text: config.name, variant: 'h3' }).addClass('NavCategory-header');
 
     this.#items = new BaseComponent('ul')
         .addClass('NavCategory-items')
