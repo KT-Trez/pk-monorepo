@@ -1,19 +1,10 @@
 import type { ConstValues, UnknownObject } from './helpers.js';
 
-export type ActionFailureApi = {
-  objects: Record<string, boolean>;
-  success: false;
-} & ErrorApi;
-
-export type ActionSuccessApi = {
-  objects: Record<string, true>;
-  success: true;
-};
-
 export type ErrorApi = {
-  httpStatus: HttpStatus;
+  code: HttpStatuses;
   message: string;
   meta?: UnknownObject;
+  success: false;
 };
 
 export type CollectionApi<T> = {
@@ -22,11 +13,18 @@ export type CollectionApi<T> = {
   offset: number;
 };
 
-export const HttpStatuses = {
-  badRequest: 400,
-  internalServerError: 500,
-  methodNotAllowed: 405,
-  notFound: 404,
-  ok: 200,
+export const HttpStatus = {
+  BadRequest: 400,
+  InternalServerError: 500,
+  MethodNotAllowed: 405,
+  NotFound: 404,
+  Ok: 200,
+  Unauthorized: 401,
 } as const;
-export type HttpStatus = ConstValues<typeof HttpStatuses>;
+export type HttpStatuses = ConstValues<typeof HttpStatus>;
+
+export type SuccessApi = {
+  code: HttpStatuses;
+  message: string;
+  success: true;
+};

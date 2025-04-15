@@ -1,16 +1,16 @@
+import { HttpStatus, type HttpStatuses } from '@pk/types/api.js';
 import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
-import { type HttpStatus, HttpStatuses } from '@pk/types/api.js';
 import type { ServerError } from './errors/ServerError.js';
 
 export class WebServerResponse<Request extends IncomingMessage = IncomingMessage> extends ServerResponse<Request> {
   readonly #headers: OutgoingHttpHeaders;
-  #status: HttpStatus;
+  #status: HttpStatuses;
 
   constructor(req: Request) {
     super(req);
 
     this.#headers = {};
-    this.#status = HttpStatuses.ok;
+    this.#status = HttpStatus.Ok;
   }
 
   addHeader(name: string, value: string | number | string[]) {
@@ -28,7 +28,7 @@ export class WebServerResponse<Request extends IncomingMessage = IncomingMessage
       return;
     }
 
-    this.setStatus(error.httpStatus);
+    this.setStatus(error.code);
     this.json(error.toJSON());
   }
 
@@ -38,7 +38,7 @@ export class WebServerResponse<Request extends IncomingMessage = IncomingMessage
     this.end(JSON.stringify(data));
   }
 
-  setStatus(code: HttpStatus) {
+  setStatus(code: HttpStatuses) {
     this.#status = code;
 
     return this;
