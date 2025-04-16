@@ -1,6 +1,6 @@
 import { HttpStatus } from '@pk/types/api.js';
 import type { SessionApi, SessionDb } from '@pk/types/session.js';
-import { createSession, selectSessionByUserUid } from '../../queries/session.ts';
+import { selectSessionByUserUid } from '../../queries/session.ts';
 import { AbstractSession } from './AbstractSession.ts';
 
 export class AuthorizedSession extends AbstractSession {
@@ -15,8 +15,6 @@ export class AuthorizedSession extends AbstractSession {
   }
 
   async constructorAsync() {
-    await createSession(this.#userUid);
-
     const { rows } = await selectSessionByUserUid(this.#userUid);
     const session = rows.at(0);
 

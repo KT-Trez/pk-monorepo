@@ -1,10 +1,22 @@
-import type { HttpHandle } from '../../lib/types.ts';
-import type { Methods } from '../types/request.js';
+import type { UnknownObject } from '@pk/types/helpers.js';
+import type { HttpHandle, HttpMethods } from '../../types/http.ts';
 
-export type RoutePath = `${Methods} ${string}`;
+export type RoutePath = `${HttpMethods} ${string}`;
 
 export abstract class BaseController {
   protected routes: Map<RoutePath, HttpHandle[]> = new Map();
+
+  protected static removeUndefined<T extends UnknownObject>(obj: T): Partial<T> {
+    const newObj: Partial<T> = {};
+
+    for (const key in obj) {
+      if (obj[key] !== undefined) {
+        newObj[key] = obj[key];
+      }
+    }
+
+    return newObj;
+  }
 
   delete(path: string, onRequest: (controller: this) => HttpHandle[]) {
     return this.#addRoute('DELETE', path, onRequest(this));
@@ -26,7 +38,7 @@ export abstract class BaseController {
     return this.routes.get(path);
   }
 
-  #addRoute(method: Methods, path: string, httpHandles: HttpHandle[]) {
+  #addRoute(method: HttpMethods, path: string, httpHandles: HttpHandle[]) {
     this.routes.set(`${method} ${path}`, httpHandles);
     return this;
   }

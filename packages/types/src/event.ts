@@ -6,7 +6,7 @@ export type EventApi = {
   location: null | string;
   startDate: string;
   title: string;
-  type: typeof ObjectType.event;
+  type: typeof ObjectType.Event;
   uid: string;
 };
 
@@ -15,7 +15,7 @@ export type EventDb = {
   end_date: string;
   event_uid: string;
   location: null | string;
-  object_type_id: typeof ObjectType.event;
+  object_type_id: typeof ObjectType.Event;
   start_date: string;
   title: string;
 };

@@ -4,7 +4,7 @@ import { ServerError } from './ServerError.ts';
 export class NotFoundError extends ServerError {
   constructor(resource: string) {
     const httpStatus = HttpStatus.NotFound;
-    const message = `Resource not found: ${resource}`;
+    const message = `"${resource}" not found`;
 
     super({ httpStatus, message });
   }

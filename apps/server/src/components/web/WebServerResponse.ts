@@ -1,6 +1,8 @@
 import { HttpStatus, type HttpStatuses } from '@pk/types/api.js';
+import { Severity } from '@pk/utils/Logger/types.js';
 import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
-import type { ServerError } from './errors/ServerError.js';
+import { logger } from '../logger/logger.ts';
+import type { ServerError } from '../response/ServerError.ts';
 
 export class WebServerResponse<Request extends IncomingMessage = IncomingMessage> extends ServerResponse<Request> {
   readonly #headers: OutgoingHttpHeaders;
@@ -20,9 +22,7 @@ export class WebServerResponse<Request extends IncomingMessage = IncomingMessage
   }
 
   error(error: ServerError) {
-    // todo: use logger
-    // biome-ignore lint/suspicious/noConsole: needed for error handling
-    console.error(`[ERROR] ${error.message} [CAUSE]`, error.cause);
+    logger.log({ message: `MESSAGE - "${error.message}", CAUSE - "${error.cause}"`, severity: Severity.Error });
 
     if (this.headersSent) {
       return;

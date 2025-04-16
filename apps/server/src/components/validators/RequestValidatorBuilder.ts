@@ -1,11 +1,10 @@
 import type { ValueValidator } from '@pk/types/valueValidator.js';
-import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
-import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
-import { BadRequestError } from '../../lib/errors/BadRequestError.ts';
-import type { HttpHandle, NextFunction } from '../../lib/types.ts';
+import type { HttpHandle, NextFunction } from '../../types/http.ts';
+import { BadRequestError } from '../response/BadRequestError.ts';
+import type { WebServerRequest } from '../web/WebServerRequest.ts';
+import type { WebServerResponse } from '../web/WebServerResponse.ts';
 
 type CheckFunction = (req: WebServerRequest) => readonly [string, boolean];
-
 type ValueGetter = (req: WebServerRequest) => unknown;
 
 export class RequestValidatorBuilder {

@@ -1,7 +1,9 @@
 import { Server } from 'node:http';
-import type { BaseController, RoutePath } from '../src/classes/BaseController.v3.ts';
-import { ServerError } from './errors/ServerError.ts';
-import type { HttpHandle } from './types.js';
+import type { HttpHandle } from '../../types/http.ts';
+import { logger } from '../logger/logger.ts';
+import { NotFoundError } from '../response/NotFoundError.ts';
+import { ServerError } from '../response/ServerError.ts';
+import type { BaseController, RoutePath } from './BaseController.v3.ts';
 import { WebServerRequest } from './WebServerRequest.ts';
 import { WebServerResponse } from './WebServerResponse.ts';
 
@@ -21,6 +23,7 @@ export class WebServer {
 
   listen(port: number, cb?: () => void) {
     this.#httpServer.listen(port, cb);
+    logger.log({ message: `Server is listening on port: "${port}"`, severity: 'info' });
   }
 
   registerController(controller: BaseController) {
@@ -44,6 +47,10 @@ export class WebServer {
 
     for (const route of routes) {
       await this.#processRoutes(route, req, res);
+    }
+
+    if (!res.headersSent) {
+      res.error(new NotFoundError(req.parsedURL.pathname));
     }
   }
 

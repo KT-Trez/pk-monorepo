@@ -5,7 +5,7 @@ export type AuditDb = {
   // biome-ignore lint/style/useNamingConvention: this is a database field
   audit_type_id: AuditTypes;
   // biome-ignore lint/style/useNamingConvention: this is a database field
-  object_type_id: typeof ObjectType.audit;
+  object_type_id: typeof ObjectType.Audit;
   // biome-ignore lint/style/useNamingConvention: this is a database field
   object_uid: string;
   timestamp: string;

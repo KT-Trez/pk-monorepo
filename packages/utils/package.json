@@ -11,6 +11,7 @@
     "./Logger/LoggerBuilder.js": "./src/Logger/LoggerBuilder.ts",
     "./Logger/LoggerConsoleTransport.js": "./src/Logger/LoggerConsoleTransport.ts",
     "./Logger/types.js": "./src/Logger/types.ts",
+    "./regexes/email.js": "./src/regexes/email.ts",
     "./exhaustiveCheck.js": "./src/exhaustiveCheck.ts",
     "./isDate.js": "./src/isDate.ts",
     "./isEmpty.js": "./src/isEmpty.ts",

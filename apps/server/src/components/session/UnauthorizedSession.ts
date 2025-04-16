@@ -1,6 +1,6 @@
 import { HttpStatus } from '@pk/types/api.js';
-import type { ServerError } from '../../../lib/errors/ServerError.ts';
-import { Unauthorized } from '../../../lib/errors/Unauthorized.ts';
+import type { ServerError } from '../response/ServerError.ts';
+import { Unauthorized } from '../response/Unauthorized.ts';
 import { AbstractSession } from './AbstractSession.ts';
 
 export class UnauthorizedSession extends AbstractSession {

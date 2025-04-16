@@ -4,11 +4,10 @@ export type UserApi = {
   album: number;
   email: string;
   name: string;
-  type: typeof ObjectType.student;
   uid: string;
 };
 
-export type UserPayloadApi = Pick<UserApi, 'album' | 'email' | 'name'> & {
+export type UserPayloadApi = Pick<UserApi, 'album' | 'email' | 'name' | 'uid'> & {
   password: string;
 };
 
@@ -17,7 +16,7 @@ export type UserDb = {
   email: string;
   first_name: string;
   last_name: string;
-  object_type_id: typeof ObjectType.student;
+  object_type_id: typeof ObjectType.Users;
   password: Buffer<ArrayBufferLike>;
   user_uid: string;
 };

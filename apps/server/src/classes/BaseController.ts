@@ -1,13 +1,13 @@
-import { HttpStatuses } from '@pk/types/api.js';
+import { HttpStatus } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
-import type { WebServerRequest } from '../../lib/WebServerRequest.ts';
-import type { WebServerResponse } from '../../lib/WebServerResponse.ts';
-import type { NextFunction } from '../../lib/types.ts';
+import { Collection } from '../components/response/Collection.ts';
+import type { WebServerRequest } from '../components/web/WebServerRequest.ts';
+import type { WebServerResponse } from '../components/web/WebServerResponse.ts';
+import type { NextFunction } from '../types/http.ts';
 import type { IORM } from '../types/orm.js';
 import type { AbstractObjectTransformer } from './AbstractObjectTransformer.ts';
 import { ActionFailure } from './responses/ActionFailure.ts';
-import { ActionSuccess } from './responses/ActionSuccess.ts';
-import { Collection } from './responses/Collection.ts';
+import { ServerSuccess } from './responses/ServerSuccess.ts';
 
 type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObject, Model extends string> = {
   model: Model;
@@ -16,9 +16,9 @@ type ControllerArgs<ApiModel extends UnknownObject, DbModel extends UnknownObjec
 };
 
 export abstract class BaseController<
-  ApiModel extends UnknownObject,
-  DbModel extends UnknownObject,
-  Model extends string,
+    ApiModel extends UnknownObject,
+    DbModel extends UnknownObject,
+    Model extends string,
 > {
   #model: Model;
   #orm: IORM;
@@ -40,7 +40,7 @@ export abstract class BaseController<
       return next(new ActionFailure());
     }
 
-    res.json(new ActionSuccess());
+    res.json(new ServerSuccess());
   }
 
   async deleteOne(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
@@ -49,10 +49,10 @@ export abstract class BaseController<
     const { rowCount } = await this.#orm.delete(this.#model, { where: this.#byPrimaryKey(uid) });
 
     if (rowCount === 0) {
-      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
+      return next(new ActionFailure([uid], [], HttpStatus.NotFound));
     }
 
-    res.json(new ActionSuccess([uid]));
+    res.json(new ServerSuccess([uid]));
   }
 
   async getOne(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
@@ -62,7 +62,7 @@ export abstract class BaseController<
     const item = rows.at(0);
 
     if (!item) {
-      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
+      return next(new ActionFailure([uid], [], HttpStatus.NotFound));
     }
 
     res.json(this.#transformer.toApiObject(item));
@@ -91,10 +91,10 @@ export abstract class BaseController<
     });
 
     if (rowCount === 0) {
-      return next(new ActionFailure([uid], [], HttpStatuses.notFound));
+      return next(new ActionFailure([uid], [], HttpStatus.NotFound));
     }
 
-    res.json(new ActionSuccess([uid]));
+    res.json(new ServerSuccess([uid]));
   }
 
   #byPrimaryKey(value: string) {
