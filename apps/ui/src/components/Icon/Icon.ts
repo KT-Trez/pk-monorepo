@@ -1,4 +1,4 @@
-import { BaseComponent } from '../BaseComponent.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 
 export class Icon extends BaseComponent {
   constructor(name: string) {

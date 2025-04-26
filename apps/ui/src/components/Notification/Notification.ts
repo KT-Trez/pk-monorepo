@@ -1,6 +1,6 @@
 import './notification.css';
 import type { Component } from '../../types/component.ts';
-import { BaseComponent } from '../BaseComponent.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { Icon } from '../Icon/Icon.ts';
 import { Typography } from '../Typography/Typography.ts';
 import { notificationClassNames, notificationIcons } from './constants.ts';

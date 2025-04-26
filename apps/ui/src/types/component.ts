@@ -15,6 +15,10 @@ export type CanBeDisabled = {
   setEnabled(): CanBeDisabled;
 };
 
+export type CanBeRerendered = {
+  renderContent(...args: unknown[]): void;
+};
+
 export type CanBeStyled = {
   addClass(className: string): CanBeStyled;
   addClasses(classNames: string[]): CanBeStyled;

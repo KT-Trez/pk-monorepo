@@ -1,6 +1,6 @@
+import { BaseComponent } from '../components/BaseComponent/BaseComponent.ts';
+import { Logo } from '../components/Logo/Logo.ts';
 import type { Component } from '../types/component.ts';
-import { BaseComponent } from './BaseComponent.ts';
-import { Logo } from './Logo.ts';
 
 export class TopBar extends BaseComponent {
   #logo: Component;

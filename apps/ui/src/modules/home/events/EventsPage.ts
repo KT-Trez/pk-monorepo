@@ -1,4 +1,4 @@
-import { BaseComponent } from '../../../components/BaseComponent.ts';
+import { BaseComponent } from '../../../components/BaseComponent/BaseComponent.ts';
 import { PageHeader } from '../../../components/PageHeader/PageHeader.ts';
 import type { Component } from '../../../types/component.ts';
 

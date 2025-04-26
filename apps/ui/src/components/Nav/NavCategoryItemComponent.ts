@@ -1,4 +1,4 @@
-import { BaseComponent } from '../BaseComponent.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { Typography } from '../Typography/Typography.ts';
 import type { NavCategoryItem } from './types.ts';
 

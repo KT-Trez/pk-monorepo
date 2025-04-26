@@ -1,4 +1,5 @@
-import { BaseComponent } from './BaseComponent.ts';
+import './form.css';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 
 export class Form extends BaseComponent<'form'> {
   constructor() {

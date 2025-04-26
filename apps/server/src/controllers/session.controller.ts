@@ -32,7 +32,9 @@ export class SessionController extends BaseController {
       },
     });
 
-    res.json(session);
+    const maxAge = new Date(session.expiresAt).getTime() - Date.now();
+
+    res.addHeader('Set-Cookie', `session_uid=${session.uid}; Max-Age: ${maxAge}`).json(session);
   }
 
   async deleteByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {

@@ -1,5 +1,5 @@
 import './typography.css';
-import { BaseComponent } from '../BaseComponent.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { typographyClassNames, typographyTagNames } from './constants.ts';
 import type { TypographyVariants } from './types.ts';
 

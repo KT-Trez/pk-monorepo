@@ -1,5 +1,5 @@
-import type { Component } from '../types/component.ts';
-import { BaseComponent } from './BaseComponent.ts';
+import type { Component } from '../../types/component.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 
 export class Logo extends BaseComponent {
   #img: Component;

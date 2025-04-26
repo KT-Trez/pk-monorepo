@@ -22,5 +22,6 @@
 }
 
 .Button-root--fullWidth {
+    min-width: unset;
     width: 100%;
 }

@@ -1,0 +1,40 @@
+.ListPageContent-root {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    height: calc(100% - var(--header-height));
+}
+
+.ListPageContent-actions {
+    border-left: 1px solid var(--color-border);
+    grid-column: 9 / 11;
+    height: 100%;
+    padding: var(--sizing-4);
+    width: 100%;
+}
+
+.ListPageContent-list {
+    grid-column: 1 / 9;
+    height: 100%;
+    padding-block: var(--sizing-4);
+    padding-inline: var(--sizing-8);
+    width: 100%;
+}
+
+
+@media (max-width: 600px) {
+    .ListPageContent-root {
+        grid-template-columns: repeat(1, 1fr);
+        padding: var(--sizing-4);
+    }
+
+    .ListPageContent-actions {
+        display: none;
+    }
+
+    .ListPageContent-list {
+        grid-column: 1 / 2;
+        overflow-x: auto;
+        padding: 0;
+        width: 100%;
+    }
+}

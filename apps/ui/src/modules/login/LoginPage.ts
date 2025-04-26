@@ -1,9 +1,10 @@
+import './loginPage.css';
 import type { EnrichedSessionApi } from '@pk/types/session.js';
-import { BaseComponent } from '../../components/BaseComponent.ts';
-import { Button } from '../../components/Button.ts';
-import { Form } from '../../components/Form.ts';
-import { Logo } from '../../components/Logo.ts';
-import { TextField } from '../../components/TextField.ts';
+import { BaseComponent } from '../../components/BaseComponent/BaseComponent.ts';
+import { Button } from '../../components/Button/Button.ts';
+import { Form } from '../../components/Form/Form.ts';
+import { Logo } from '../../components/Logo/Logo.ts';
+import { TextField } from '../../components/TextField/TextField.ts';
 import { client, notifier, store } from '../../main.ts';
 import type { Component } from '../../types/component.ts';
 import { navigate } from '../../utils/navigate.ts';

@@ -1,6 +1,6 @@
 import './nav.css';
 import type { Component } from '../../types/component.ts';
-import { BaseComponent } from '../BaseComponent.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { NavCategoryComponent } from './NavCategoryComponent.ts';
 import type { NavCategory } from './types.ts';
 

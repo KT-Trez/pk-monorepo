@@ -1,7 +1,8 @@
-import type { CanBeDisabled, Component } from '../types/component.ts';
-import { BaseComponent } from './BaseComponent.ts';
-import { Icon } from './Icon/Icon.ts';
-import { Typography } from './Typography/Typography.ts';
+import './textField.css';
+import type { CanBeDisabled, Component } from '../../types/component.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
+import { Icon } from '../Icon/Icon.ts';
+import { Typography } from '../Typography/Typography.ts';
 
 type TextFieldTypeAttribute =
     | 'date'

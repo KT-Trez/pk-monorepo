@@ -1,5 +1,6 @@
-import type { CanBeClicked, CanBeDisabled } from '../types/component.ts';
-import { BaseComponent } from './BaseComponent.ts';
+import './button.css';
+import type { CanBeClicked, CanBeDisabled } from '../../types/component.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 
 export class Button extends BaseComponent<'button'> implements CanBeClicked, CanBeDisabled {
   constructor(text: string) {

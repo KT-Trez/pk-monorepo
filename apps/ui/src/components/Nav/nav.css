@@ -36,3 +36,9 @@
 .NavCategory-item:hover {
     color: var(--color-text-secondary);
 }
+
+@media (max-width: 600px) {
+    .Nav-root {
+        display: none;
+    }
+}

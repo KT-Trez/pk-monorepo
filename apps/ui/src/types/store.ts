@@ -1,5 +1,5 @@
-import type { SessionApi } from '@pk/types/session.js';
+import type { EnrichedSessionApi } from '@pk/types/session.js';
 
 export type StoreContent = {
-  session: SessionApi;
+  session: EnrichedSessionApi;
 };
