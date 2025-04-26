@@ -1,15 +1,18 @@
+import { parseCookies } from '@pk/utils/cookies.js';
 import { IncomingMessage } from 'node:http';
 import type { Socket } from 'node:net';
+import { Session } from './Session.ts';
 
 export class WebServerRequest extends IncomingMessage {
   #parsedURL: URL;
-  #paths: string[] = [];
   #rawData: unknown;
+  #session: Session | null;
 
   constructor(socket: Socket) {
     super(socket);
     this.#parsedURL = new URL('', `http://${this.headers.host}`);
     this.#rawData = '';
+    this.#session = null;
 
     this.on('data', chunk => {
       this.#rawData += chunk;
@@ -26,6 +29,14 @@ export class WebServerRequest extends IncomingMessage {
 
   get parsedURL(): URL {
     return Object.freeze(this.#parsedURL);
+  }
+
+  get session(): Readonly<Session> {
+    if (!this.#session) {
+      throw new Error('Session is missing');
+    }
+
+    return Object.freeze(this.#session);
   }
 
   getBody<T>(): T {
@@ -52,17 +63,12 @@ export class WebServerRequest extends IncomingMessage {
     return param;
   }
 
-  _getNextPath() {
-    return this.#paths.shift();
-  }
-
   _process() {
     if (!this.url) {
       throw new Error('Request URL is missing');
     }
 
     this.#parsedURL = new URL(this.url, `http://${this.headers.host}`);
-    this.#paths = this.#parsedURL.pathname.split('/').filter(Boolean);
 
     return new Promise((resolve, reject) => {
       this.once('end', () => {
@@ -73,5 +79,21 @@ export class WebServerRequest extends IncomingMessage {
         reject(err);
       });
     });
+  }
+
+  async _processSession() {
+    if (!this.headers.cookie) {
+      return false;
+    }
+
+    const cookies = parseCookies(this.headers.cookie);
+    const sessionUid = cookies.session_uid;
+
+    if (sessionUid) {
+      this.#session = await new Session().constructorAsync(sessionUid);
+      return this.#session.hasSession();
+    }
+
+    return false;
   }
 }

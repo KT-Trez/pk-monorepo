@@ -13,7 +13,7 @@ export class FullUserRepository extends PostgresSQLRepository<FullUserApi> {
         surname: 'surname',
         uid: 'uid',
       },
-      table: 'full_user',
+      table: 'public.full_user',
     });
   }
 }

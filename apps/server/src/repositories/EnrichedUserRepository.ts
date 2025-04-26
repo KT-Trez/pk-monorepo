@@ -14,7 +14,7 @@ export class EnrichedUserRepository extends PostgresSQLRepository<EnrichedUserAp
         surname: 'surname',
         uid: 'uid',
       },
-      table: 'enriched_user',
+      table: 'public.enriched_user',
     });
   }
 }

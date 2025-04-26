@@ -1,17 +1,13 @@
-import type { UserPayloadApi } from './user.js';
+import type { FullUserApi } from './user.js';
 
-export type SessionApiPayload = Required<Pick<UserPayloadApi, 'email' | 'password'>>;
-
-export type SessionDb = {
-  acl: number;
-  expires_at: Date;
-  session_uid: string;
-  user_uid: string;
+export type EnrichedSessionApi = {
+  createdAt: string;
+  expiresAt: string;
+  uid: string;
+  user: FullUserApi;
 };
 
-export type SessionApi = {
-  acl: string;
-  expiresAt: string;
-  sessionUid: string;
-  userUid: string;
+export type SessionApiCreatePayload = {
+  email: string;
+  password: string;
 };

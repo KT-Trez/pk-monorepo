@@ -1,6 +1,7 @@
-import type { UnknownObject } from '@pk/types/helpers.js';
+import type { DeepPartial, UnknownObject } from '@pk/types/helpers.js';
 import pg, { type PoolClient } from 'pg';
 import type { BaseRepository, FindManyOptions, FindOptions } from '../../types/repository.ts';
+import { ServerError } from '../response/ServerError.ts';
 import { Client } from './Client.ts';
 
 const { escapeIdentifier, escapeLiteral } = pg;
@@ -31,7 +32,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
             return acc;
           }
 
-          acc.push(`${this.#getAttributeName(attributeDefinition)} AS ${escapeIdentifier(objectProperty)}`);
+          acc.push(`${this.#getAttributeName_old(attributeDefinition)} AS ${escapeIdentifier(objectProperty)}`);
 
           return acc;
         }, [])
@@ -43,131 +44,142 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     this.primaryKey = primaryKeyName;
     this.#primaryKeyIdentifier = escapeIdentifier(attributesDefinition[primaryKeyName] as string);
     this.table = table;
-    this.#tableIdentifier = escapeIdentifier(table);
+    this.#tableIdentifier = table.split('.').map(escapeIdentifier).join('.');
   }
 
-  async delete(uidOrObject: string | Partial<T>, tx?: PoolClient): Promise<boolean> {
-    const uid = typeof uidOrObject === 'string' ? uidOrObject : uidOrObject[this.primaryKey];
+  async delete(primaryKeyOrQuery: string | Partial<T>, tx?: PoolClient): Promise<boolean> {
+    const conditions = this.#where(primaryKeyOrQuery);
 
-    if (!uid) {
-      throw new Error(`Cannot delete ${this.#tableIdentifier} without ${this.#primaryKeyIdentifier}`);
-    }
-
-    const { success } = await Client.instance.queryRow<{ success: boolean }>({
+    const result = await Client.instance.queryRow<{ success: boolean }>({
       queryTextOrConfig: {
-        name: `delete-${this.table}`,
         text: `DELETE
                FROM ${this.#tableIdentifier}
-               WHERE ${this.#primaryKeyIdentifier} = $1
+               WHERE ${conditions}
                RETURNING true AS success`,
-        values: [uid],
       },
-      resource: this.table,
       tx,
-      uid: (uid as string) ?? 'unknown-uid',
     });
 
-    return success;
+    return result?.success ?? false;
   }
 
-  find(object: Partial<T>, options?: FindManyOptions<T, PoolClient>): Promise<T[]> {
+  find(query: Partial<T>, options?: FindManyOptions<T, PoolClient>): Promise<T[]> {
     const attributes = this.#selectAttributes(options?.attributes);
     const limit = escapeLiteral(options?.limit?.toString() ?? '10');
     const offset = escapeLiteral(options?.offset?.toString() ?? '0');
-    const orderBy = options?.orderBy ? escapeIdentifier(options.orderBy as string) : this.#primaryKeyIdentifier;
+    const orderBy = options?.orderBy ? this.getAttributeName_new(options.orderBy) : this.#primaryKeyIdentifier;
 
-    const conditions = this.#where(object);
-    const where = conditions ? `WHERE ${conditions}` : '';
+    const conditions = this.#where(query);
+    const where = conditions ? conditions : '1 = 1';
 
     return Client.instance.queryRows<T>({
       queryTextOrConfig: {
-        name: `find-${this.table}`,
+        name: `find-${this.table}-${conditions}`.substring(0, 63),
         text: `SELECT ${attributes}
-               FROM ${this.#tableIdentifier} ${where}
+               FROM ${this.#tableIdentifier}
+               WHERE ${where}
                ORDER BY ${orderBy}
                LIMIT ${limit} OFFSET ${offset}`,
-        values: Object.values(object),
       },
       tx: options?.tx,
     });
   }
 
-  findOne(uidOrObject: string | Partial<T>, options?: FindOptions<T, PoolClient>): Promise<T> {
+  findOne(primaryKeyOrQuery: string | Partial<T>, options?: FindOptions<T, PoolClient>): Promise<T | undefined> {
     const attributes = this.#selectAttributes(options?.attributes);
-    const uid = typeof uidOrObject === 'string' ? uidOrObject : uidOrObject[this.primaryKey];
+    const conditions = this.#where(primaryKeyOrQuery);
 
     return Client.instance.queryRow<T>({
       queryTextOrConfig: {
-        name: `find-one-${this.table}`,
+        name: `find-one-${this.table}-${conditions}`.substring(0, 63),
         text: `SELECT ${attributes}
                FROM ${this.#tableIdentifier}
-               WHERE ${this.#primaryKeyIdentifier} = $1
-                         LIKE 1`,
-        values: [uid],
+               WHERE ${conditions}
+               LIMIT 1`,
       },
-      resource: this.table,
       tx: options?.tx,
-      uid: (uid ?? 'unknown-uid') as string,
     });
   }
 
-  async create(object: Partial<T>, tx?: PoolClient): Promise<T> {
+  async create(object: DeepPartial<T>, tx?: PoolClient): Promise<T> {
     const attributes: string[] = [];
     const values: unknown[] = [];
 
     for (const key in object) {
-      attributes.push(this.#getAttributeName(this.#attributesDefinition[key]));
+      attributes.push(this.getAttributeName_new(key));
       values.push(object[key]);
     }
 
-    const cols = attributes.join(', ');
+    const into = attributes.join(', ');
     const parameters = values.map((_, index) => `$${index + 1}`).join(',');
 
-    return await Client.instance.queryRow<T>({
+    const row = await Client.instance.queryRow<T>({
       queryTextOrConfig: {
-        name: `insert-${this.#tableIdentifier}`,
-        text: `INSERT INTO ${this.#tableIdentifier} (${cols})
+        text: `INSERT INTO ${this.#tableIdentifier} (${into})
                VALUES (${parameters})
                RETURNING ${this.#allAttributes}`,
         values,
       },
-      resource: this.table,
       tx,
-      uid: (object.uid ?? 'unknown-uid') as string,
     });
-  }
 
-  async update(object: Partial<T>, newObject: Partial<T>, tx?: PoolClient): Promise<T> {
-    const attributesAndParameters: string[] = [];
-    const values: unknown[] = [];
-
-    for (const key in newObject) {
-      attributesAndParameters.push(
-          `${this.#getAttributeName(this.#attributesDefinition[key])} = $${attributesAndParameters.length + 1}`,
-      );
-      values.push(newObject[key]);
+    if (!row) {
+      throw new ServerError({ cause: `INSERT failed for object: "${JSON.stringify(object)}"` });
     }
 
-    const set = attributesAndParameters.join(', ');
-    const conditions = this.#where(object, attributesAndParameters.length);
-    const where = conditions ? `WHERE ${conditions}` : '';
+    return row;
+  }
+
+  async update(
+      primaryKeyOrQuery: string | Partial<T>,
+      newObject: DeepPartial<T>,
+      tx?: PoolClient,
+  ): Promise<T | undefined> {
+    const attributes: string[] = [];
+
+    for (const key in newObject) {
+      attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(newObject[key] as string)}`);
+    }
+
+    const set = attributes.join(', ');
+    const conditions = this.#where(primaryKeyOrQuery);
+    const where = conditions ? conditions : '1 = 1';
 
     return await Client.instance.queryRow<T>({
       queryTextOrConfig: {
-        name: `update-${this.#tableIdentifier}`,
         text: `UPDATE ${this.#tableIdentifier}
-               SET ${set} ${where}
+               SET ${set}
+               WHERE ${where}
                RETURNING ${this.#allAttributes}`,
-        values: [...values, ...Object.values(object)],
       },
-      resource: this.table,
       tx,
-      uid: (object.uid ?? 'unknown-uid') as string,
     });
   }
 
-  #getAttributeName(attribute: string | AttributeDefinition<T>) {
+  /**
+   * Retrieves the attribute name based on the provided input.
+   * If the input is a string, it escapes and returns the string.
+   * If the input is an AttributeDefinition, it retrieves, escapes, and returns the name property.
+   *
+   * @param attribute - The attribute to process.
+   * Can be a string representing the attribute name, or an object with a `name` property.
+   * @return The escaped attribute name.
+   *
+   * @deprecated Use {@link PostgresSQLRepository.getAttributeName_new } instead.
+   */
+  #getAttributeName_old(attribute: string | AttributeDefinition<T>) {
     return escapeIdentifier(typeof attribute === 'string' ? attribute : (attribute.name as string));
+  }
+
+  private getAttributeName_new(attribute: keyof T | AttributeDefinition<T>) {
+    if (typeof attribute === 'object') {
+      return escapeIdentifier(attribute.name as string);
+    }
+
+    const attributeDefinition = this.#attributesDefinition[attribute];
+    const attributeName = typeof attributeDefinition === 'string' ? attributeDefinition : attributeDefinition.name;
+
+    return escapeIdentifier(attributeName as string);
   }
 
   #selectAttributes(attributes: (keyof T)[] | undefined) {
@@ -175,14 +187,23 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
       return this.#allAttributes;
     }
 
-    return attributes;
+    return attributes.map(this.getAttributeName_new).join(', ');
   }
 
-  #where(object: Partial<T>, offset = 0) {
+  #where(primaryKeyOrQuery: string | Partial<T>) {
+    const isPrimaryKeyCondition = typeof primaryKeyOrQuery === 'string';
+
+    if (isPrimaryKeyCondition) {
+      return `${this.#primaryKeyIdentifier} = ${escapeLiteral(primaryKeyOrQuery)}`;
+    }
+
     const where: string[] = [];
 
-    for (const key in object) {
-      where.push(`${this.#attributesDefinition[key]} = $${where.length + 1 + offset}`);
+    for (const key in primaryKeyOrQuery) {
+      const escapedAttribute = this.getAttributeName_new(key);
+      const escapedValue = escapeLiteral(primaryKeyOrQuery[key] as string);
+
+      where.push(`${escapedAttribute} = ${escapedValue}`);
     }
 
     return where.join(' AND ');

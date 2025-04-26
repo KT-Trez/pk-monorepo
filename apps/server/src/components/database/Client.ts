@@ -9,7 +9,6 @@ import pg, {
 } from 'pg';
 import { logger } from '../logger/logger.ts';
 import { NotFoundError } from '../response/NotFoundError.ts';
-import { ObjectNotFound } from '../response/ObjectNotFound.ts';
 
 const { Pool } = pg;
 
@@ -21,14 +20,6 @@ type Query<I = unknown[]> = {
 type QueryOptions<I = unknown[]> = Query<I> & {
   tx?: PoolClient;
 };
-
-type QueryRowOptions<I = unknown[]> = Query<I> & {
-  resource: string;
-  tx?: PoolClient;
-  uid: string;
-};
-
-type QueryWithStatementsOptions<I = unknown[]> = TransactionOptions<I>;
 
 type TransactionOptions<I = unknown[]> = {
   autocommit?: boolean;
@@ -78,42 +69,19 @@ export class Client {
     return Client.#instance;
   }
 
-  async query<R extends QueryResultRow = unknown[], I = unknown[]>({
-    queryTextOrConfig,
-    values,
-    tx,
-  }: QueryOptions<I>): Promise<QueryResult<R>> {
-    const queryResults = await this.#transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
-    const queryResult = queryResults.at(0);
-
-    if (!queryResult) {
-      throw new NotFoundError('query');
-    }
-
-    return queryResult;
-  }
-
   queryRow = async <R extends QueryResultRow = unknown[], I = unknown[]>({
     queryTextOrConfig,
     values,
-    resource,
     tx,
-    uid,
-  }: QueryRowOptions<I>): Promise<R> => {
-    const queryResults = await this.#transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
+  }: QueryOptions<I>): Promise<R | undefined> => {
+    const queryResults = await this.transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
     const queryResult = queryResults.at(0);
 
     if (!queryResult) {
       throw new NotFoundError('query');
     }
 
-    const row = queryResult.rows.at(0);
-
-    if (!row) {
-      throw new ObjectNotFound(resource, uid);
-    }
-
-    return row;
+    return queryResult.rows.at(0);
   };
 
   queryRows = async <R extends QueryResultRow = unknown[], I = unknown[]>({
@@ -121,7 +89,7 @@ export class Client {
     values,
     tx,
   }: QueryOptions<I>): Promise<R[]> => {
-    const queryResults = await this.#transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
+    const queryResults = await this.transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
     const queryResult = queryResults.at(0);
 
     if (!queryResult) {
@@ -131,14 +99,22 @@ export class Client {
     return queryResult.rows;
   };
 
-  queryWithStatements<R extends QueryResultRow = unknown[], I = unknown[]>({
-    queries,
+  async queryWithResult<R extends QueryResultRow = unknown[], I = unknown[]>({
+    queryTextOrConfig,
+    values,
     tx,
-  }: QueryWithStatementsOptions<I>): Promise<QueryResult<R>[]> {
-    return this.#transaction<R, I>({ queries, tx });
+  }: QueryOptions<I>): Promise<QueryResult<R>> {
+    const queryResults = await this.transaction<R, I>({ queries: [{ queryTextOrConfig, values }], tx });
+    const queryResult = queryResults.at(0);
+
+    if (!queryResult) {
+      throw new NotFoundError('query');
+    }
+
+    return queryResult;
   }
 
-  async #transaction<R extends QueryResultRow = unknown[], I = unknown[]>({
+  async transaction<R extends QueryResultRow = unknown[], I = unknown[]>({
     autocommit = true,
     queries,
     tx,

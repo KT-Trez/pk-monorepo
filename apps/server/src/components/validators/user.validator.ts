@@ -9,7 +9,7 @@ import { not } from '@pk/utils/valueValidator/not.js';
 import { optional } from '@pk/utils/valueValidator/optional.js';
 import { RequestValidatorBuilder } from './RequestValidatorBuilder.ts';
 
-const ROLES_REGEX = /^(admin|member)+,?$/;
+const ROLES_REGEX = /^\{(admin|member|admin,member)}$/;
 
 export const postUserBodyValidator = new RequestValidatorBuilder()
     .body()

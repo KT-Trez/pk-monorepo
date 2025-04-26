@@ -1,14 +1,16 @@
 import { Server } from 'node:http';
-import type { HttpHandle } from '../../types/http.ts';
+import type { HttpHandle, HttpMethods } from '../../types/http.ts';
 import { logger } from '../logger/logger.ts';
 import { NotFoundError } from '../response/NotFoundError.ts';
 import { ServerError } from '../response/ServerError.ts';
-import type { BaseController, RoutePath } from './BaseController.v3.ts';
+import { Unauthorized } from '../response/Unauthorized.ts';
+import type { BaseController, RoutePath } from './BaseController.ts';
 import { WebServerRequest } from './WebServerRequest.ts';
 import { WebServerResponse } from './WebServerResponse.ts';
 
 export class WebServer {
-  #controllers: BaseController[] = [];
+  #authenticatedControllers: Map<RoutePath, BaseController> = new Map();
+  #controllers: Map<RoutePath, BaseController> = new Map();
   #httpServer: Server<typeof WebServerRequest, typeof WebServerResponse>;
 
   constructor() {
@@ -26,27 +28,38 @@ export class WebServer {
     logger.log({ message: `Server is listening on port: "${port}"`, severity: 'info' });
   }
 
+  registerAuthenticatedController(controller: BaseController) {
+    this.#registerRoutes(controller, this.#authenticatedControllers);
+    return this;
+  }
+
   registerController(controller: BaseController) {
-    this.#controllers.push(controller);
+    this.#registerRoutes(controller, this.#controllers);
     return this;
   }
 
   async #processRequest(req: WebServerRequest, res: WebServerResponse) {
     await req._process();
 
-    const routes = this.#controllers.reduce<HttpHandle[][]>((acc, controller) => {
-      // the parameter does not have to be a RoutePath but since it's a check, we can accept it
-      const controllerRoutes = controller._getRoutes(`${req.method} ${req.parsedURL.pathname}` as RoutePath);
+    const path: RoutePath = `${req.method as HttpMethods} ${req.parsedURL.pathname}`;
+    const controller = this.#controllers.get(path);
+    const routes = controller?._getRoute(path);
 
-      if (controllerRoutes) {
-        acc.push(controllerRoutes);
-      }
+    if (routes) {
+      await this.#processRoutes(routes, req, res);
+    }
 
-      return acc;
-    }, []);
+    const hasSession = await req._processSession();
 
-    for (const route of routes) {
-      await this.#processRoutes(route, req, res);
+    if (!(res.headersSent || hasSession)) {
+      return res.error(new Unauthorized('Session not found'));
+    }
+
+    const authenticatedController = this.#authenticatedControllers.get(path);
+    const authenticatedRoutes = authenticatedController?._getRoute(path);
+
+    if (authenticatedRoutes) {
+      await this.#processRoutes(authenticatedRoutes, req, res);
     }
 
     if (!res.headersSent) {
@@ -76,7 +89,18 @@ export class WebServer {
         res.error(error);
       }
     } catch (error) {
+      if (error instanceof ServerError) {
+        return res.error(error);
+      }
+
       res.error(new ServerError({ cause: error }));
+    }
+  }
+
+  #registerRoutes(controller: BaseController, map: Map<RoutePath, BaseController>) {
+    const routes = controller._getPaths();
+    for (const route of routes) {
+      map.set(route, controller);
     }
   }
 }

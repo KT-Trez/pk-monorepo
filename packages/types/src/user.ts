@@ -25,6 +25,6 @@ export type EnrichedUserApiUpdatePayload = Partial<EnrichedUserApiCreatePayload>
 
 export const UserRole = {
   Admin: 'admin',
-  User: 'member',
+  Member: 'member',
 } as const;
 export type UserRoles = ConstValues<typeof UserRole>;

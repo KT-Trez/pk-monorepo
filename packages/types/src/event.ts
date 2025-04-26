@@ -1,21 +1,15 @@
-import type { ObjectType } from './objectType.js';
+import type { CalendarDb } from './calendar.js';
 
 export type EventApi = {
+  calendar_uid: string;
   description: null | string;
-  endDate: string;
+  end_date: string;
   location: null | string;
-  startDate: string;
+  start_date: string;
   title: string;
-  type: typeof ObjectType.Event;
   uid: string;
 };
 
-export type EventDb = {
-  description: null | string;
-  end_date: string;
-  event_uid: string;
-  location: null | string;
-  object_type_id: typeof ObjectType.Event;
-  start_date: string;
-  title: string;
+export type EventDb = EventApi & {
+  calendar: CalendarDb;
 };

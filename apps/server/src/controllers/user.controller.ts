@@ -1,6 +1,7 @@
 import type { EnrichedUserApi, EnrichedUserApiCreatePayload, EnrichedUserApiUpdatePayload } from '@pk/types/user.js';
 import { Collection } from '../components/response/Collection.ts';
 import { Forbidden } from '../components/response/Forbidden.ts';
+import { ObjectNotFound } from '../components/response/ObjectNotFound.ts';
 import { ServerSuccess } from '../components/response/ServerSuccess.ts';
 import { BaseController } from '../components/web/BaseController.ts';
 import { Hash } from '../components/web/Hash.ts';
@@ -11,22 +12,18 @@ import type { NextFunction } from '../types/http.ts';
 
 export class UserController extends BaseController {
   async create(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const { password, ...payload } = req.getBody<EnrichedUserApiCreatePayload>();
+    const payload = req.getBody<EnrichedUserApiCreatePayload>();
 
-    if (!req.session.hasPermission('user', 'create')) {
+    if (!req.session.hasPermission('user', 'create', payload)) {
       return next(new Forbidden('User is missing permissions to create a new user'));
-    }
-
-    if (payload.roles.includes('admin') && !req.session.user?.roles.includes('admin')) {
-      return next(new Forbidden('User is missing permissions to create an admin user'));
     }
 
     const data: Partial<EnrichedUserApi> = {
       ...payload,
-      password: await Hash.instance.hashPassword(password),
+      password: await Hash.instance.hashPassword(payload.password),
     };
 
-    const user = await enrichedUserRepository.create(data);
+    const { password: _, ...user } = await enrichedUserRepository.create(data);
 
     res.json(user);
   }
@@ -40,6 +37,10 @@ export class UserController extends BaseController {
       return next(new Forbidden(`User is missing permissions to delete the user "${uid}"`));
     }
 
+    if (!user) {
+      return next(new ObjectNotFound('user', uid));
+    }
+
     await fullUserRepository.delete(uid);
 
     res.json(new ServerSuccess());
@@ -51,18 +52,19 @@ export class UserController extends BaseController {
     const offset = req.getOptionalSearchParam('offset');
     const normalizedOffset = offset ? Number.parseInt(offset) : 0;
 
-    const items = await fullUserRepository.find(
+    const users = await fullUserRepository.find(
         {},
-        { limit: normalizedLimit, offset: normalizedOffset, orderBy: 'name' },
+        {
+          limit: normalizedLimit,
+          offset: normalizedOffset,
+          orderBy: 'name',
+        },
     );
-    const collection = new Collection({
-      hasMore: items.length === normalizedLimit - normalizedOffset,
-      items,
-      limit: normalizedLimit,
-      offset: normalizedOffset,
-    });
 
-    res.json(collection);
+    const items = users.filter(item => req.session.hasPermission('user', 'read', item));
+    const hasMore = items.length === normalizedLimit - normalizedOffset;
+
+    res.json(new Collection({ hasMore, items, limit: normalizedLimit, offset: normalizedOffset }));
   }
 
   async getByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
@@ -72,6 +74,10 @@ export class UserController extends BaseController {
 
     if (!req.session.hasPermission('user', 'read', user)) {
       return next(new Forbidden(`User is missing permissions to read the user "${uid}"`));
+    }
+
+    if (!user) {
+      return next(new ObjectNotFound('user', uid));
     }
 
     res.json(user);
@@ -85,6 +91,10 @@ export class UserController extends BaseController {
 
     if (!req.session.hasPermission('user', 'update', user)) {
       return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
+    }
+
+    if (!user) {
+      return next(new ObjectNotFound('user', uid));
     }
 
     const data: Partial<EnrichedUserApi> = {

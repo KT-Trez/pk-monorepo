@@ -1,4 +1,4 @@
-import type { SessionApi } from '@pk/types/session.js';
+import type { EnrichedSessionApi } from '@pk/types/session.js';
 import { BaseComponent } from '../../components/BaseComponent.ts';
 import { Button } from '../../components/Button.ts';
 import { Form } from '../../components/Form.ts';
@@ -56,7 +56,7 @@ export class LoginPage extends BaseComponent {
     }
 
     try {
-      const session = await client.post<SessionApi>('/v1/session', { email, password });
+      const session = await client.post<EnrichedSessionApi>('/v1/session', { email, password });
 
       store.set('session', session);
       navigate('#/home/events');

@@ -43,6 +43,14 @@
           "message": "Unauthorized",
           "success": false
         }
+      },
+      "User": {
+        "value": {
+          "album": "2137",
+          "email": "john.doe@example.com",
+          "name": "John Doe",
+          "uid": "123e4567-e89b-12d3-a456-426614174000"
+        }
       }
     },
     "schemas": {
@@ -140,6 +148,34 @@
         "required": [
           "email",
           "password"
+        ],
+        "type": "object"
+      },
+      "User": {
+        "examples": {
+          "User": {
+            "$ref": "#/components/examples/User"
+          }
+        },
+        "properties": {
+          "album": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "album",
+          "email",
+          "password",
+          "uid"
         ],
         "type": "object"
       }
@@ -246,7 +282,7 @@
         "summary": "Delete session information"
       },
       "post": {
-        "description": "Session information",
+        "description": "Retrieve session information",
         "requestBody": {
           "content": {
             "application/json": {
@@ -264,14 +300,14 @@
         },
         "responses": {
           "200": {
-            "description": "API information retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Session"
                 }
               }
-            }
+            },
+            "description": "API information retrieved successfully"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -281,6 +317,23 @@
           }
         },
         "summary": "Get session information"
+      }
+    },
+    "/v1/user": {
+      "delete": {
+        "description": "Delete user",
+        "responses": {
+          "200": {
+            "description": "User deleted successfully",
+            "$ref": "#/components/responses/200"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
       }
     }
   },

@@ -1,29 +1,47 @@
-import type { SessionApiPayload } from '@pk/types/session.js';
+import type { SessionApiCreatePayload } from '@pk/types/session.js';
 import { ObjectNotFound } from '../components/response/ObjectNotFound.ts';
 import { ServerSuccess } from '../components/response/ServerSuccess.ts';
-import { SessionFactory } from '../components/session/SessionFactory.ts';
-import { BaseController } from '../components/web/BaseController.v3.ts';
+import { Unauthorized } from '../components/response/Unauthorized.ts';
+import { BaseController } from '../components/web/BaseController.ts';
+import { Hash } from '../components/web/Hash.ts';
 import type { WebServerRequest } from '../components/web/WebServerRequest.ts';
 import type { WebServerResponse } from '../components/web/WebServerResponse.ts';
-import { deleteSessionBySessionUid } from '../queries/session.ts';
+import { enrichedSessionRepository, enrichedUserRepository } from '../main.ts';
 import type { NextFunction } from '../types/http.ts';
 
 export class SessionController extends BaseController {
-  async create(req: WebServerRequest, res: WebServerResponse, _: NextFunction) {
-    const { email, password } = req.getBody<SessionApiPayload>();
+  async create(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const { email, password } = req.getBody<SessionApiCreatePayload>();
 
-    const session = await new SessionFactory(email, password).constructorAsync();
+    const user = await enrichedUserRepository.findOne({ email });
 
-    res.setStatus(session.code).json(session.toResponse());
+    if (!user) {
+      return next(new Unauthorized(`User with email "${email}" not found`));
+    }
+
+    const passwordHash = await Hash.instance.hashPassword(password);
+    const hasMatchingPassword = passwordHash.equals(user.password);
+
+    if (!hasMatchingPassword) {
+      return next(new Unauthorized(`Invalid password: "${password}"`));
+    }
+
+    const session = await enrichedSessionRepository.create({
+      user: {
+        uid: user.uid,
+      },
+    });
+
+    res.json(session);
   }
 
   async deleteByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const sessionUid = req.getSearchParam('uid');
+    const uid = req.getSearchParam('uid');
 
-    const { rowCount } = await deleteSessionBySessionUid(sessionUid);
+    const isSuccess = await enrichedSessionRepository.delete(uid);
 
-    if (rowCount === 0) {
-      return next(new ObjectNotFound('session', sessionUid));
+    if (!isSuccess) {
+      return next(new ObjectNotFound('session', uid));
     }
 
     res.json(new ServerSuccess());
