@@ -1,11 +1,13 @@
 import type { ValueValidator } from '@pk/types/valueValidator.js';
 
-export const isString: ValueValidator = (value: unknown, canBeEmpty = false) => {
-  if (typeof value !== 'string') {
-    return false;
-  }
+export const isString = (canBeEmpty = false): ValueValidator => {
+  return (value: unknown) => {
+    if (typeof value !== 'string') {
+      return false;
+    }
 
-  return !canBeEmpty && value !== '';
+    return !(!canBeEmpty && value.length === 0);
+  };
 };
 
 export const isStringMatching = (regex: RegExp, canBeEmpty = false): ValueValidator => {
