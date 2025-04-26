@@ -1,6 +1,6 @@
-import type { EnrichedUserApiCreatePayload, EnrichedUserApiUpdatePayload } from '@pk/types/user.js';
+import { type EnrichedUserApiCreatePayload, type EnrichedUserApiUpdatePayload, UserRole } from '@pk/types/user.js';
 import { EMAIL_REGEX } from '@pk/utils/regexes/email.js';
-import { STRONG_PASSWORD_REGEX } from '@pk/utils/regexes/password.js';
+import { isArrayOf } from '@pk/utils/valueValidator/isArrayOf.js';
 import { isEmpty } from '@pk/utils/valueValidator/isEmpty.js';
 import { isMatching } from '@pk/utils/valueValidator/isMatching.js';
 import { isString, isStringMatching } from '@pk/utils/valueValidator/isString.js';
@@ -9,8 +9,6 @@ import { not } from '@pk/utils/valueValidator/not.js';
 import { optional } from '@pk/utils/valueValidator/optional.js';
 import { RequestValidatorBuilder } from './RequestValidatorBuilder.ts';
 
-const ROLES_REGEX = /^\{(admin|member|admin,member)}$/;
-
 export const postUserBodyValidator = new RequestValidatorBuilder()
   .body()
   .addCheck(not(isEmpty), 'body must be an object')
@@ -18,8 +16,8 @@ export const postUserBodyValidator = new RequestValidatorBuilder()
     isMatching<EnrichedUserApiCreatePayload>({
       email: [isStringMatching(EMAIL_REGEX)],
       name: [isString()],
-      password: [isStringMatching(STRONG_PASSWORD_REGEX)],
-      roles: [isStringMatching(ROLES_REGEX)],
+      password: [isString()],
+      roles: [isArrayOf([UserRole.Admin, UserRole.Member])],
       surname: [isString()],
     }),
     'must match the "EnrichedUserApiCreatePayload" object shape',
@@ -34,8 +32,8 @@ export const putUserBodyValidator = new RequestValidatorBuilder()
     isMatching<EnrichedUserApiUpdatePayload>({
       email: [optional(isStringMatching(EMAIL_REGEX))],
       name: [optional(isString())],
-      password: [optional(isStringMatching(STRONG_PASSWORD_REGEX))],
-      roles: [optional(isStringMatching(ROLES_REGEX))],
+      password: [isString()],
+      roles: [optional(isArrayOf([UserRole.Admin, UserRole.Member]))],
       surname: [optional(isString())],
       uid: [isUUID],
     }),

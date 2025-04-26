@@ -1,12 +1,19 @@
 import './button.css';
 import type { CanBeClicked, CanBeDisabled } from '../../types/component.ts';
 import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
+import { buttonClassNames } from './constants.ts';
+
+type ButtonProps = {
+  text: string;
+  variant?: 'contained' | 'outlined';
+};
 
 export class Button extends BaseComponent<'button'> implements CanBeClicked, CanBeDisabled {
-  constructor(text: string) {
-    super('button');
+  constructor({ text, variant = 'contained' }: ButtonProps) {
+    const className = buttonClassNames[variant];
 
-    this.addClass('Button-root').setTextContent(text);
+    super('button');
+    this.addClasses(['Button-root', className]).setTextContent(text);
   }
 
   onClick(callback: () => void) {
@@ -32,6 +39,11 @@ export class Button extends BaseComponent<'button'> implements CanBeClicked, Can
 
   setFullWidth() {
     this.addClass('Button-root--fullWidth');
+    return this;
+  }
+
+  setFitContentWith() {
+    this.addClass('Button-root--fitContentWidth');
     return this;
   }
 

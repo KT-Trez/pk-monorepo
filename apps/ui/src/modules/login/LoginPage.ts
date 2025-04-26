@@ -41,7 +41,7 @@ export class LoginPage extends BaseComponent {
       .setRequired()
       .setType('password');
 
-    this.#submit = new Button('Submit').setFullWidth().setType('submit');
+    this.#submit = new Button({ text: 'Submit' }).setFullWidth().setType('submit');
   }
 
   render(): HTMLElement {

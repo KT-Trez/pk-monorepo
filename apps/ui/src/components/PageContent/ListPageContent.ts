@@ -1,4 +1,4 @@
-import './pageContent.css';
+import './listPageContent.css';
 import type { Component } from '../../types/component.ts';
 import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { Button } from '../Button/Button.ts';
@@ -18,7 +18,7 @@ export class ListPageContent extends BaseComponent {
     this.addClass('ListPageContent-root');
 
     this.#actions = new BaseComponent('div').addClass('ListPageContent-actions');
-    this.#buttons = actions.map(action => new Button(action.label).onClick(action.onClick).setFullWidth());
+    this.#buttons = actions.map(action => new Button({ text: action.label }).onClick(action.onClick).setFullWidth());
     this.#list = new BaseComponent('div').addClass('ListPageContent-list');
   }
 
@@ -26,7 +26,7 @@ export class ListPageContent extends BaseComponent {
     return this.children([this.#list, this.#actions.children(this.#buttons)]).root;
   }
 
-  setContent(content: Component) {
+  setContent(content: Component | Component[]) {
     this.#list.children(content);
     return this;
   }

@@ -1,5 +1,6 @@
 import 'material-icons/iconfont/material-icons.css';
 import { PermissionsPage } from './modules/admin/permissions/PermissionsPage.ts';
+import { UserCreateForm } from './modules/admin/users/UserCreateForm.ts';
 import { UsersPage } from './modules/admin/users/UsersPage.ts';
 import { DashboardPage } from './modules/dashboard/DashboardPage.ts';
 import { EventsPage } from './modules/home/events/EventsPage.ts';
@@ -20,6 +21,7 @@ export const navigationService = new NavigationService<NavigationPaths>(sessionS
   .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
   .addRoute('/admin/permissions', { Component: PermissionsPage, Container: DashboardPage, parentSelector: 'main' })
   .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/admin/users/create', { Component: UserCreateForm, Container: DashboardPage, parentSelector: 'main' })
   .addRoute('/home/events', { Component: EventsPage, Container: DashboardPage, parentSelector: 'main' })
   .addRoute('/home/schedule', { Component: SchedulePage, Container: DashboardPage, parentSelector: 'main' })
   .addRoute('/settings/account', { Component: AccountPage, Container: DashboardPage, parentSelector: 'main' })

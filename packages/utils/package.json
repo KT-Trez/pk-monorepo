@@ -13,6 +13,7 @@
     "./Logger/types.js": "./src/Logger/types.ts",
     "./regexes/email.js": "./src/regexes/email.ts",
     "./regexes/password.js": "./src/regexes/password.ts",
+    "./valueValidator/isArrayOf.js": "./src/valueValidator/isArrayOf.ts",
     "./valueValidator/isDate.js": "./src/valueValidator/isDate.ts",
     "./valueValidator/isEmpty.js": "./src/valueValidator/isEmpty.ts",
     "./valueValidator/isGreaterOrEqualThan.js": "./src/valueValidator/isGreaterOrEqualThan.ts",
