@@ -1,5 +1,7 @@
 import type { Component } from '../types/component.ts';
+import type { NavigationPaths } from '../types/navigationPaths.ts';
 import { removeChildren } from '../utils/removeChildren.ts';
+import type { SessionService } from './SessionService.ts';
 
 type RenderSingle = {
   render(): HTMLElement;
@@ -17,10 +19,16 @@ export type Route = {
 export type Routes = Map<string, Route>;
 
 export class NavigationService<TPaths extends string> {
+  #loginPath: `#${NavigationPaths}` = '#/';
+  #mainPath: `#${NavigationPaths}` = '#/home/events';
+
+  #sessionService: SessionService;
   #routes: Routes = new Map<TPaths, Route>();
 
-  constructor() {
-    window.addEventListener('popstate', this.#onRouteChange.bind(this));
+  constructor(sessionService: SessionService) {
+    this.#sessionService = sessionService;
+
+    window.onpopstate = this.onRouteChange.bind(this);
   }
 
   addRoute(path: TPaths, route: Route) {
@@ -29,31 +37,36 @@ export class NavigationService<TPaths extends string> {
   }
 
   start() {
-    const path = this.#getCurrentPath();
+    this.onRouteChange();
+    return this;
+  }
+
+  onRouteChange() {
+    const session = this.#sessionService.session;
+
+    const currentPath = this.#getPath();
+
+    const authenticatedPath = this.#routes.has(currentPath) ? currentPath : this.#getPath(this.#mainPath);
+
+    const path = session ? authenticatedPath : this.#getPath(this.#loginPath);
     const route = this.#routes.get(path);
 
-    if (route) {
-      return this.#loadRoute(path, route);
+    // biome-ignore lint/suspicious/noConsole: it is used for debugging purposes
+    console.debug(`Pushing state to history: "#${path}"`);
+    window.history.pushState(null, '', `#${path}`);
+
+    if (!route) {
+      throw new Error(`Route "${path}" not found`);
     }
 
-    const defaultPath = '/';
-    const defaultRoute = this.#routes.get(defaultPath);
-
-    if (!defaultRoute) {
-      return console.error(`Default route "${defaultPath}" not found`);
-    }
-
-    window.history.pushState(null, '', defaultPath);
-    this.#loadRoute(defaultPath, defaultRoute);
+    this.#renderRoute(path, route);
   }
 
-  #getCurrentPath() {
-    return location.hash.slice(1);
+  #getPath(hash = window.location.hash) {
+    return hash.slice(hash.indexOf('#') + 1);
   }
 
-  #loadRoute(path: string, route: Route) {
-    // todo: redirect when user is not authorized
-
+  #renderRoute(path: string, route: Route) {
     if (route.Container) {
       const Container = new route.Container().render();
       removeChildren(document.body).appendChild(Container);
@@ -67,16 +80,5 @@ export class NavigationService<TPaths extends string> {
 
     const Component = new route.Component().render();
     removeChildren(parent).appendChild(Component);
-  }
-
-  #onRouteChange(_: PopStateEvent) {
-    const path = this.#getCurrentPath();
-    const route = this.#routes.get(path);
-
-    if (!route) {
-      return window.history.pushState(null, '', '/');
-    }
-
-    this.#loadRoute(path, route);
   }
 }

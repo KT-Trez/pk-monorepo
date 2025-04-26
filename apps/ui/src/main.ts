@@ -9,15 +9,14 @@ import { AccountPage } from './modules/settings/account/AccountPage.ts';
 import { ApiService } from './services/ApiService.ts';
 import { NavigationService } from './services/NavigationService.ts';
 import { NotificationService } from './services/NotificationService.ts';
-import { StoreService } from './services/StoreService.ts';
+import { SessionService } from './services/SessionService.ts';
 import type { NavigationPaths } from './types/navigationPaths.ts';
-import type { StoreContent } from './types/store.ts';
 
 export const client = new ApiService(window.location.origin);
 export const notifier = new NotificationService();
-export const store = new StoreService<StoreContent>();
+export const sessionService = new SessionService();
 
-new NavigationService<NavigationPaths>()
+export const navigationService = new NavigationService<NavigationPaths>(sessionService)
   .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
   .addRoute('/admin/permissions', { Component: PermissionsPage, Container: DashboardPage, parentSelector: 'main' })
   .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })

@@ -5,7 +5,7 @@ import { Button } from '../../components/Button/Button.ts';
 import { Form } from '../../components/Form/Form.ts';
 import { Logo } from '../../components/Logo/Logo.ts';
 import { TextField } from '../../components/TextField/TextField.ts';
-import { client, notifier, store } from '../../main.ts';
+import { client, notifier, sessionService } from '../../main.ts';
 import type { Component } from '../../types/component.ts';
 import { navigate } from '../../utils/navigate.ts';
 
@@ -57,9 +57,7 @@ export class LoginPage extends BaseComponent {
     }
 
     try {
-      const session = await client.post<EnrichedSessionApi>('/v1/session', { email, password });
-
-      store.set('session', session);
+      sessionService.session = await client.post<EnrichedSessionApi>('/v1/session', { email, password });
       navigate('#/home/events');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
