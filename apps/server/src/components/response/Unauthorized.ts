@@ -9,4 +9,3 @@ export class Unauthorized extends ServerError {
     super({ cause, httpStatus, message });
   }
 }
-

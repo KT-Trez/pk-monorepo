@@ -74,11 +74,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "code",
-          "message",
-          "success"
-        ],
+        "required": ["code", "message", "success"],
         "type": "object"
       },
       "ServerSuccess": {
@@ -98,11 +94,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "code",
-          "message",
-          "success"
-        ],
+        "required": ["code", "message", "success"],
         "type": "object"
       },
       "Session": {
@@ -128,12 +120,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "acl",
-          "expiresAt",
-          "sessionUid",
-          "startsAt"
-        ],
+        "required": ["acl", "expiresAt", "sessionUid", "startsAt"],
         "type": "object"
       },
       "SessionRequest": {
@@ -145,10 +132,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object"
       },
       "User": {
@@ -171,12 +155,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "album",
-          "email",
-          "password",
-          "uid"
-        ],
+        "required": ["album", "email", "password", "uid"],
         "type": "object"
       }
     },

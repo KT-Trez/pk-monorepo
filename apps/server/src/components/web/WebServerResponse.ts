@@ -1,6 +1,6 @@
+import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
 import { HttpStatus, type HttpStatuses } from '@pk/types/api.js';
 import { Severity } from '@pk/utils/Logger/types.js';
-import { type IncomingMessage, type OutgoingHttpHeaders, ServerResponse } from 'node:http';
 import { logger } from '../logger/logger.ts';
 import type { ServerError } from '../response/ServerError.ts';
 

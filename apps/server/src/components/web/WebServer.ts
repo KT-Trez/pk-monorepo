@@ -15,11 +15,11 @@ export class WebServer {
 
   constructor() {
     this.#httpServer = new Server(
-        {
-          IncomingMessage: WebServerRequest,
-          ServerResponse: WebServerResponse,
-        },
-        this.#processRequest.bind(this),
+      {
+        IncomingMessage: WebServerRequest,
+        ServerResponse: WebServerResponse,
+      },
+      this.#processRequest.bind(this),
     );
   }
 

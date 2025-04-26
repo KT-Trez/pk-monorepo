@@ -18,10 +18,10 @@ export const notifier = new NotificationService();
 export const store = new StoreService<StoreContent>();
 
 new NavigationService<NavigationPaths>()
-    .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
-    .addRoute('/admin/permissions', { Component: PermissionsPage, Container: DashboardPage, parentSelector: 'main' })
-    .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })
-    .addRoute('/home/events', { Component: EventsPage, Container: DashboardPage, parentSelector: 'main' })
-    .addRoute('/home/schedule', { Component: SchedulePage, Container: DashboardPage, parentSelector: 'main' })
-    .addRoute('/settings/account', { Component: AccountPage, Container: DashboardPage, parentSelector: 'main' })
-    .start();
+  .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
+  .addRoute('/admin/permissions', { Component: PermissionsPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/home/events', { Component: EventsPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/home/schedule', { Component: SchedulePage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/settings/account', { Component: AccountPage, Container: DashboardPage, parentSelector: 'main' })
+  .start();

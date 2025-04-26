@@ -10,13 +10,13 @@ export class Logo extends BaseComponent {
     this.setStyle({ textAlign: 'center' });
 
     this.#img = new BaseComponent('img')
-        .setAttribute('alt', 'WIiT logo')
-        .setAttribute('src', '/wiit.png')
-        .setStyle({
-          aspectRatio: '1',
-          height: height ? height : undefined,
-          width: width ? width : undefined,
-        });
+      .setAttribute('alt', 'WIiT logo')
+      .setAttribute('src', '/wiit.png')
+      .setStyle({
+        aspectRatio: '1',
+        height: height ? height : undefined,
+        width: width ? width : undefined,
+      });
   }
 
   render(): HTMLElement {

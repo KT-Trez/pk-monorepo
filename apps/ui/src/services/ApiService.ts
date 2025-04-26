@@ -24,9 +24,9 @@ export class ApiService {
   }
 
   async #performRequest<T, U extends UnknownObject>(
-      url: string | URL,
-      method: 'DELETE' | 'GET' | 'POST' | 'PUT',
-      body?: U,
+    url: string | URL,
+    method: 'DELETE' | 'GET' | 'POST' | 'PUT',
+    body?: U,
   ): Promise<T> {
     const origin = url instanceof URL ? url : new URL(url, this.#baseUrl);
 

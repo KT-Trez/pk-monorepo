@@ -53,12 +53,12 @@ export class UserController extends BaseController {
     const normalizedOffset = offset ? Number.parseInt(offset) : 0;
 
     const users = await fullUserRepository.find(
-        {},
-        {
-          limit: normalizedLimit,
-          offset: normalizedOffset,
-          orderBy: 'name',
-        },
+      {},
+      {
+        limit: normalizedLimit,
+        offset: normalizedOffset,
+        orderBy: 'name',
+      },
     );
 
     const items = users.filter(item => req.session.hasPermission('user', 'read', item));

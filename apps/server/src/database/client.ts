@@ -16,22 +16,22 @@ const pool = new Pool({
 });
 
 pool
-    .connect()
-    .then(() => {
-      logger.log({
-        message: `Connected to database: "${DATABASE_NAME}" on port: "${DATABASE_PORT}"`,
-        severity: Severity.Info,
-      });
-    })
-    .catch(err => {
-      const message = err instanceof AggregateError ? err.errors.map(e => e.message).join(' | ') : err;
-      logger.log({ message: `Error connecting to database: "${message}"`, severity: Severity.Fatal });
-      process.exit(1);
+  .connect()
+  .then(() => {
+    logger.log({
+      message: `Connected to database: "${DATABASE_NAME}" on port: "${DATABASE_PORT}"`,
+      severity: Severity.Info,
     });
+  })
+  .catch(err => {
+    const message = err instanceof AggregateError ? err.errors.map(e => e.message).join(' | ') : err;
+    logger.log({ message: `Error connecting to database: "${message}"`, severity: Severity.Fatal });
+    process.exit(1);
+  });
 
 export const query: QueryFunction = async <R extends QueryResultRow = unknown[], I = unknown[]>(
-    queryTextOrConfig: string | QueryConfig<I>,
-    values?: QueryConfigValues<I>,
+  queryTextOrConfig: string | QueryConfig<I>,
+  values?: QueryConfigValues<I>,
 ) => {
   const start = performance.now();
   const queryResult = await pool.query<R, I>(queryTextOrConfig, values);

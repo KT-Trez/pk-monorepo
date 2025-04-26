@@ -22,24 +22,24 @@ export class LoginPage extends BaseComponent {
     this.addClass('FullPage-root');
 
     this.#email = new TextField('email')
-        .addIcon('email', 'start')
-        .setFullWidth()
-        // .setLabel('Email')
-        .setPlaceholder('Enter email')
-        .setRequired()
-        .setType('email');
+      .addIcon('email', 'start')
+      .setFullWidth()
+      // .setLabel('Email')
+      .setPlaceholder('Enter email')
+      .setRequired()
+      .setType('email');
 
     this.#form = new Form().onSubmit(this.#handleFormSubmit).setMethod('POST');
 
     this.#logo = new Logo('100px');
 
     this.#password = new TextField('password')
-        .addIcon('lock', 'start')
-        .setFullWidth()
-        // .setLabel('Password')
-        .setPlaceholder('Enter password')
-        .setRequired()
-        .setType('password');
+      .addIcon('lock', 'start')
+      .setFullWidth()
+      // .setLabel('Password')
+      .setPlaceholder('Enter password')
+      .setRequired()
+      .setType('password');
 
     this.#submit = new Button('Submit').setFullWidth().setType('submit');
   }

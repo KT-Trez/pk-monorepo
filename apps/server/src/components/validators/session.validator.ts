@@ -7,14 +7,14 @@ import { not } from '@pk/utils/valueValidator/not.js';
 import { RequestValidatorBuilder } from './RequestValidatorBuilder.ts';
 
 export const postSessionBodyValidator = new RequestValidatorBuilder()
-    .body()
-    .addCheck(not(isEmpty), 'body must be an object')
-    .addCheck(
-        isMatching<SessionApiCreatePayload>({
-          email: [isStringMatching(EMAIL_REGEX)],
-          password: [isString(), not(isEmpty)],
-        }),
-        'must match the "SessionApiPayload" object shape',
-    )
-    .end()
-    .build();
+  .body()
+  .addCheck(not(isEmpty), 'body must be an object')
+  .addCheck(
+    isMatching<SessionApiCreatePayload>({
+      email: [isStringMatching(EMAIL_REGEX)],
+      password: [isString(), not(isEmpty)],
+    }),
+    'must match the "SessionApiPayload" object shape',
+  )
+  .end()
+  .build();

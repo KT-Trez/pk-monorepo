@@ -1,7 +1,7 @@
 import './dashboard.css';
+import { TopBar } from '../../TopBar/TopBar.ts';
 import { BaseComponent } from '../../components/BaseComponent/BaseComponent.ts';
 import { Nav } from '../../components/Nav/Nav.ts';
-import { TopBar } from '../../TopBar/TopBar.ts';
 import type { Component } from '../../types/component.ts';
 import { navConfig } from './constants.ts';
 

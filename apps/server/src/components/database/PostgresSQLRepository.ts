@@ -27,16 +27,16 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
 
   constructor({ attributesDefinition, primaryKey, table }: PostgresSQLRepositoryOptions<T>) {
     this.#allAttributes = Object.entries(attributesDefinition)
-        .reduce<string[]>((acc, [objectProperty, attributeDefinition]) => {
-          if (typeof attributeDefinition === 'object' && attributeDefinition.isHidden) {
-            return acc;
-          }
-
-          acc.push(`${this.#getAttributeName_old(attributeDefinition)} AS ${escapeIdentifier(objectProperty)}`);
-
+      .reduce<string[]>((acc, [objectProperty, attributeDefinition]) => {
+        if (typeof attributeDefinition === 'object' && attributeDefinition.isHidden) {
           return acc;
-        }, [])
-        .join(', ');
+        }
+
+        acc.push(`${this.#getAttributeName_old(attributeDefinition)} AS ${escapeIdentifier(objectProperty)}`);
+
+        return acc;
+      }, [])
+      .join(', ');
 
     const primaryKeyName = (primaryKey as string) ?? 'uid';
 
@@ -131,9 +131,9 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
   }
 
   async update(
-      primaryKeyOrQuery: string | Partial<T>,
-      newObject: DeepPartial<T>,
-      tx?: PoolClient,
+    primaryKeyOrQuery: string | Partial<T>,
+    newObject: DeepPartial<T>,
+    tx?: PoolClient,
   ): Promise<T | undefined> {
     const attributes: string[] = [];
 

@@ -5,18 +5,18 @@ import { Icon } from '../Icon/Icon.ts';
 import { Typography } from '../Typography/Typography.ts';
 
 type TextFieldTypeAttribute =
-    | 'date'
-    | 'datetime-local'
-    | 'email'
-    | 'month'
-    | 'number'
-    | 'password'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'time-local'
-    | 'url'
-    | 'week';
+  | 'date'
+  | 'datetime-local'
+  | 'email'
+  | 'month'
+  | 'number'
+  | 'password'
+  | 'search'
+  | 'tel'
+  | 'text'
+  | 'time-local'
+  | 'url'
+  | 'week';
 
 export class TextField extends BaseComponent implements CanBeDisabled {
   #name: string;

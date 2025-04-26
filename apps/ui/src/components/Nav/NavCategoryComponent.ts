@@ -15,8 +15,8 @@ export class NavCategoryComponent extends BaseComponent {
     this.#header = new Typography({ text: config.name, variant: 'h3' }).addClass('NavCategory-header');
 
     this.#items = new BaseComponent('ul')
-        .addClass('NavCategory-items')
-        .children(config.items.map(item => new NavCategoryItemComponent(item)));
+      .addClass('NavCategory-items')
+      .children(config.items.map(item => new NavCategoryItemComponent(item)));
   }
 
   render(): HTMLElement {

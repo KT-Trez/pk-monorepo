@@ -9,8 +9,8 @@ export class NavCategoryItemComponent extends BaseComponent {
     super('li');
 
     this.#link = new Typography({ tag: 'a', text: config.name })
-        .addClass('NavCategory-item')
-        .setAttribute('href', config.href);
+      .addClass('NavCategory-item')
+      .setAttribute('href', config.href);
   }
 
   render(): HTMLElement {

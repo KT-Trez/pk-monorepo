@@ -8,8 +8,8 @@ import type {
 } from '@pk/types/user.js';
 
 export type PermissionCheck<R extends keyof PermissionsByResource, A extends keyof PermissionsByResource[R]> =
-    | ((user: FullUserApi, data?: PermissionsByResource[R][A]) => boolean)
-    | boolean;
+  | ((user: FullUserApi, data?: PermissionsByResource[R][A]) => boolean)
+  | boolean;
 
 export type PermissionsByResource = {
   calendar: {

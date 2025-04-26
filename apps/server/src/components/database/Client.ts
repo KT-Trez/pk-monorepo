@@ -47,18 +47,18 @@ export class Client {
     });
 
     this.#pool
-        .connect()
-        .then(() => {
-          logger.log({
-            message: `Connected to database: "${database}" on port: "${port}"`,
-            severity: Severity.Info,
-          });
-        })
-        .catch(err => {
-          const message = err instanceof AggregateError ? err.errors.map(e => e.message).join(' | ') : err;
-          logger.log({ message: `Error connecting to database: "${message}"`, severity: Severity.Fatal });
-          process.exit(1);
+      .connect()
+      .then(() => {
+        logger.log({
+          message: `Connected to database: "${database}" on port: "${port}"`,
+          severity: Severity.Info,
         });
+      })
+      .catch(err => {
+        const message = err instanceof AggregateError ? err.errors.map(e => e.message).join(' | ') : err;
+        logger.log({ message: `Error connecting to database: "${message}"`, severity: Severity.Fatal });
+        process.exit(1);
+      });
   }
 
   static get instance(): Client {

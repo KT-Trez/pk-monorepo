@@ -29,10 +29,10 @@ export class Session {
         create: true,
         delete: (user, calendar) => calendar?.author_uid === user.uid,
         read: (user, calendar) =>
-            calendar?.author_uid === user.uid ||
-            calendar?.is_public ||
-            calendar?.shared_with[user.uid] === 'editor' ||
-            calendar?.shared_with[user.uid] === 'viewer',
+          calendar?.author_uid === user.uid ||
+          calendar?.is_public ||
+          calendar?.shared_with[user.uid] === 'editor' ||
+          calendar?.shared_with[user.uid] === 'viewer',
         update: (user, calendar) => calendar?.author_uid === user.uid || calendar?.shared_with[user.uid] === 'editor',
       },
       event: {
@@ -48,7 +48,7 @@ export class Session {
           const isCalendarPublic = event?.calendar.is_public;
           const isEventAuthor = event?.calendar.author_uid === user.uid;
           const isEventSharedWithUser =
-              event?.calendar.shared_with[user.uid] === 'editor' || event?.calendar.shared_with[user.uid] === 'viewer';
+            event?.calendar.shared_with[user.uid] === 'editor' || event?.calendar.shared_with[user.uid] === 'viewer';
 
           return isCalendarPublic || isEventAuthor || isEventSharedWithUser;
         },
@@ -89,9 +89,9 @@ export class Session {
   }
 
   hasPermission<R extends keyof PermissionsByResource, A extends keyof PermissionsByResource[R]>(
-      resource: R,
-      action: A,
-      data?: PermissionsByResource[R][A],
+    resource: R,
+    action: A,
+    data?: PermissionsByResource[R][A],
   ) {
     if (!this.session.user) {
       return false;
