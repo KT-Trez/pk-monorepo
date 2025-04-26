@@ -1,22 +1,30 @@
-import type { ObjectType } from './objectType.js';
+import type { ConstValues } from './helpers.js';
 
-export type UserApi = {
-  album: number;
+export type FullUserApi = {
+  createdAt: string;
   email: string;
+  modifiedAt: string;
   name: string;
+  roles: UserRoles[];
+  surname: string;
   uid: string;
 };
 
-export type UserPayloadApi = Pick<UserApi, 'album' | 'email' | 'name' | 'uid'> & {
+export type EnrichedUserApi = FullUserApi & {
+  password: Buffer;
+};
+
+export type EnrichedUserApiCreatePayload = Pick<FullUserApi, 'email' | 'name' | 'roles' | 'surname'> & {
   password: string;
 };
 
-export type UserDb = {
-  album: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  object_type_id: typeof ObjectType.Users;
-  password: Buffer<ArrayBufferLike>;
-  user_uid: string;
+export type EnrichedUserApiUpdatePayload = Partial<EnrichedUserApiCreatePayload> & {
+  password?: string;
+  uid: FullUserApi['uid'];
 };
+
+export const UserRole = {
+  Admin: 'admin',
+  User: 'member',
+} as const;
+export type UserRoles = ConstValues<typeof UserRole>;

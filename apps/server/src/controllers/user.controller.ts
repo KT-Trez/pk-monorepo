@@ -1,92 +1,99 @@
-import { ObjectType } from '@pk/types/objectType.js';
-import type { UserApi, UserDb, UserPayloadApi } from '@pk/types/user.js';
-import { ObjectNotFound } from '../components/response/ObjectNotFound.ts';
-import { ServerError } from '../components/response/ServerError.ts';
+import type { EnrichedUserApi, EnrichedUserApiCreatePayload, EnrichedUserApiUpdatePayload } from '@pk/types/user.js';
+import { Collection } from '../components/response/Collection.ts';
+import { Forbidden } from '../components/response/Forbidden.ts';
 import { ServerSuccess } from '../components/response/ServerSuccess.ts';
-import { BaseController } from '../components/web/BaseController.v3.ts';
+import { BaseController } from '../components/web/BaseController.ts';
 import { Hash } from '../components/web/Hash.ts';
 import type { WebServerRequest } from '../components/web/WebServerRequest.ts';
 import type { WebServerResponse } from '../components/web/WebServerResponse.ts';
-import { create, deleteUserByUid, selectUserByUid, updateUser } from '../queries/user.ts';
-import type { NextFunction } from '../types/http.js';
+import { enrichedUserRepository, fullUserRepository } from '../main.ts';
+import type { NextFunction } from '../types/http.ts';
 
 export class UserController extends BaseController {
-  static #toApiObject(userDb: UserDb): UserApi {
-    return {
-      album: userDb.album,
-      email: userDb.email,
-      name: `${userDb.first_name} ${userDb.last_name}`,
-      uid: userDb.user_uid,
-    };
-  }
-
-  static #toDbObject(userApi: Partial<UserPayloadApi>): Partial<UserDb> {
-    const [first_name, last_name] = userApi.name?.split(' ') ?? [];
-
-    return UserController.removeUndefined({
-      album: userApi.album,
-      email: userApi.email,
-      first_name,
-      last_name,
-      object_type_id: ObjectType.Users,
-      password: userApi.password ? Hash.instance.hashPasswordSync(userApi.password) : undefined,
-      user_uid: userApi.uid,
-    });
-  }
-
   async create(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const userApi = req.getBody<UserPayloadApi>();
+    const { password, ...payload } = req.getBody<EnrichedUserApiCreatePayload>();
 
-    const { rowCount } = await create(UserController.#toDbObject(userApi));
-
-    if (rowCount === 0) {
-      return next(new ServerError());
+    if (!req.session.hasPermission('user', 'create')) {
+      return next(new Forbidden('User is missing permissions to create a new user'));
     }
 
-    res.json(new ServerSuccess());
+    if (payload.roles.includes('admin') && !req.session.user?.roles.includes('admin')) {
+      return next(new Forbidden('User is missing permissions to create an admin user'));
+    }
+
+    const data: Partial<EnrichedUserApi> = {
+      ...payload,
+      password: await Hash.instance.hashPassword(password),
+    };
+
+    const user = await enrichedUserRepository.create(data);
+
+    res.json(user);
   }
 
   async deleteByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const userUid = req.getSearchParam('uid');
+    const uid = req.getSearchParam('uid');
 
-    const { rowCount } = await deleteUserByUid(userUid);
+    const user = await fullUserRepository.findOne(uid);
 
-    if (rowCount === 0) {
-      return next(new ObjectNotFound('user', userUid));
+    if (!req.session.hasPermission('user', 'delete', user)) {
+      return next(new Forbidden(`User is missing permissions to delete the user "${uid}"`));
     }
+
+    await fullUserRepository.delete(uid);
 
     res.json(new ServerSuccess());
   }
 
-  async getByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const userUid = req.getSearchParam('uid');
+  async getAll(req: WebServerRequest, res: WebServerResponse) {
+    const limit = req.getOptionalSearchParam('limit');
+    const normalizedLimit = limit ? Number.parseInt(limit) : 10;
+    const offset = req.getOptionalSearchParam('offset');
+    const normalizedOffset = offset ? Number.parseInt(offset) : 0;
 
-    const { rows } = await selectUserByUid(userUid);
-    const user = rows.at(0);
+    const items = await fullUserRepository.find(
+        {},
+        { limit: normalizedLimit, offset: normalizedOffset, orderBy: 'name' },
+    );
+    const collection = new Collection({
+      hasMore: items.length === normalizedLimit - normalizedOffset,
+      items,
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+    });
 
-    if (!user) {
-      return next(new ObjectNotFound('user', userUid));
-    }
-
-    res.json(UserController.#toApiObject(user));
+    res.json(collection);
   }
 
-  async putByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
-    const userApi = req.getBody<UserPayloadApi>();
+  async getByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const uid = req.getSearchParam('uid');
 
-    const { rowCount } = await updateUser(UserController.#toDbObject(userApi));
+    const user = await fullUserRepository.findOne(uid);
 
-    if (rowCount === 0) {
-      return next(new ObjectNotFound('user', userApi.uid));
+    if (!req.session.hasPermission('user', 'read', user)) {
+      return next(new Forbidden(`User is missing permissions to read the user "${uid}"`));
     }
 
-    const { rows } = await selectUserByUid(userApi.uid);
-    const user = rows.at(0);
+    res.json(user);
+  }
 
-    if (!user) {
-      return next(new ObjectNotFound('user', userApi.uid));
+  async updateByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
+    const { password, ...payload } = req.getBody<EnrichedUserApiUpdatePayload>();
+    const uid = payload.uid;
+
+    const user = await fullUserRepository.findOne(uid);
+
+    if (!req.session.hasPermission('user', 'update', user)) {
+      return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
     }
 
-    res.json(UserController.#toApiObject(user));
+    const data: Partial<EnrichedUserApi> = {
+      ...payload,
+      ...(password ? { password: await Hash.instance.hashPassword(password) } : {}),
+    };
+
+    const newUser = await enrichedUserRepository.update({ uid: payload.uid }, data);
+
+    res.json(newUser);
   }
 }
