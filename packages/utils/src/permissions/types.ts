@@ -15,7 +15,9 @@ export type PermissionsByResource = {
   calendar: {
     create: EnrichedCalendarCreateApiPayload;
     delete: EnrichedCalendarApi;
+    follow: EnrichedCalendarApi;
     read: EnrichedCalendarApi;
+    share: EnrichedCalendarApi;
     update: EnrichedCalendarApi;
   };
   event: {

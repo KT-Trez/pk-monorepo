@@ -6,7 +6,9 @@ export const permissionsByRole: PermissionsByRole = {
     calendar: {
       create: true,
       delete: true,
+      follow: (user, calendar) => !calendar?.sharedWith[user.uid],
       read: true,
+      share: true,
       update: true,
     },
     event: {
@@ -26,6 +28,12 @@ export const permissionsByRole: PermissionsByRole = {
     calendar: {
       create: true,
       delete: (user, calendar) => calendar?.authorUid === user.uid,
+      follow: (user, calendar) => {
+        const isCalendarPublic = !!calendar?.isPublic;
+        const isAlreadyFollowing = calendar?.sharedWith[user.uid];
+
+        return isCalendarPublic && !isAlreadyFollowing;
+      },
       read: (user, calendar) => {
         const isAuthor = calendar?.authorUid === user.uid;
         const isCalendarPublic = calendar?.isPublic;
@@ -34,6 +42,7 @@ export const permissionsByRole: PermissionsByRole = {
 
         return isAuthor || isCalendarPublic || isEditor || isViewer;
       },
+      share: (user, calendar) => user.uid === calendar?.authorUid,
       update: (user, calendar) => {
         const isAuthor = calendar?.authorUid === user.uid;
         const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;

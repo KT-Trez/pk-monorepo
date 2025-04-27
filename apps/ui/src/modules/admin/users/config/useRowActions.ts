@@ -11,6 +11,7 @@ type UseRowActionsProps = {
 export const useRowActions = ({ setUsers }: UseRowActionsProps): RowAction<FullUserApi>[] => {
   return [
     {
+      icon: 'delete_forever',
       isDisabled: user => user.uid === sessionService.session?.user?.uid,
       label: 'Delete',
       onClick: async user => {
