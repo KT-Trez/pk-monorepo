@@ -138,7 +138,14 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const attributes: string[] = [];
 
     for (const key in newObject) {
-      attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(newObject[key] as string)}`);
+      const value = newObject[key];
+      if (value === null || value === undefined) {
+        attributes.push(`${this.getAttributeName_new(key)} = NULL`);
+      } else if (typeof value === 'string') {
+        attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(value)}`);
+      } else {
+        attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(String(value))}`);
+      }
     }
 
     const set = attributes.join(', ');
