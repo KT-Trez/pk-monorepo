@@ -12,11 +12,16 @@ export class NavCategoryComponent extends BaseComponent {
     super('div');
     this.addClass('NavCategory-root');
 
-    this.#header = new Typography({ text: config.name, variant: 'h3' }).addClass('NavCategory-header');
+    const items = config.items.reduce<Component[]>((acc, item) => {
+      if (!item.isHidden) {
+        acc.push(new NavCategoryItemComponent(item));
+      }
 
-    this.#items = new BaseComponent('ul')
-      .addClass('NavCategory-items')
-      .children(config.items.map(item => new NavCategoryItemComponent(item)));
+      return acc;
+    }, []);
+
+    this.#header = new Typography({ text: config.name, variant: 'h3' }).addClass('NavCategory-header');
+    this.#items = new BaseComponent('ul').addClass('NavCategory-items').children(items);
   }
 
   render(): HTMLElement {

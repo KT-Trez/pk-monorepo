@@ -1,5 +1,7 @@
 export const removeChildren = (element: Element) => {
-  for (const child of element.children) {
+  const children = [...element.children];
+
+  for (const child of children) {
     element.removeChild(child);
   }
 

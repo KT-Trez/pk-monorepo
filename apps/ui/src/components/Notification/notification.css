@@ -10,7 +10,7 @@
 }
 
 .Notification-root--error {
-    background-color: var(--color-error);
+    background-color: var(--color-danger);
 }
 
 .Notification-root--info {

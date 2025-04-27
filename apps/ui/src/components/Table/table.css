@@ -4,6 +4,18 @@
     width: 100%;
 }
 
+.Table-root tr {
+    position: relative;
+}
+
+.Table-root tr:hover {
+    background: linear-gradient(90deg, var(--color-background), var(--color-elevation-1));
+}
+
+.Table-root tr:hover td {
+    opacity: 0.15;
+}
+
 .Table-root tr td,
 .Table-root tr th {
     padding: var(--sizing-2);
@@ -12,6 +24,9 @@
 .Table-root tr th {
     background: var(--color-elevation-1);
     text-align: left;
+    position: sticky;
+    top: calc(var(--sizing-4) * -1);
+    z-index: 100;
 }
 
 .Table-root tr td {
@@ -33,3 +48,39 @@
 .Table-root tr:last-child td:first-child {
     border-bottom-left-radius: var(--size-border-radius);
 }
+
+.Table-rowAction {
+    bottom: 0;
+    display: none;
+    height: fit-content;
+    margin: auto 0;
+    min-width: unset;
+    position: absolute;
+    right: var(--sizing-8);
+    top: 0;
+}
+
+.Table-root tr:hover .Table-rowAction {
+    display: unset;
+}
+
+.Table-rowAction--danger {
+    background: var(--color-danger);
+}
+
+.Table-rowAction--info {
+    background: var(--color-info);
+}
+
+.Table-rowAction--primary {
+    background: var(--color-primary);
+}
+
+.Table-rowAction--warning {
+    background: var(--color-warning);
+}
+
+.Table-rowAction--success {
+    background: var(--color-success);
+}
+

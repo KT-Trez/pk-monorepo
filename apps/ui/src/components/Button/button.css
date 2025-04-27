@@ -1,8 +1,11 @@
 .Button-root {
+    align-items: center;
     border-radius: var(--size-border-radius);
     color: var(--color-text-primary);
+    display: flex;
     font-size: var(--text-button-font-size);
     font-weight: var(--text-button-font-weight);
+    justify-content: center;
     line-height: var(--text-button-line-height);
     text-transform: var(--text-button-text-transform);
     min-width: 350px;
@@ -16,16 +19,27 @@
     border: none;
 }
 
+.Button-icon {
+    background: transparent;
+    border: none;
+    border-radius: 100%;
+
+}
+
 .Button-outlined {
     background: transparent;
     border: 1px solid var(--color-primary);
 }
 
-.Button-root:active {
+.Button-root:active:not(:disabled) {
     transform: translateY(2px);
 }
 
-.Button-root:hover {
+.Button-root:disabled {
+    cursor: not-allowed;
+}
+
+.Button-root:hover:not(:disabled) {
     box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.25);
 }
 

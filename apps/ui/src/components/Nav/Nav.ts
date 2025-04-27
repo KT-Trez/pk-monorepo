@@ -11,7 +11,13 @@ export class Nav extends BaseComponent {
     super('nav');
     this.addClass('Nav-root');
 
-    this.#categories = config.map(category => new NavCategoryComponent(category));
+    this.#categories = config.reduce<Component[]>((acc, category) => {
+      if (!category.isHidden) {
+        acc.push(new NavCategoryComponent(category));
+      }
+
+      return acc;
+    }, []);
   }
 
   render(): HTMLElement {

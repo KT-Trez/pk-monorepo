@@ -4,9 +4,13 @@ import { BaseComponent } from '../../../components/BaseComponent/BaseComponent.t
 import { ListPageContent } from '../../../components/PageContent/ListPageContent.ts';
 import { PageHeader } from '../../../components/PageHeader/PageHeader.ts';
 import { Table } from '../../../components/Table/Table.ts';
-import { client } from '../../../main.ts';
+import { client, notifier } from '../../../main.ts';
+import { ApiService } from '../../../services/ApiService.ts';
 import type { Component } from '../../../types/component.ts';
+import type { SetterDispatch, StateSubscribe } from '../../../types/useState.ts';
+import { useState } from '../../../utils/useState.ts';
 import { usePageActions } from './config/usePageActions.ts';
+import { useRowActions } from './config/useRowActions.ts';
 import { useTableColumns } from './config/useTableColumns.ts';
 
 export class UsersPage extends BaseComponent {
@@ -14,16 +18,27 @@ export class UsersPage extends BaseComponent {
   #header: Component;
   #table: Table<FullUserApi>;
 
+  #setUsers: SetterDispatch<FullUserApi[]>;
+  #subscribe: StateSubscribe<FullUserApi[]>;
+
   constructor() {
     super('div');
-    this.setStyle({ height: '100%' }).#onRender();
+    this.setStyle({ height: '100%' });
+
+    const [_, setUsers, subscribe] = useState<FullUserApi[]>([]);
+    this.#setUsers = setUsers;
+    this.#subscribe = subscribe;
 
     const actions = usePageActions();
     const columns = useTableColumns();
+    const rowActions = useRowActions({ setUsers: this.#setUsers });
 
-    this.#table = new Table({ columns, data: [] });
+    this.#table = new Table({ columns, rowActions });
     this.#header = new PageHeader('Users');
     this.#content = new ListPageContent({ actions }).setContent(this.#table);
+
+    this.#subscribe(users => this.#table.renderContent(users));
+    this.#onRender();
   }
 
   render(): HTMLElement {
@@ -31,7 +46,12 @@ export class UsersPage extends BaseComponent {
   }
 
   async #onRender() {
-    const { items } = await client.get<Collection<FullUserApi>>('/v1/users');
-    this.#table.renderContent(items);
+    try {
+      const { items } = await client.get<Collection<FullUserApi>>(`/v1/users?limit=${ApiService.DEFAULT_LIMIT}`);
+      this.#setUsers(items);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch users.';
+      notifier.notify({ severity: 'error', text: message });
+    }
   }
 }

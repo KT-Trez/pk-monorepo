@@ -16,14 +16,14 @@ export class SessionController extends BaseController {
     const user = await enrichedUserRepository.findOne({ email });
 
     if (!user) {
-      return next(new Unauthorized(`User with email "${email}" not found`));
+      return next(new Unauthorized(`User with email "${email}" not found`, 'Invalid email or password'));
     }
 
     const passwordHash = await Hash.instance.hashPassword(password);
     const hasMatchingPassword = passwordHash.equals(user.password);
 
     if (!hasMatchingPassword) {
-      return next(new Unauthorized(`Invalid password: "${password}"`));
+      return next(new Unauthorized(`Invalid password: "${password}"`, 'Invalid email or password'));
     }
 
     const session = await enrichedSessionRepository.create({

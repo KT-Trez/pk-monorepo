@@ -1,10 +1,17 @@
+import { HttpStatus } from '@pk/types/api.js';
 import type { UnknownObject } from '@pk/types/helpers.js';
+import { navigate } from '../utils/navigate.ts';
+import type { SessionService } from './SessionService.ts';
 
 export class ApiService {
-  #baseUrl: string;
+  static DEFAULT_LIMIT = 9999;
 
-  constructor(baseUrl: string) {
+  #baseUrl: string;
+  #sessionService: SessionService;
+
+  constructor(baseUrl: string, sessionService: SessionService) {
     this.#baseUrl = baseUrl;
+    this.#sessionService = sessionService;
   }
 
   delete<T>(url: string | URL): Promise<T> {
@@ -39,11 +46,19 @@ export class ApiService {
         method,
       });
 
-      if (!response.ok) {
-        throw new ApiError(`Response returned the "${response.status}" status code`);
+      const data = await response.json();
+
+      if (response.status === HttpStatus.Unauthorized) {
+        this.#sessionService.clear();
+        navigate('#/');
       }
 
-      return response.json();
+      if (!response.ok) {
+        const fallbackMessage = `Response returned the "${response.status}" status code`;
+        throw new ApiError('message' in data && typeof data.message === 'string' ? data.message : fallbackMessage);
+      }
+
+      return data;
     } catch (err) {
       if (err instanceof ApiError) {
         throw err;

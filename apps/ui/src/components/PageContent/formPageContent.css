@@ -10,7 +10,6 @@
     background: var(--color-elevation-1);
     flex-direction: row;
     gap: var(--sizing-4);
-    overflow-y: auto;
     padding-block: var(--sizing-4);
     padding-inline: var(--sizing-8);
 }
@@ -18,6 +17,7 @@
 .FormPageContent-content {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
+    overflow-y: auto;
 }
 
 @media (max-width: 600px) {

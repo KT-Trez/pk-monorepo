@@ -15,6 +15,7 @@
 .ListPageContent-list {
     grid-column: 1 / 9;
     height: 100%;
+    overflow-y: auto;
     padding-block: var(--sizing-4);
     padding-inline: var(--sizing-8);
     width: 100%;

@@ -4,7 +4,7 @@ export class NotificationService {
   #notifications: HTMLElement[] = [];
   #timeout: number;
 
-  constructor(timeout = 5000) {
+  constructor(timeout = 10000) {
     this.#timeout = timeout;
   }
 

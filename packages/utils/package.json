@@ -11,6 +11,8 @@
     "./Logger/LoggerBuilder.js": "./src/Logger/LoggerBuilder.ts",
     "./Logger/LoggerConsoleTransport.js": "./src/Logger/LoggerConsoleTransport.ts",
     "./Logger/types.js": "./src/Logger/types.ts",
+    "./permissions/permissionsByRole.js": "./src/permissions/permissionsByRole.ts",
+    "./permissions/types.js": "./src/permissions/types.ts",
     "./regexes/email.js": "./src/regexes/email.ts",
     "./regexes/password.js": "./src/regexes/password.ts",
     "./valueValidator/isArrayOf.js": "./src/valueValidator/isArrayOf.ts",

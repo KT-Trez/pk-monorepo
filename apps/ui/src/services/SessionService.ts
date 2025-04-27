@@ -1,4 +1,6 @@
 import type { EnrichedSessionApi } from '@pk/types/session.js';
+import { permissionsByRole } from '@pk/utils/permissions/permissionsByRole.js';
+import type { PermissionsByResource } from '@pk/utils/permissions/types.js';
 
 export const SESSION_LOCAL_STORAGE_KEY = '@pk/session';
 
@@ -37,5 +39,31 @@ export class SessionService extends EventTarget {
   clear() {
     this.#session = null;
     localStorage.removeItem(SESSION_LOCAL_STORAGE_KEY);
+  }
+
+  hasPermission<R extends keyof PermissionsByResource, A extends keyof PermissionsByResource[R]>(
+    resource: R,
+    action: A,
+    data?: PermissionsByResource[R][A],
+  ) {
+    const session = this.session;
+
+    if (!session) {
+      return false;
+    }
+
+    return session.user.roles.some(role => {
+      const permission = permissionsByRole[role][resource]?.[action];
+
+      if (permission === undefined) {
+        return false;
+      }
+
+      if (typeof permission === 'boolean') {
+        return permission;
+      }
+
+      return permission(session.user, data);
+    });
   }
 }

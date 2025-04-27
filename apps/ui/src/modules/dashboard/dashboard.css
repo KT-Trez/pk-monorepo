@@ -7,6 +7,7 @@
 
 .Dashboard-main {
     grid-column: 3 / 13;
+    overflow: hidden;
 }
 
 @media (max-width: 600px) {
