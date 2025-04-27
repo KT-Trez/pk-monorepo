@@ -1,12 +1,12 @@
-import { WebServer } from '../lib/WebServer.ts';
-import { eventRouter } from './routers/event.router.ts';
-import { groupRouter } from './routers/group.router.ts';
-import { userRouter } from './routers/user.router.ts';
+import { WebServer } from './components/web/WebServer.ts';
+import { EnrichedSessionRepository } from './repositories/EnrichedSessionRepository.ts';
+import { EnrichedUserRepository } from './repositories/EnrichedUserRepository.ts';
+import { FullUserRepository } from './repositories/FullUserRepository.ts';
+import { sessionController } from './routes/session.route.ts';
+import { userController } from './routes/user.route.ts';
 
-const app = new WebServer();
+export const enrichedUserRepository = new EnrichedUserRepository();
+export const enrichedSessionRepository = new EnrichedSessionRepository();
+export const fullUserRepository = new FullUserRepository();
 
-app.use('/event', eventRouter);
-app.use('/group', groupRouter);
-app.use('/user', userRouter);
-
-app.listen(5000);
+new WebServer().registerAuthenticatedController(userController).registerController(sessionController).listen(5000);

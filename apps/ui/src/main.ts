@@ -1,26 +1,24 @@
-import './style.css';
-import viteLogo from '/vite.svg';
-import { setupCounter } from './counter.ts';
-import typescriptLogo from './typescript.svg';
+import 'material-icons/iconfont/material-icons.css';
+import { UserCreateForm } from './modules/admin/users/UserCreateForm.ts';
+import { UsersPage } from './modules/admin/users/UsersPage.ts';
+import { DashboardPage } from './modules/dashboard/DashboardPage.ts';
+import { EventsPage } from './modules/home/events/EventsPage.ts';
+import { LoginPage } from './modules/login/LoginPage.ts';
+import { AccountPage } from './modules/settings/account/AccountPage.ts';
+import { ApiService } from './services/ApiService.ts';
+import { NavigationService } from './services/NavigationService.ts';
+import { NotificationService } from './services/NotificationService.ts';
+import { SessionService } from './services/SessionService.ts';
+import type { NavigationPaths } from './types/navigationPaths.ts';
 
-// biome-ignore lint/style/noNonNullAssertion: this is a demo app
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+export const sessionService = new SessionService();
 
-// biome-ignore lint/style/noNonNullAssertion: this is a demo app
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+export const client = new ApiService(window.location.origin, sessionService);
+export const notifier = new NotificationService();
+export const navigation = new NavigationService<NavigationPaths>(sessionService)
+  .addRoute('/', { Component: LoginPage, parentSelector: 'body' })
+  .addRoute('/admin/users', { Component: UsersPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/admin/users/create', { Component: UserCreateForm, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/home/events', { Component: EventsPage, Container: DashboardPage, parentSelector: 'main' })
+  .addRoute('/settings/account', { Component: AccountPage, Container: DashboardPage, parentSelector: 'main' })
+  .start();

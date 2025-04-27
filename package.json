@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "turbo": "^2.4.4",
+    "turbo": "^2.5.2",
     "typescript": "^5.8.2"
   },
   "license": "GPL-3.0-or-later",
@@ -15,7 +15,7 @@
     "serve": "turbo serve",
     "typecheck": "turbo typecheck"
   },
-  "version": "2.2.0",
+  "version": "2.3.0",
   "workspaces": [
     "apps/*",
     "packages/*"

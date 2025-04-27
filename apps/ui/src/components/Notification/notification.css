@@ -1,0 +1,26 @@
+.Notification-root {
+    display: flex;
+    border-radius: var(--size-border-radius);
+    flex-direction: row;
+    gap: var(--sizing-2);
+    left: var(--sizing-8);
+    padding-block: var(--sizing-2);
+    padding-inline: var(--sizing-4);
+    position: absolute;
+}
+
+.Notification-root--error {
+    background-color: var(--color-danger);
+}
+
+.Notification-root--info {
+    background-color: var(--color-info);
+}
+
+.Notification-root--success {
+    background-color: var(--color-success);
+}
+
+.Notification-root--warning {
+    background-color: var(--color-warning);
+}

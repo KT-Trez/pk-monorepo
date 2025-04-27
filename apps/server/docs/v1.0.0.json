@@ -1,0 +1,325 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "examples": {
+      "NotFound": {
+        "value": {
+          "code": 404,
+          "message": "Not found",
+          "success": false
+        }
+      },
+      "ServerError": {
+        "value": {
+          "code": 500,
+          "message": "Internal server error",
+          "success": false
+        }
+      },
+      "Session": {
+        "value": {
+          "acl": "0x1fa3bc38",
+          "expiresAt": "2023-10-02T12:00:00Z",
+          "sessionUid": "123e4567-e89b-12d3-a456-426614174000",
+          "startsAt": "2023-10-01T12:00:00Z"
+        }
+      },
+      "SessionRequest": {
+        "value": {
+          "email": "john.doe@example.com",
+          "password": "zaq1@WSX"
+        }
+      },
+      "ServerSuccess": {
+        "value": {
+          "code": 200,
+          "message": "OK",
+          "success": true
+        }
+      },
+      "Unauthorized": {
+        "value": {
+          "code": 401,
+          "message": "Unauthorized",
+          "success": false
+        }
+      },
+      "User": {
+        "value": {
+          "album": "2137",
+          "email": "john.doe@example.com",
+          "name": "John Doe",
+          "uid": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      }
+    },
+    "schemas": {
+      "ServerError": {
+        "examples": {
+          "ServerError": {
+            "$ref": "#/components/examples/ServerError"
+          },
+          "Unauthorized": {
+            "$ref": "#/components/examples/Unauthorized"
+          }
+        },
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": ["code", "message", "success"],
+        "type": "object"
+      },
+      "ServerSuccess": {
+        "examples": {
+          "ServerSuccess": {
+            "$ref": "#/components/examples/ServerSuccess"
+          }
+        },
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": ["code", "message", "success"],
+        "type": "object"
+      },
+      "Session": {
+        "examples": {
+          "Session": {
+            "$ref": "#/components/examples/Session"
+          }
+        },
+        "properties": {
+          "acl": {
+            "description": "Access Control List encoded as a hex string of permissions",
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "sessionUid": {
+            "type": "string"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["acl", "expiresAt", "sessionUid", "startsAt"],
+        "type": "object"
+      },
+      "SessionRequest": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"],
+        "type": "object"
+      },
+      "User": {
+        "examples": {
+          "User": {
+            "$ref": "#/components/examples/User"
+          }
+        },
+        "properties": {
+          "album": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": ["album", "email", "password", "uid"],
+        "type": "object"
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "examples": {
+              "ServerSuccess": {
+                "$ref": "#/components/examples/ServerSuccess"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerSuccess"
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "examples": {
+              "Unauthorized": {
+                "$ref": "#/components/examples/Unauthorized"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not found",
+        "content": {
+          "application/json": {
+            "examples": {
+              "NotFound": {
+                "$ref": "#/components/examples/NotFound"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Server error",
+        "content": {
+          "application/json": {
+            "examples": {
+              "ServerError": {
+                "$ref": "#/components/examples/ServerError"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "description": "This is the API documentation for the @pk/server package.",
+    "license": {
+      "name": "GNU General Public License v3.0 or later",
+      "identifier": "GPL-3.0-or-later"
+    },
+    "title": "@pk/server",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/session": {
+      "delete": {
+        "description": "Delete session information",
+        "parameters": [
+          {
+            "description": "Session UID",
+            "in": "query",
+            "name": "uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session deleted successfully",
+            "$ref": "#/components/responses/200"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Delete session information"
+      },
+      "post": {
+        "description": "Retrieve session information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
+              },
+              "examples": {
+                "SessionRequest": {
+                  "$ref": "#/components/examples/SessionRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            },
+            "description": "API information retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get session information"
+      }
+    },
+    "/v1/user": {
+      "delete": {
+        "description": "Delete user",
+        "responses": {
+          "200": {
+            "description": "User deleted successfully",
+            "$ref": "#/components/responses/200"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Local server",
+      "url": "http://localhost:5000"
+    }
+  ]
+}

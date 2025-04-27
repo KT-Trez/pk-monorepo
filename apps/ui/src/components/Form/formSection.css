@@ -1,0 +1,24 @@
+.FormSection-root {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 5;
+    padding-block: var(--sizing-4);
+    padding-inline: var(--sizing-8);
+}
+
+.FormSection-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sizing-4);
+}
+
+.FormSection-title {
+    color: var(--color-primary) !important;
+}
+
+@media (max-width: 600px) {
+    .FormSection-root {
+        grid-column: 1 / 2;
+        padding: var(--sizing-4);
+    }
+}

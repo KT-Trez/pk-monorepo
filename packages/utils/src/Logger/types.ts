@@ -20,6 +20,7 @@ export type LoggerTransportStrategy<TSeverity extends string> = {
 export const Severity = {
   Debug: 'debug',
   Error: 'error',
+  Fatal: 'fatal',
   Info: 'info',
   Success: 'success',
   Warn: 'warn',

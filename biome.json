@@ -44,7 +44,6 @@
     "rules": {
       "all": true,
       "correctness": {
-        "noNodejsModules": "off",
         "noUndeclaredDependencies": "off"
       },
       "style": {
@@ -55,6 +54,39 @@
   "organizeImports": {
     "enabled": true
   },
+  "overrides": [
+    {
+
+      "include": [
+        "apps/server/**/*.ts",
+        "apps/server/**/*.tsx",
+        "apps/timetable-parser-service/**/*.ts",
+        "apps/timetable-parser-service/**/*.tsx",
+        "packages/**/*.ts",
+        "packages/**/*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": [
+        "apps/ui/**/*.ts",
+        "apps/ui/**/*.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useHookAtTopLevel": "off"
+          }
+        }
+      }
+    }
+  ],
   "vcs": {
     "clientKind": "git",
     "defaultBranch": "master",

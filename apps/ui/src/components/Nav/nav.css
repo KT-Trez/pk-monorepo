@@ -1,0 +1,44 @@
+.Nav-root {
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sizing-4);
+    grid-column: 1 / 3;
+    height: 100%;
+    padding: var(--sizing-4);
+}
+
+.NavCategory-root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sizing-2);
+}
+
+.NavCategory-header {
+    /* fixme: https://github.com/KT-Trez/pk-monorepo/issues/22: color inheritance for Typography variants  */
+    color: var(--color-primary) !important;
+    font-weight: var(--font-weight-bold) !important;
+}
+
+.NavCategory-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sizing-1);
+    list-style-type: none;
+    padding-left: var(--sizing-2);
+}
+
+.NavCategory-item {
+    font-weight: var(--font-weight-medium) !important;
+    text-decoration: none;
+}
+
+.NavCategory-item:hover {
+    color: var(--color-text-secondary);
+}
+
+@media (max-width: 600px) {
+    .Nav-root {
+        display: none;
+    }
+}

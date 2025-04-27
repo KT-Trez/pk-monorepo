@@ -5,8 +5,9 @@ import { type Severities, Severity } from './types.ts';
 
 export const createDefaultLogger = (): Logger<Severities> => {
   const transport = new LoggerConsoleTransport<Severities>()
-    .configureColor(Severity.Debug, '\u001b[30;1m')
+    .configureColor(Severity.Debug, '\u001b[37;1m')
     .configureColor(Severity.Error, '\u001b[31;1m')
+    .configureColor(Severity.Fatal, '\u001b[35;1m')
     .configureColor(Severity.Info, '\u001b[36;1m')
     .configureColor(Severity.Success, '\u001b[32;1m')
     .configureColor(Severity.Warn, '\u001b[33;1m');
@@ -20,6 +21,11 @@ export const createDefaultLogger = (): Logger<Severities> => {
     .addSeverity({
       label: 'ERROR',
       severity: Severity.Error,
+      std: 'err',
+    })
+    .addSeverity({
+      label: 'FATAL',
+      severity: Severity.Fatal,
       std: 'err',
     })
     .addSeverity({

@@ -1,0 +1,18 @@
+.TopBar-root {
+    display: flex;
+    background: var(--color-elevation-1);
+    flex-direction: row;
+    height: var(--topbar-height);
+    justify-content: space-between;
+    padding-block: var(--sizing-2);
+    padding-inline: var(--sizing-4);
+    width: 100%;
+}
+
+.TopBar-icon {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-h4-font-size);
+    justify-content: center;
+    padding: var(--sizing-2);
+}

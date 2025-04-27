@@ -4,11 +4,11 @@
   },
   "exports": {
     "./api.js": "./src/api.ts",
+    "./calendar.js": "./src/calendar.ts",
     "./event.js": "./src/event.ts",
-    "./fieldOfStudy.js": "./src/fieldOfStudy.ts",
-    "./group.js": "./src/group.ts",
     "./helpers.js": "./src/helpers.ts",
-    "./objectType.js": "./src/objectType.ts",
+    "./session.js": "./src/session.ts",
+    "./user.js": "./src/user.ts",
     "./valueValidator.js": "./src/valueValidator.ts"
   },
   "name": "@pk/types",
