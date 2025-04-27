@@ -1,4 +1,5 @@
 import type { HttpHandle, HttpMethods } from '../../types/http.ts';
+import type { WebServerRequest } from './WebServerRequest.ts';
 
 export type RoutePath = `${HttpMethods} ${string}`;
 
@@ -27,6 +28,18 @@ export abstract class BaseController {
 
   _getRoute(path: RoutePath) {
     return this.routes.get(path);
+  }
+
+  protected getPaginationParams(req: WebServerRequest) {
+    const limit = req.getOptionalSearchParam('limit');
+    const normalizedLimit = limit ? Number.parseInt(limit) : 10;
+    const offset = req.getOptionalSearchParam('offset');
+    const normalizedOffset = offset ? Number.parseInt(offset) : 0;
+
+    return {
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+    };
   }
 
   #addRoute(method: HttpMethods, path: string, httpHandles: HttpHandle[]) {

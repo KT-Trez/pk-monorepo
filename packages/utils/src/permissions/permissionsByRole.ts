@@ -1,3 +1,4 @@
+import { CalendarShareType } from '@pk/types/calendar.js';
 import type { PermissionsByRole } from './types.js';
 
 export const permissionsByRole: PermissionsByRole = {
@@ -24,13 +25,21 @@ export const permissionsByRole: PermissionsByRole = {
   member: {
     calendar: {
       create: true,
-      delete: (user, calendar) => calendar?.author_uid === user.uid,
-      read: (user, calendar) =>
-        calendar?.author_uid === user.uid ||
-        calendar?.is_public ||
-        calendar?.shared_with[user.uid] === 'editor' ||
-        calendar?.shared_with[user.uid] === 'viewer',
-      update: (user, calendar) => calendar?.author_uid === user.uid || calendar?.shared_with[user.uid] === 'editor',
+      delete: (user, calendar) => calendar?.authorUid === user.uid,
+      read: (user, calendar) => {
+        const isAuthor = calendar?.authorUid === user.uid;
+        const isCalendarPublic = calendar?.isPublic;
+        const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;
+        const isViewer = calendar?.sharedWith[user.uid] === CalendarShareType.Viewer;
+
+        return isAuthor || isCalendarPublic || isEditor || isViewer;
+      },
+      update: (user, calendar) => {
+        const isAuthor = calendar?.authorUid === user.uid;
+        const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;
+
+        return isAuthor || isEditor;
+      },
     },
     event: {
       create: (user, event) => {
