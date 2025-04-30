@@ -56,7 +56,7 @@ export class CalendarController extends BaseController {
     const calendars = await enrichedCalendarRepository.find({}, { limit, offset, orderBy: 'name' });
 
     const items = calendars.filter(item => req.session.hasPermission('calendar', 'read', item));
-    const hasMore = items.length === limit - offset;
+    const hasMore = items.length === limit;
 
     res.json(new Collection({ hasMore, items, limit, offset }));
   }

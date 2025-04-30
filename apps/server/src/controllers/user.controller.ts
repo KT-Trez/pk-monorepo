@@ -52,7 +52,7 @@ export class UserController extends BaseController {
     const users = await fullUserRepository.find({}, { limit, offset, orderBy: 'name' });
 
     const items = users.filter(item => req.session.hasPermission('user', 'read', item));
-    const hasMore = items.length === limit - offset;
+    const hasMore = items.length === limit;
 
     res.json(new Collection({ hasMore, items, limit, offset }));
   }
