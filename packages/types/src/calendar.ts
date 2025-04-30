@@ -12,10 +12,15 @@ export type EnrichedCalendarApi = {
 
 export type EnrichedCalendarCreateApiPayload = Pick<EnrichedCalendarApi, 'name'> & {
   isPublic?: EnrichedCalendarApi['isPublic'];
-  sharedWith?: EnrichedCalendarApi['sharedWith'];
+  sharedWith?: Record<string, CalendarShareTypes>;
 };
 
 export type EnrichedCalendarUpdateApiPayload = Partial<EnrichedCalendarCreateApiPayload> & {
+  uid: EnrichedCalendarApi['uid'];
+};
+
+export type EnrichedCalendarShareApiPayload = {
+  sharedWith?: Record<string, CalendarShareTypes | null>;
   uid: EnrichedCalendarApi['uid'];
 };
 

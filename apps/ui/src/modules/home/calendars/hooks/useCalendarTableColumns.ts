@@ -5,7 +5,7 @@ import { VisibilityCell, VisibilityType } from '../../../../components/Table/cel
 import type { ColumnDefinition } from '../../../../components/Table/types.ts';
 import { Typography } from '../../../../components/Typography/Typography.ts';
 
-export const useTableColumns = (): ColumnDefinition<EnrichedCalendarApi>[] => {
+export const useCalendarTableColumns = (): ColumnDefinition<EnrichedCalendarApi>[] => {
   return [
     {
       label: 'Name',

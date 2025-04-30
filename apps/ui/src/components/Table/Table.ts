@@ -72,16 +72,17 @@ export class Table<T> extends BaseComponent implements CanBeRerendered {
     for (const action of this.#rowActions) {
       const variant = action.variant ?? RowActionVariant.Primary;
       const className = rowActionClassNames[variant];
+      const isDisabled = typeof action.isDisabled === 'boolean' ? action.isDisabled : action.isDisabled?.(datum);
+      const isHidden = typeof action.isHidden === 'boolean' ? action.isHidden : action.isHidden?.(datum);
+
+      if (isHidden) {
+        continue;
+      }
 
       const button = new Button({ icon: action.icon, text: action.label })
         .addClasses(['Table-rowAction', className])
-        .onClick(() => action.onClick(datum));
-
-      const isDisabled = typeof action.isDisabled === 'boolean' ? action.isDisabled : action.isDisabled?.(datum);
-
-      if (isDisabled) {
-        button.setDisabled();
-      }
+        .onClick(() => action.onClick(datum))
+        .setStatus(isDisabled ? 'disabled' : 'enabled');
 
       rowActions.push(button);
     }

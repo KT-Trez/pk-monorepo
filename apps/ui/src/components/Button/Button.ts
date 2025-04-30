@@ -70,6 +70,10 @@ export class Button extends BaseComponent<'button'> implements CanBeClicked, Can
     return this;
   }
 
+  setStatus(status: 'disabled' | 'enabled') {
+    return status === 'disabled' ? this.setDisabled() : this.setEnabled();
+  }
+
   setType(type: 'button' | 'submit' | 'reset') {
     this.setAttribute('type', type);
     return this;

@@ -54,4 +54,8 @@ export class Checkbox extends BaseComponent implements CanBeDisabled {
     this.#checkbox.setAttribute('disabled', 'true');
     return this;
   }
+
+  setStatus(status: 'disabled' | 'enabled') {
+    return status === 'disabled' ? this.setDisabled() : this.setEnabled();
+  }
 }

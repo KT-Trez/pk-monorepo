@@ -7,7 +7,7 @@ import { Table } from '../../../components/Table/Table.ts';
 import { client, notifier } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
 import type { Component } from '../../../types/component.ts';
-import type { SetterDispatch, StateSubscribe } from '../../../types/useState.ts';
+import type { SetState, SubscribeState } from '../../../types/useState.ts';
 import { useState } from '../../../utils/useState.ts';
 import { usePageActions } from './config/usePageActions.ts';
 import { useRowActions } from './config/useRowActions.ts';
@@ -18,8 +18,8 @@ export class UsersPage extends BaseComponent {
   #header: Component;
   #table: Table<FullUserApi>;
 
-  #setUsers: SetterDispatch<FullUserApi[]>;
-  #subscribe: StateSubscribe<FullUserApi[]>;
+  #setUsers: SetState<FullUserApi[]>;
+  #subscribe: SubscribeState<FullUserApi[]>;
 
   constructor() {
     super('div');
@@ -31,7 +31,7 @@ export class UsersPage extends BaseComponent {
 
     const actions = usePageActions();
     const columns = useTableColumns();
-    const rowActions = useRowActions({ setUsers: this.#setUsers });
+    const rowActions = useRowActions(this.#setUsers);
 
     this.#table = new Table({ columns, rowActions });
     this.#header = new PageHeader('Users');

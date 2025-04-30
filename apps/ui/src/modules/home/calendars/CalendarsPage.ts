@@ -7,19 +7,19 @@ import { Table } from '../../../components/Table/Table.ts';
 import { client, notifier } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
 import type { Component } from '../../../types/component.ts';
-import type { SetterDispatch, StateSubscribe } from '../../../types/useState.ts';
+import type { SetState, SubscribeState } from '../../../types/useState.ts';
 import { useState } from '../../../utils/useState.ts';
-import { usePageActions } from './config/usePageActions.ts';
-import { useRowActions } from './config/useRowActions.ts';
-import { useTableColumns } from './config/useTableColumns.ts';
+import { useCalendarPageActions } from './hooks/useCalendarPageActions.ts';
+import { useCalendarRowActions } from './hooks/useCalendarRowActions.ts';
+import { useCalendarTableColumns } from './hooks/useCalendarTableColumns.ts';
 
 export class CalendarsPage extends BaseComponent {
   #content: Component;
   #header: Component;
   #table: Table<EnrichedCalendarApi>;
 
-  #setCalendars: SetterDispatch<EnrichedCalendarApi[]>;
-  #subscribe: StateSubscribe<EnrichedCalendarApi[]>;
+  #setCalendars: SetState<EnrichedCalendarApi[]>;
+  #subscribe: SubscribeState<EnrichedCalendarApi[]>;
 
   constructor() {
     super('div');
@@ -29,9 +29,9 @@ export class CalendarsPage extends BaseComponent {
     this.#setCalendars = setCalendars;
     this.#subscribe = subscribe;
 
-    const actions = usePageActions();
-    const columns = useTableColumns();
-    const rowActions = useRowActions({ setCalendars: this.#setCalendars });
+    const actions = useCalendarPageActions();
+    const columns = useCalendarTableColumns();
+    const rowActions = useCalendarRowActions(this.#setCalendars);
 
     this.#table = new Table({ columns, rowActions });
     this.#header = new PageHeader('Calendars');

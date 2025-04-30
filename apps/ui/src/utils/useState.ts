@@ -1,12 +1,12 @@
-import type { Setter, StateSubscribe, StateSubscription, UseStateReturn } from '../types/useState.ts';
+import type { NewState, StateSubscription, SubscribeState, UseStateReturn } from '../types/useState.ts';
 
 export const useState = <T extends boolean | null | number | string | unknown[]>(
   initialState: T,
 ): UseStateReturn<T> => {
   let state: T = initialState;
-  const subscribers: StateSubscription<T>[] = [];
+  const subscriptions: StateSubscription<T>[] = [];
 
-  const setState = (setter: Setter<T>) => {
+  const setState = (setter: NewState<T>) => {
     const isCallback = typeof setter === 'function';
 
     if (isCallback) {
@@ -15,13 +15,13 @@ export const useState = <T extends boolean | null | number | string | unknown[]>
       state = setter;
     }
 
-    for (const subscriber of subscribers) {
+    for (const subscriber of subscriptions) {
       subscriber(state);
     }
   };
 
-  const subscribe: StateSubscribe<T> = subscriber => {
-    subscribers.push(subscriber);
+  const subscribe: SubscribeState<T> = subscription => {
+    subscriptions.push(subscription);
   };
 
   return [state, setState, subscribe] as const;

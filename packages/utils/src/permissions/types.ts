@@ -1,4 +1,8 @@
-import type { EnrichedCalendarApi, EnrichedCalendarCreateApiPayload } from '@pk/types/calendar.js';
+import type {
+  EnrichedCalendarApi,
+  EnrichedCalendarCreateApiPayload,
+  EnrichedCalendarUpdateApiPayload,
+} from '@pk/types/calendar.js';
 import type { EventDb } from '@pk/types/event.js';
 import type {
   EnrichedUserApiCreatePayload,
@@ -18,7 +22,8 @@ export type PermissionsByResource = {
     follow: EnrichedCalendarApi;
     read: EnrichedCalendarApi;
     share: EnrichedCalendarApi;
-    update: EnrichedCalendarApi;
+    unfollow: EnrichedCalendarApi;
+    update: { calendar?: EnrichedCalendarApi; payload?: EnrichedCalendarUpdateApiPayload };
   };
   event: {
     create: EventDb;

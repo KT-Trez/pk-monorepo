@@ -3,6 +3,7 @@ import type {
   EnrichedCalendarCreateApiPayload,
   EnrichedCalendarUpdateApiPayload,
 } from '@pk/types/calendar.js';
+import type { PermissionsByResource } from '@pk/utils/permissions/types.js';
 import { Collection } from '../components/response/Collection.ts';
 import { Forbidden } from '../components/response/Forbidden.ts';
 import { ObjectNotFound } from '../components/response/ObjectNotFound.ts';
@@ -66,7 +67,7 @@ export class CalendarController extends BaseController {
 
     const calendar = await enrichedCalendarRepository.findOne(uid);
 
-    if (!req.session.hasPermission('calendar', 'update', calendar)) {
+    if (!req.session.hasPermission('calendar', 'update', { calendar, payload })) {
       return next(new Forbidden(`User is missing permissions to update the calendar "${uid}"`));
     }
 
@@ -77,5 +78,28 @@ export class CalendarController extends BaseController {
     const updatedCalendar = await enrichedCalendarRepository.update(uid, payload);
 
     res.json(updatedCalendar);
+  }
+
+  updateSharedWith<A extends keyof PermissionsByResource['calendar']>(action: Extract<A, 'follow' | 'unfollow'>) {
+    return async (req: WebServerRequest, res: WebServerResponse, next: NextFunction) => {
+      const payload = req.getBody<EnrichedCalendarUpdateApiPayload>();
+      const uid = payload.uid;
+
+      const calendar = await enrichedCalendarRepository.findOne(uid);
+
+      if (!req.session.hasPermission('calendar', action, calendar)) {
+        return next(
+          new Forbidden(`User is missing permissions to update the "sharedWith" property in calendar "${uid}"`),
+        );
+      }
+
+      if (!calendar) {
+        return next(new ObjectNotFound('calendar', uid));
+      }
+
+      const updatedCalendar = await enrichedCalendarRepository.update(uid, payload);
+
+      res.json(updatedCalendar);
+    };
   }
 }

@@ -13,6 +13,7 @@ export type CanBeClicked = {
 export type CanBeDisabled = {
   setDisabled(): CanBeDisabled;
   setEnabled(): CanBeDisabled;
+  setStatus(status: 'disabled' | 'enabled'): CanBeDisabled;
 };
 
 export type CanBeRerendered = {

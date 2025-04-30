@@ -17,6 +17,7 @@ export type ColumnAligns = ConstValues<typeof ColumnAlign>;
 export type RowAction<T> = {
   icon?: string;
   isDisabled?: boolean | ((datum: T) => boolean);
+  isHidden?: boolean | ((datum: T) => boolean);
   label: string;
   onClick: (datum: T) => void;
   variant?: RowActionVariants;
