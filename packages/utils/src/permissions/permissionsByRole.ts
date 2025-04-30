@@ -1,3 +1,4 @@
+import { CalendarShareType } from '@pk/types/calendar.js';
 import type { PermissionsByRole } from './types.js';
 
 export const permissionsByRole: PermissionsByRole = {
@@ -5,8 +6,25 @@ export const permissionsByRole: PermissionsByRole = {
     calendar: {
       create: true,
       delete: true,
+      follow: (user, calendar) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isAlreadyFollowing = !!calendar?.sharedWith[user.uid];
+
+        return !(isCalendarAuthor || isAlreadyFollowing);
+      },
       read: true,
-      update: true,
+      share: true,
+      unfollow: (user, calendar) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isAlreadyFollowing = !!calendar?.sharedWith[user.uid];
+
+        return !isCalendarAuthor && isAlreadyFollowing;
+      },
+      update: (_, { payload } = {}) => {
+        const isEditingSharedWith = payload?.sharedWith !== undefined;
+
+        return !isEditingSharedWith;
+      },
     },
     event: {
       create: true,
@@ -24,13 +42,37 @@ export const permissionsByRole: PermissionsByRole = {
   member: {
     calendar: {
       create: true,
-      delete: (user, calendar) => calendar?.author_uid === user.uid,
-      read: (user, calendar) =>
-        calendar?.author_uid === user.uid ||
-        calendar?.is_public ||
-        calendar?.shared_with[user.uid] === 'editor' ||
-        calendar?.shared_with[user.uid] === 'viewer',
-      update: (user, calendar) => calendar?.author_uid === user.uid || calendar?.shared_with[user.uid] === 'editor',
+      delete: (user, calendar) => calendar?.authorUid === user.uid,
+      follow: (user, calendar) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isCalendarPublic = !!calendar?.isPublic;
+        const isAlreadyFollowing = !!calendar?.sharedWith[user.uid];
+
+        return !isCalendarAuthor && isCalendarPublic && !isAlreadyFollowing;
+      },
+      read: (user, calendar) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isCalendarPublic = calendar?.isPublic;
+        const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;
+        const isViewer = calendar?.sharedWith[user.uid] === CalendarShareType.Viewer;
+
+        return isCalendarAuthor || isCalendarPublic || isEditor || isViewer;
+      },
+      share: (user, calendar) => user.uid === calendar?.authorUid,
+      unfollow: (user, calendar) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isCalendarPublic = !!calendar?.isPublic;
+        const isAlreadyFollowing = !!calendar?.sharedWith[user.uid];
+
+        return !isCalendarAuthor && isCalendarPublic && isAlreadyFollowing;
+      },
+      update: (user, { calendar, payload } = {}) => {
+        const isCalendarAuthor = calendar?.authorUid === user.uid;
+        const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;
+        const isEditingSharedWith = payload?.sharedWith !== undefined;
+
+        return (isCalendarAuthor || isEditor) && !isEditingSharedWith;
+      },
     },
     event: {
       create: (user, event) => {

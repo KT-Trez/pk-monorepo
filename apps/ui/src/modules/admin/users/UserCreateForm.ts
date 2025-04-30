@@ -72,11 +72,9 @@ export class UserCreateForm extends BaseComponent {
 
     try {
       const user = await client.post<FullUserApi, EnrichedUserApiCreatePayload>('/v1/user', payload);
-      notifier.notify({
-        text: `User ${user.name} ${user.surname} (${user.uid}) successfully created.`,
-        severity: 'success',
-      });
       navigate('#/admin/users');
+      const message = `User ${user.name} ${user.surname} (${user.uid}) created successfully.`;
+      notifier.notify({ text: message, severity: 'success' });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       notifier.notify({ text: message, severity: 'error' });

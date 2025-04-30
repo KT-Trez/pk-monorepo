@@ -3,12 +3,12 @@ import type { CanBeClicked, CanBeDisabled, Component } from '../../types/compone
 import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { Icon } from '../Icon/Icon.ts';
 import { buttonClassNames } from './constants.ts';
-import { ButtonVariant } from './types.ts';
+import type { ButtonVariant } from './types.ts';
 
 type ButtonProps = BaseButtonProps | IconButtonProps;
 
 type BaseButtonProps = {
-  icon?: undefined;
+  icon?: string;
   text: string;
   variant?: typeof ButtonVariant.Contained | typeof ButtonVariant.Outlined;
 };
@@ -22,17 +22,16 @@ type IconButtonProps = {
 export class Button extends BaseComponent<'button'> implements CanBeClicked, CanBeDisabled {
   #icon: Component | null;
 
-  constructor({ variant = 'contained', ...rest }: ButtonProps) {
+  constructor({ icon, text, variant = 'contained' }: ButtonProps) {
     const className = buttonClassNames[variant];
 
     super('button');
     this.addClasses(['Button-root', className]);
 
-    if (variant === ButtonVariant.Icon) {
-      this.#icon = new Icon(rest.icon as string);
-    } else {
-      this.#icon = null;
-      this.setTextContent(rest.text as string);
+    this.#icon = icon ? new Icon(icon) : null;
+
+    if (text) {
+      this.setTextContent(text);
     }
   }
 
@@ -69,6 +68,10 @@ export class Button extends BaseComponent<'button'> implements CanBeClicked, Can
   setFitContentWith() {
     this.addClass('Button-root--fitContentWidth');
     return this;
+  }
+
+  setStatus(status: 'disabled' | 'enabled') {
+    return status === 'disabled' ? this.setDisabled() : this.setEnabled();
   }
 
   setType(type: 'button' | 'submit' | 'reset') {

@@ -1,6 +1,7 @@
 .FormSection-root {
     display: flex;
     flex-direction: column;
+    gap: var(--sizing-2);
     grid-column: 1 / 5;
     padding-block: var(--sizing-4);
     padding-inline: var(--sizing-8);

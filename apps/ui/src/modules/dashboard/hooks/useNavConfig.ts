@@ -15,7 +15,12 @@ export const useNavConfig = (): NavCategory[] => {
       name: 'Admin',
     },
     {
+      isHidden: sessionService.session?.user.roles.length === 0,
       items: [
+        {
+          href: '#/home/calendars',
+          name: 'Calendars',
+        },
         {
           href: '#/home/events',
           name: 'Events',

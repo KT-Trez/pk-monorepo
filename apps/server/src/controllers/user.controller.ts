@@ -47,24 +47,14 @@ export class UserController extends BaseController {
   }
 
   async getAll(req: WebServerRequest, res: WebServerResponse) {
-    const limit = req.getOptionalSearchParam('limit');
-    const normalizedLimit = limit ? Number.parseInt(limit) : 10;
-    const offset = req.getOptionalSearchParam('offset');
-    const normalizedOffset = offset ? Number.parseInt(offset) : 0;
+    const { limit, offset } = super.getPaginationParams(req);
 
-    const users = await fullUserRepository.find(
-      {},
-      {
-        limit: normalizedLimit,
-        offset: normalizedOffset,
-        orderBy: 'name',
-      },
-    );
+    const users = await fullUserRepository.find({}, { limit, offset, orderBy: 'name' });
 
     const items = users.filter(item => req.session.hasPermission('user', 'read', item));
-    const hasMore = items.length === normalizedLimit - normalizedOffset;
+    const hasMore = items.length === limit;
 
-    res.json(new Collection({ hasMore, items, limit: normalizedLimit, offset: normalizedOffset }));
+    res.json(new Collection({ hasMore, items, limit, offset }));
   }
 
   async getByUid(req: WebServerRequest, res: WebServerResponse, next: NextFunction) {
@@ -102,8 +92,8 @@ export class UserController extends BaseController {
       ...(password ? { password: await Hash.instance.hashPassword(password) } : {}),
     };
 
-    const newUser = await enrichedUserRepository.update({ uid: payload.uid }, data);
+    const updatedUser = await enrichedUserRepository.update({ uid: payload.uid }, data);
 
-    res.json(newUser);
+    res.json(updatedUser);
   }
 }

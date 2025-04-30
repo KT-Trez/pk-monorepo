@@ -85,6 +85,10 @@ export class TextField extends BaseComponent implements CanBeDisabled {
     return this;
   }
 
+  setStatus(status: 'disabled' | 'enabled') {
+    return status === 'disabled' ? this.setDisabled() : this.setEnabled();
+  }
+
   setType(type: TextFieldTypeAttribute) {
     this.#input.setAttribute('type', type);
     return this;

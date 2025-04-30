@@ -1,4 +1,8 @@
-import type { CalendarDb } from '@pk/types/calendar.js';
+import type {
+  EnrichedCalendarApi,
+  EnrichedCalendarCreateApiPayload,
+  EnrichedCalendarUpdateApiPayload,
+} from '@pk/types/calendar.js';
 import type { EventDb } from '@pk/types/event.js';
 import type {
   EnrichedUserApiCreatePayload,
@@ -13,22 +17,25 @@ export type PermissionCheck<R extends keyof PermissionsByResource, A extends key
 
 export type PermissionsByResource = {
   calendar: {
-    create: CalendarDb;
-    read: CalendarDb;
-    update: CalendarDb;
-    delete: CalendarDb;
+    create: EnrichedCalendarCreateApiPayload;
+    delete: EnrichedCalendarApi;
+    follow: EnrichedCalendarApi;
+    read: EnrichedCalendarApi;
+    share: EnrichedCalendarApi;
+    unfollow: EnrichedCalendarApi;
+    update: { calendar?: EnrichedCalendarApi; payload?: EnrichedCalendarUpdateApiPayload };
   };
   event: {
     create: EventDb;
+    delete: EventDb;
     read: EventDb;
     update: EventDb;
-    delete: EventDb;
   };
   user: {
     create: EnrichedUserApiCreatePayload;
+    delete: FullUserApi;
     read: FullUserApi;
     update: EnrichedUserApiUpdatePayload;
-    delete: FullUserApi;
   };
 };
 

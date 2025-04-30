@@ -144,7 +144,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
       } else if (typeof value === 'string') {
         attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(value)}`);
       } else {
-        attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(String(value))}`);
+        attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(JSON.stringify(value))}`);
       }
     }
 

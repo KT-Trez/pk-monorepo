@@ -49,19 +49,35 @@
     border-bottom-left-radius: var(--size-border-radius);
 }
 
-.Table-rowAction {
-    bottom: 0;
+.Table-column--left {
+    text-align: left;
+}
+
+.Table-column--center {
+    text-align: center;
+}
+
+.Table-column--right {
+    text-align: right;
+}
+
+.Table-rowActions {
     display: none;
+    bottom: 0;
+    gap: var(--sizing-2);
     height: fit-content;
     margin: auto 0;
-    min-width: unset;
     position: absolute;
     right: var(--sizing-8);
     top: 0;
 }
 
-.Table-root tr:hover .Table-rowAction {
-    display: unset;
+.Table-rowAction {
+    min-width: unset;
+}
+
+.Table-root tr:hover .Table-rowActions {
+    display: flex;
 }
 
 .Table-rowAction--danger {
@@ -83,4 +99,3 @@
 .Table-rowAction--success {
     background: var(--color-success);
 }
-

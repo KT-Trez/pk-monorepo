@@ -1,1 +1,8 @@
-export type NavigationPaths = '/' | '/admin/users' | '/admin/users/create' | '/home/events' | '/settings/account';
+export type NavigationPaths =
+  | '/'
+  | '/admin/users'
+  | '/admin/users/create'
+  | '/home/calendars'
+  | '/home/calendars/create'
+  | '/home/events'
+  | '/settings/account';

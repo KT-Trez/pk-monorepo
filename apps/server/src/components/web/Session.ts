@@ -6,7 +6,7 @@ import { enrichedSessionRepository } from '../../main.ts';
 export class Session {
   #session: EnrichedSessionApi | null = null;
 
-  get session() {
+  get details() {
     if (!this.#session) {
       throw new Error('#session is not initialized, call "constructorAsync()" first');
     }
@@ -29,11 +29,11 @@ export class Session {
     action: A,
     data?: PermissionsByResource[R][A],
   ) {
-    if (!this.session.user) {
+    if (!this.details.user) {
       return false;
     }
 
-    return this.session.user.roles.some(role => {
+    return this.details.user.roles.some(role => {
       const permission = permissionsByRole[role][resource]?.[action];
 
       if (permission === undefined) {
@@ -44,7 +44,7 @@ export class Session {
         return permission;
       }
 
-      return permission(this.session.user, data);
+      return permission(this.details.user, data);
     });
   }
 

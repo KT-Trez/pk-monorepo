@@ -1,14 +1,27 @@
 import type { ConstValues } from './helpers.js';
 
-export type CalendarApi = {
-  author_uid: string | null;
-  is_public: boolean;
+export type EnrichedCalendarApi = {
+  authorUid: string | null;
+  createdAt: string;
+  isPublic: boolean;
+  modifiedAt: string;
   name: string;
+  sharedWith: Record<string, CalendarShareTypes>;
   uid: string;
 };
 
-export type CalendarDb = CalendarApi & {
-  shared_with: Record<string, CalendarShareTypes>;
+export type EnrichedCalendarCreateApiPayload = Pick<EnrichedCalendarApi, 'name'> & {
+  isPublic?: EnrichedCalendarApi['isPublic'];
+  sharedWith?: Record<string, CalendarShareTypes>;
+};
+
+export type EnrichedCalendarUpdateApiPayload = Partial<EnrichedCalendarCreateApiPayload> & {
+  uid: EnrichedCalendarApi['uid'];
+};
+
+export type EnrichedCalendarShareApiPayload = {
+  sharedWith?: Record<string, CalendarShareTypes | null>;
+  uid: EnrichedCalendarApi['uid'];
 };
 
 export const CalendarShareType = {

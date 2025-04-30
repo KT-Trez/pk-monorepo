@@ -5,6 +5,7 @@
     display: flex;
     font-size: var(--text-button-font-size);
     font-weight: var(--text-button-font-weight);
+    gap: var(--sizing-2);
     justify-content: center;
     line-height: var(--text-button-line-height);
     text-transform: var(--text-button-text-transform);
@@ -23,7 +24,6 @@
     background: transparent;
     border: none;
     border-radius: 100%;
-
 }
 
 .Button-outlined {

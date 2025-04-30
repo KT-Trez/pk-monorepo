@@ -2,15 +2,12 @@ import type { SuccessApi } from '@pk/types/api.js';
 import type { FullUserApi } from '@pk/types/user.js';
 import { type RowAction, RowActionVariant } from '../../../../components/Table/types.ts';
 import { client, notifier, sessionService } from '../../../../main.ts';
-import type { SetterDispatch } from '../../../../types/useState.ts';
+import type { SetState } from '../../../../types/useState.ts';
 
-type UseRowActionsProps = {
-  setUsers: SetterDispatch<FullUserApi[]>;
-};
-
-export const useRowActions = ({ setUsers }: UseRowActionsProps): RowAction<FullUserApi>[] => {
+export const useRowActions = (setUsers: SetState<FullUserApi[]>): RowAction<FullUserApi>[] => {
   return [
     {
+      icon: 'delete_forever',
       isDisabled: user => user.uid === sessionService.session?.user?.uid,
       label: 'Delete',
       onClick: async user => {
