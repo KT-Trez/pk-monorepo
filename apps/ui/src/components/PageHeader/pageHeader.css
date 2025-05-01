@@ -1,6 +1,6 @@
 .PageHeader-root {
-    background: linear-gradient(90deg, var(--color-primary), var(--color-background));
-    padding-block: var(--sizing-4);
-    padding-inline: var(--sizing-8);
-    width: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-background));
+  padding-block: var(--sizing-4);
+  padding-inline: var(--sizing-8);
+  width: 100%;
 }

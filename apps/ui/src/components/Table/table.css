@@ -1,101 +1,101 @@
 .Table-root {
-    border-collapse: collapse;
-    border-style: hidden;
-    width: 100%;
+  border-collapse: collapse;
+  border-style: hidden;
+  width: 100%;
 }
 
 .Table-root tr {
-    position: relative;
+  position: relative;
 }
 
 .Table-root tr:has(.Table-rowAction):hover {
-    background: linear-gradient(90deg, var(--color-background), var(--color-elevation-1));
+  background: linear-gradient(90deg, var(--color-background), var(--color-elevation-1));
 }
 
 .Table-root tr:has(.Table-rowAction):hover td {
-    opacity: 0.15;
+  opacity: 0.15;
 }
 
 .Table-root tr td,
 .Table-root tr th {
-    padding: var(--sizing-2);
+  padding: var(--sizing-2);
 }
 
 .Table-root tr th {
-    background: var(--color-elevation-1);
-    text-align: left;
-    position: sticky;
-    top: calc(var(--sizing-4) * -1);
-    z-index: 100;
+  background: var(--color-elevation-1);
+  text-align: left;
+  position: sticky;
+  top: calc(var(--sizing-4) * -1);
+  z-index: 100;
 }
 
 .Table-root tr td {
-    border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .Table-root tr:first-child th:first-child {
-    border-top-left-radius: var(--size-border-radius);
+  border-top-left-radius: var(--size-border-radius);
 }
 
 .Table-root tr:first-child th:last-child {
-    border-top-right-radius: var(--size-border-radius);
+  border-top-right-radius: var(--size-border-radius);
 }
 
 .Table-root tr:last-child td:last-child {
-    border-bottom-right-radius: var(--size-border-radius);
+  border-bottom-right-radius: var(--size-border-radius);
 }
 
 .Table-root tr:last-child td:first-child {
-    border-bottom-left-radius: var(--size-border-radius);
+  border-bottom-left-radius: var(--size-border-radius);
 }
 
 .Table-column--left {
-    text-align: left;
+  text-align: left;
 }
 
 .Table-column--center {
-    text-align: center;
+  text-align: center;
 }
 
 .Table-column--right {
-    text-align: right;
+  text-align: right;
 }
 
 .Table-rowActions {
-    display: none;
-    bottom: 0;
-    gap: var(--sizing-2);
-    height: fit-content;
-    margin: auto 0;
-    position: absolute;
-    right: var(--sizing-8);
-    top: 0;
+  display: none;
+  bottom: 0;
+  gap: var(--sizing-2);
+  height: fit-content;
+  margin: auto 0;
+  position: absolute;
+  right: var(--sizing-8);
+  top: 0;
 }
 
 .Table-rowAction {
-    min-width: unset;
+  min-width: unset;
 }
 
 .Table-root tr:hover .Table-rowActions {
-    display: flex;
+  display: flex;
 }
 
 .Table-rowAction--danger {
-    background: var(--color-danger);
+  background: var(--color-danger);
 }
 
 .Table-rowAction--info {
-    background: var(--color-info);
+  background: var(--color-info);
 }
 
 .Table-rowAction--primary {
-    background: var(--color-primary);
+  background: var(--color-primary);
 }
 
 .Table-rowAction--warning {
-    background: var(--color-warning);
+  background: var(--color-warning);
 }
 
 .Table-rowAction--success {
-    background: var(--color-success);
+  background: var(--color-success);
 }

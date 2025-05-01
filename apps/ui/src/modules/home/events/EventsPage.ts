@@ -34,7 +34,7 @@ export class EventsPage extends BaseComponent {
     const columns = useEventTableColumns(this.#onRender.bind(this));
 
     this.#table = new Table({ columns, hideHeader: true });
-    this.#header = new PageHeader('Calendars');
+    this.#header = new PageHeader('Events');
     this.#content = new ListPageContent({ actions }).setContent(this.#table);
 
     this.#subscribeEvents(calendars => this.#table.setData(calendars));

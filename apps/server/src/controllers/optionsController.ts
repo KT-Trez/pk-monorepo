@@ -5,8 +5,10 @@ import type { WebServerResponse } from '../components/web/WebServerResponse.ts';
 import { enrichedCalendarRepository } from '../main.ts';
 
 export class OptionsController extends BaseController {
+  static readonly #limit = 99_999;
+
   async getCalendarOptions(req: WebServerRequest, res: WebServerResponse) {
-    const calendars = await enrichedCalendarRepository.find({}, { orderBy: 'name' });
+    const calendars = await enrichedCalendarRepository.find({}, { limit: OptionsController.#limit, orderBy: 'name' });
 
     const options = calendars.reduce<Option[]>((acc, calendar) => {
       if (req.session.hasPermission('options', 'calendar', calendar)) {

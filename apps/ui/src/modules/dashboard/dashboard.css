@@ -1,21 +1,21 @@
 .Dashboard-root {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    height: calc(100vh - var(--topbar-height));
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  height: calc(100vh - var(--topbar-height));
+  width: 100%;
 }
 
 .Dashboard-main {
-    grid-column: 3 / 13;
-    overflow: hidden;
+  grid-column: 3 / 13;
+  overflow: hidden;
 }
 
 @media (max-width: 600px) {
-    .Dashboard-root {
-        grid-template-columns: repeat(1, 1fr);
-    }
+  .Dashboard-root {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
-    .Dashboard-main {
-        grid-column: 1 / 2;
-    }
+  .Dashboard-main {
+    grid-column: 1 / 2;
+  }
 }

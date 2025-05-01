@@ -37,6 +37,7 @@ class Event extends BaseComponent {
   #location: Component | null;
   #title: Component;
   #time: Component;
+  #timeMobile: Component;
 
   constructor(event: EnrichedEventApi, onDelete: () => void) {
     super('div');
@@ -46,6 +47,9 @@ class Event extends BaseComponent {
     const timeFormatter = new DateFormatter('time');
     const parsedEndDate = DateFormatter.parseDate(event.endDate);
     const parsedStartDate = DateFormatter.parseDate(event.startDate);
+    const time = `${timeFormatter.formatter.format(parsedStartDate)} - ${timeFormatter.formatter.format(
+      parsedEndDate,
+    )}`;
 
     this.#detailsContainer = new BaseComponent('div').addClass('Event-details');
     this.#timeContainer = new BaseComponent('div').addClass('Event-time');
@@ -68,13 +72,12 @@ class Event extends BaseComponent {
       : null;
 
     this.#title = new Typography({ text: event.title, variant: 'h5' });
-    this.#time = new Typography({
-      text: `${timeFormatter.formatter.format(parsedStartDate)} - ${timeFormatter.formatter.format(parsedEndDate)}`,
-    });
+    this.#time = new Typography({ text: time });
+    this.#timeMobile = new Typography({ text: time }).addClass('Event-mobile-time');
   }
 
   render(): HTMLElement {
-    const details: Component[] = [this.#title];
+    const details: Component[] = [this.#title, this.#timeMobile];
 
     if (this.#description) {
       details.push(this.#description);

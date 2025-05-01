@@ -33,12 +33,12 @@ export class UserController extends BaseController {
 
     const user = await fullUserRepository.findOne(uid);
 
-    if (!req.session.hasPermission('user', 'delete', user)) {
-      return next(new Forbidden(`User is missing permissions to delete the user "${uid}"`));
-    }
-
     if (!user) {
       return next(new ObjectNotFound('user', uid));
+    }
+
+    if (!req.session.hasPermission('user', 'delete', user)) {
+      return next(new Forbidden(`User is missing permissions to delete the user "${uid}"`));
     }
 
     await fullUserRepository.delete(uid);
@@ -62,12 +62,12 @@ export class UserController extends BaseController {
 
     const user = await fullUserRepository.findOne(uid);
 
-    if (!req.session.hasPermission('user', 'read', user)) {
-      return next(new Forbidden(`User is missing permissions to read the user "${uid}"`));
-    }
-
     if (!user) {
       return next(new ObjectNotFound('user', uid));
+    }
+
+    if (!req.session.hasPermission('user', 'read', user)) {
+      return next(new Forbidden(`User is missing permissions to read the user "${uid}"`));
     }
 
     res.json(user);
@@ -79,12 +79,12 @@ export class UserController extends BaseController {
 
     const user = await fullUserRepository.findOne(uid);
 
-    if (!req.session.hasPermission('user', 'update', user)) {
-      return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
-    }
-
     if (!user) {
       return next(new ObjectNotFound('user', uid));
+    }
+
+    if (!req.session.hasPermission('user', 'update', user)) {
+      return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
     }
 
     const data: Partial<EnrichedUserApi> = {
