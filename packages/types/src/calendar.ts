@@ -1,7 +1,7 @@
 import type { ConstValues } from './helpers.js';
 
 export type EnrichedCalendarApi = {
-  authorUid: string | null;
+  authorUid: string;
   createdAt: string;
   isPublic: boolean;
   modifiedAt: string;
