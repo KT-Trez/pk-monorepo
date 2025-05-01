@@ -66,7 +66,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
 
   find(query: QueryExpression<T>, options?: FindManyOptions<T, PoolClient>): Promise<T[]> {
     const attributes = this.#selectAttributes(options?.attributes);
-    const limit = escapeLiteral(options?.limit?.toString() ?? '10');
+    const limit = escapeLiteral(options?.limit?.toString() ?? '100');
     const offset = escapeLiteral(options?.offset?.toString() ?? '0');
     const orderBy = options?.orderBy ? this.getAttributeName_new(options.orderBy) : this.#primaryKeyIdentifier;
 
@@ -101,6 +101,16 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
       },
       tx: options?.tx,
     });
+  }
+
+  async findOneOrCreate(primaryKeyOrQuery: string | QueryExpression<T>, object: DeepPartial<T>, tx?: PoolClient) {
+    const foundObject = await this.findOne(primaryKeyOrQuery, { tx });
+
+    if (foundObject) {
+      return foundObject;
+    }
+
+    return this.create(object, tx);
   }
 
   async create(object: DeepPartial<T>, tx?: PoolClient): Promise<T> {
