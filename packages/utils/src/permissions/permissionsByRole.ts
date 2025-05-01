@@ -82,12 +82,11 @@ export const permissionsByRole: PermissionsByRole = {
       },
       read: (user, { calendar, event } = {}) => {
         const isCalendarAuthor = calendar?.authorUid === user.uid;
-        const isCalendarPublic = calendar?.isPublic;
         const isEditor = calendar?.sharedWith[user.uid] === CalendarShareType.Editor;
         const isViewer = calendar?.sharedWith[user.uid] === CalendarShareType.Viewer;
         const isEventAuthor = event?.authorUid === user.uid;
 
-        return isCalendarAuthor || isCalendarPublic || isEditor || isViewer || isEventAuthor;
+        return isCalendarAuthor || isEditor || isViewer || isEventAuthor;
       },
       update: (user, { calendar, event } = {}) => {
         const isCalendarAuthor = calendar?.authorUid === user.uid;
