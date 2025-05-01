@@ -17,7 +17,7 @@ import { not } from '@pk/utils/valueValidator/not.js';
 import { optional } from '@pk/utils/valueValidator/optional.js';
 import { RequestValidatorBuilder } from './RequestValidatorBuilder.ts';
 
-const SHARE_TYPE_REGEX = new RegExp(`^${CalendarShareType.Editor}|${CalendarShareType.Viewer}`);
+const _SHARE_TYPE_REGEX = new RegExp(`^${CalendarShareType.Editor}|${CalendarShareType.Viewer}`);
 
 export const postCalendarValidator = new RequestValidatorBuilder()
   .body()

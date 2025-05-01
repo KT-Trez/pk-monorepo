@@ -1,52 +1,77 @@
 .EventsCell-root {
-    display: flex;
-    flex-direction: row;
-    gap: var(--sizing-8);
+  display: flex;
+  flex-direction: row;
+  gap: var(--sizing-8);
 }
 
 .EventsCell-root > p {
-    min-width: 100px;
+  min-width: 100px;
 }
 
 .EventsCell-events {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sizing-4);
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sizing-4);
+  width: 100%;
 }
 
 .Event-root {
-    display: flex;
-    flex-direction: row;
-    gap: var(--sizing-8);
-    position: relative;
-}
-
-.Event-details {
-    grid-column: 3 / 9;
+  display: flex;
+  flex-direction: row;
+  gap: var(--sizing-8);
+  position: relative;
 }
 
 .Event-root .Event-delete-button {
-    display: none;
-    background-color: var(--color-danger);
-    height: fit-content;
-    left: 0;
-    position: absolute;
-    top: 0;
+  display: none;
+  background-color: var(--color-danger);
+  height: fit-content;
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 
 .Event-root:hover .Event-delete-button {
-    display: flex;
+  display: flex;
 }
 
 .Event-secondary-text {
-    color: var(--color-text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .Event-time {
-    grid-column: 1 / 3;
+  display: block;
+  white-space: nowrap;
+}
+
+.Event-mobile-time {
+  display: none;
 }
 
 .Event-time > p {
-    line-height: var(--text-h5-line-height);
+  line-height: var(--text-h5-line-height);
+}
+
+@media (max-width: 600px) {
+  .EventsCell-root {
+    flex-direction: column;
+    gap: var(--sizing-2);
+  }
+
+  .EventsCell-events {
+    gap: var(--sizing-4);
+  }
+
+  .Event-root {
+    flex-direction: column;
+    gap: var(--sizing-0);
+  }
+
+  .Event-time {
+    display: none;
+  }
+
+  .Event-mobile-time {
+    display: block;
+  }
 }

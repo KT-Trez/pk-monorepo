@@ -1,9 +1,9 @@
 .NameCell-root {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .NameCell-uid {
-    color: var(--color-text-secondary);
-    word-break: keep-all;
+  color: var(--color-text-secondary);
+  word-break: keep-all;
 }
