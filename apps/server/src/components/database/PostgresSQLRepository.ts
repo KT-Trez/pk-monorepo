@@ -1,8 +1,8 @@
 import type { DeepPartial, UnknownObject } from '@pk/types/helpers.js';
 import pg, { type PoolClient } from 'pg';
-import type { BaseRepository, FindManyOptions, FindOptions } from '../../types/repository.ts';
+import type { BaseRepository, FindManyOptions, FindOptions, QueryExpression } from '../../types/repository.ts';
 import { ServerError } from '../response/ServerError.ts';
-import { Client } from './Client.ts';
+import { DatabaseService } from './DatabaseService.ts';
 
 const { escapeIdentifier, escapeLiteral } = pg;
 
@@ -47,14 +47,15 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     this.#tableIdentifier = table.split('.').map(escapeIdentifier).join('.');
   }
 
-  async delete(primaryKeyOrQuery: string | Partial<T>, tx?: PoolClient): Promise<boolean> {
+  async delete(primaryKeyOrQuery: string | QueryExpression<T>, tx?: PoolClient): Promise<boolean> {
     const conditions = this.#where(primaryKeyOrQuery);
+    const where = conditions ? conditions : '1 = 1';
 
-    const result = await Client.instance.queryRow<{ success: boolean }>({
+    const result = await DatabaseService.instance.queryRow<{ success: boolean }>({
       queryTextOrConfig: {
         text: `DELETE
                FROM ${this.#tableIdentifier}
-               WHERE ${conditions}
+               WHERE ${where}
                RETURNING true AS success`,
       },
       tx,
@@ -63,7 +64,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     return result?.success ?? false;
   }
 
-  find(query: Partial<T>, options?: FindManyOptions<T, PoolClient>): Promise<T[]> {
+  find(query: QueryExpression<T>, options?: FindManyOptions<T, PoolClient>): Promise<T[]> {
     const attributes = this.#selectAttributes(options?.attributes);
     const limit = escapeLiteral(options?.limit?.toString() ?? '10');
     const offset = escapeLiteral(options?.offset?.toString() ?? '0');
@@ -72,7 +73,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const conditions = this.#where(query);
     const where = conditions ? conditions : '1 = 1';
 
-    return Client.instance.queryRows<T>({
+    return DatabaseService.instance.queryRows<T>({
       queryTextOrConfig: {
         text: `SELECT ${attributes}
                FROM ${this.#tableIdentifier}
@@ -84,11 +85,14 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     });
   }
 
-  findOne(primaryKeyOrQuery: string | Partial<T>, options?: FindOptions<T, PoolClient>): Promise<T | undefined> {
+  findOne(
+    primaryKeyOrQuery: string | QueryExpression<T>,
+    options?: FindOptions<T, PoolClient>,
+  ): Promise<T | undefined> {
     const attributes = this.#selectAttributes(options?.attributes);
     const conditions = this.#where(primaryKeyOrQuery);
 
-    return Client.instance.queryRow<T>({
+    return DatabaseService.instance.queryRow<T>({
       queryTextOrConfig: {
         text: `SELECT ${attributes}
                FROM ${this.#tableIdentifier}
@@ -111,7 +115,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const into = attributes.join(', ');
     const parameters = values.map((_, index) => `$${index + 1}`).join(',');
 
-    const row = await Client.instance.queryRow<T>({
+    const row = await DatabaseService.instance.queryRow<T>({
       queryTextOrConfig: {
         text: `INSERT INTO ${this.#tableIdentifier} (${into})
                VALUES (${parameters})
@@ -129,7 +133,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
   }
 
   async update(
-    primaryKeyOrQuery: string | Partial<T>,
+    primaryKeyOrQuery: string | QueryExpression<T>,
     newObject: DeepPartial<T>,
     tx?: PoolClient,
   ): Promise<T | undefined> {
@@ -150,7 +154,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const conditions = this.#where(primaryKeyOrQuery);
     const where = conditions ? conditions : '1 = 1';
 
-    return await Client.instance.queryRow<T>({
+    return await DatabaseService.instance.queryRow<T>({
       queryTextOrConfig: {
         text: `UPDATE ${this.#tableIdentifier}
                SET ${set}
@@ -195,7 +199,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     return attributes.map(this.getAttributeName_new).join(', ');
   }
 
-  #where(primaryKeyOrQuery: string | Partial<T>) {
+  #where(primaryKeyOrQuery: string | QueryExpression<T>) {
     const isPrimaryKeyCondition = typeof primaryKeyOrQuery === 'string';
 
     if (isPrimaryKeyCondition) {
@@ -205,10 +209,22 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const where: string[] = [];
 
     for (const key in primaryKeyOrQuery) {
-      const escapedAttribute = this.getAttributeName_new(key);
-      const escapedValue = escapeLiteral(primaryKeyOrQuery[key] as string);
+      const value = primaryKeyOrQuery[key];
 
-      where.push(`${escapedAttribute} = ${escapedValue}`);
+      const isINOperator = key.endsWith('__in') && Array.isArray(value);
+
+      if (isINOperator) {
+        const originalKey = key.slice(0, -4);
+        const escapedAttribute = this.getAttributeName_new(originalKey);
+        const escapedValues = value.map(data => escapeLiteral(data)).join(', ');
+
+        where.push(`${escapedAttribute} IN (${escapedValues})`);
+      } else if (value !== undefined) {
+        const escapedAttribute = this.getAttributeName_new(key);
+        const escapedValue = escapeLiteral(value as string);
+
+        where.push(`${escapedAttribute} = ${escapedValue}`);
+      }
     }
 
     return where.join(' AND ');

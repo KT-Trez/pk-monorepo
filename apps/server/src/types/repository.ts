@@ -13,13 +13,17 @@ export type FindManyOptions<T extends UnknownObject, C> = FindOptions<T, C> & {
   orderBy?: keyof T;
 };
 
+export type QueryExpression<T extends UnknownObject> = Partial<T> & {
+  [K in keyof T as `${string & K}__in`]?: string[];
+};
+
 export type Reader<T extends UnknownObject, C> = {
-  find(query: Partial<T>, options?: FindManyOptions<T, C>): Promise<T[]>;
-  findOne(primaryKeyOrQuery: string | Partial<T>, options?: FindOptions<T, C>): Promise<T | undefined>;
+  find(query: QueryExpression<T>, options?: FindManyOptions<T, C>): Promise<T[]>;
+  findOne(primaryKeyOrQuery: string | QueryExpression<T>, options?: FindOptions<T, C>): Promise<T | undefined>;
 };
 
 export type Writer<T extends UnknownObject, C> = {
   create(object: DeepPartial<T>, tx?: C): Promise<T>;
-  delete(primaryKeyOrQuery: string | Partial<T>, tx?: C): Promise<boolean>;
-  update(primaryKeyOrQuery: string | Partial<T>, object: DeepPartial<T>, tx?: C): Promise<T | undefined>;
+  delete(primaryKeyOrQuery: string | QueryExpression<T>, tx?: C): Promise<boolean>;
+  update(primaryKeyOrQuery: string | QueryExpression<T>, object: DeepPartial<T>, tx?: C): Promise<T | undefined>;
 };
