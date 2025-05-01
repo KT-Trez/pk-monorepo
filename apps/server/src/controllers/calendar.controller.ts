@@ -71,7 +71,7 @@ export class CalendarController extends BaseController {
       return next(new ObjectNotFound('calendar', uid));
     }
 
-    if (!req.session.hasPermission('calendar', 'update', { calendar, payload })) {
+    if (!req.session.hasPermission('calendar', 'update', calendar)) {
       return next(new Forbidden(`User is missing permissions to update the calendar "${uid}"`));
     }
 
