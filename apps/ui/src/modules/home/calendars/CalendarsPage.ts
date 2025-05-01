@@ -37,7 +37,7 @@ export class CalendarsPage extends BaseComponent {
     this.#header = new PageHeader('Calendars');
     this.#content = new ListPageContent({ actions }).setContent(this.#table);
 
-    this.#subscribe(calendars => this.#table.renderContent(calendars));
+    this.#subscribe(calendars => this.#table.setData(calendars));
     this.#onRender();
   }
 

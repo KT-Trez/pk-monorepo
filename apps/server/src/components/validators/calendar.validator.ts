@@ -11,7 +11,7 @@ import { isMapMatching } from '@pk/utils/valueValidator/isMapMatching.js';
 import { isMatching } from '@pk/utils/valueValidator/isMatching.js';
 import { isNull } from '@pk/utils/valueValidator/isNull.js';
 import { isOneOf } from '@pk/utils/valueValidator/isOneOf.js';
-import { isString, isStringMatching } from '@pk/utils/valueValidator/isString.js';
+import { isString } from '@pk/utils/valueValidator/isString.js';
 import { isUUID } from '@pk/utils/valueValidator/isUUID.js';
 import { not } from '@pk/utils/valueValidator/not.js';
 import { optional } from '@pk/utils/valueValidator/optional.js';
@@ -26,7 +26,6 @@ export const postCalendarValidator = new RequestValidatorBuilder()
     isMatching<EnrichedCalendarCreateApiPayload>({
       isPublic: [optional(isBoolean)],
       name: [isString()],
-      sharedWith: [optional(isMapMatching(isUUID, isStringMatching(SHARE_TYPE_REGEX)))],
     }),
     'must match the "EnrichedCalendarCreateApiPayload" object shape',
   )
@@ -40,7 +39,6 @@ export const putCalendarValidator = new RequestValidatorBuilder()
     isMatching<EnrichedCalendarUpdateApiPayload>({
       isPublic: [optional(isBoolean)],
       name: [optional(isString())],
-      sharedWith: [optional(isMapMatching(isUUID, isOneOf([isStringMatching(SHARE_TYPE_REGEX), isNull])))],
       uid: [isUUID],
     }),
     'must match the "EnrichedCalendarUpdateApiPayload" object shape',

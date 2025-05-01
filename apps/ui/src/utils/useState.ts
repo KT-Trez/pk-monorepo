@@ -1,4 +1,4 @@
-import type { NewState, SubscribeState, StateSubscription, UseStateReturn } from '../types/useState.ts';
+import type { NewState, StateSubscription, SubscribeState, UseStateReturn } from '../types/useState.ts';
 
 export const useState = <T extends boolean | null | number | string | unknown[]>(
   initialState: T,

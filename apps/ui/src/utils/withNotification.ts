@@ -18,11 +18,13 @@ export const withNotification = async <T>({
   try {
     const resolved = await promise;
 
-    const fallbackMessage = 'Action completed successfully';
     const message = typeof successMessage === 'string' ? successMessage : successMessage?.(resolved);
 
     onSuccess?.(resolved);
-    notifier.notify({ severity: 'success', text: message ?? fallbackMessage });
+
+    if (message) {
+      notifier.notify({ severity: 'success', text: message });
+    }
 
     return resolved;
   } catch (error) {

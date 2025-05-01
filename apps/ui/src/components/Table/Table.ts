@@ -8,38 +8,41 @@ import { ColumnAlign, type ColumnDefinition, type RowAction, RowActionVariant } 
 
 type TableProps<T> = {
   columns: ColumnDefinition<T>[];
+  hideHeader?: boolean;
   rowActions?: RowAction<T>[];
 };
 
-export class Table<T> extends BaseComponent implements CanBeRerendered {
+export class Table<T> extends BaseComponent implements CanBeRerendered<T> {
   #body: Component;
-  #header: Component;
+  #header: Component | null;
 
   #columns: ColumnDefinition<T>[];
+  #data: T[];
   #rowActions: RowAction<T>[];
 
-  constructor({ columns, rowActions }: TableProps<T>) {
+  constructor({ columns, hideHeader, rowActions }: TableProps<T>) {
     super('table');
     this.addClass('Table-root');
 
     this.#columns = columns;
+    this.#data = [];
     this.#rowActions = rowActions ?? [];
 
     const headerCells = columns.map(column => new BaseComponent('th').setTextContent(column.label));
     const headerRow = new BaseComponent('tr').children(headerCells);
 
-    this.#header = new BaseComponent('thead').children(headerRow);
+    this.#header = hideHeader ? null : new BaseComponent('thead').children(headerRow);
     this.#body = new BaseComponent('tbody');
   }
 
   render(): HTMLElement {
-    return this.children([this.#header, this.#body]).root;
+    return this.children([...(this.#header ? [this.#header] : []), this.#body]).root;
   }
 
-  renderContent(data: T[]) {
+  renderData() {
     const rows: Component[] = [];
 
-    for (const datum of data) {
+    for (const datum of this.#data) {
       const columns = this.#renderColumns(datum);
       const rowActions = this.#renderRowActions(datum);
 
@@ -48,6 +51,12 @@ export class Table<T> extends BaseComponent implements CanBeRerendered {
 
     removeChildren(this.#body.root);
     this.#body.children(rows);
+  }
+
+  setData(data: T[]) {
+    this.#data = data;
+    this.renderData();
+    return this;
   }
 
   #renderColumns(datum: T) {

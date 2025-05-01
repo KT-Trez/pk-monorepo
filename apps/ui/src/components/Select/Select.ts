@@ -1,40 +1,39 @@
-import './textField.css';
-import type { CanBeDisabled, Component } from '../../types/component.ts';
+import './select.css';
+import type { CanBeDisabled, CanBeRerendered, Component } from '../../types/component.ts';
 import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
 import { Icon } from '../Icon/Icon.ts';
 import { Typography } from '../Typography/Typography.ts';
 
-type TextFieldTypeAttribute =
-  | 'date'
-  | 'datetime-local'
-  | 'email'
-  | 'month'
-  | 'number'
-  | 'password'
-  | 'search'
-  | 'tel'
-  | 'text'
-  | 'time-local'
-  | 'url'
-  | 'week';
+type SelectOptions<T> = {
+  getOptionLabel?: (option: T) => string;
+  getOptionValue?: (option: T) => string;
+};
 
-export class TextField extends BaseComponent implements CanBeDisabled {
+export class Select<T> extends BaseComponent implements CanBeDisabled, CanBeRerendered<T> {
+  #config: SelectOptions<T>;
   #name: string;
+  #options: T[];
 
   #control: Component;
   #icons: { end: Component<'span'> | null; start: Component<'span'> | null };
   #label: Component<'label'> | null;
-  #input: Component<'input'>;
+  #input: Component<'select'>;
 
-  constructor(name: string) {
+  constructor(name: string, config: SelectOptions<T> = {}) {
     super('div');
-    this.addClass('TextField-root');
-    this.#name = name;
+    this.addClass('Select-root');
 
-    this.#control = new BaseComponent('div').addClass('TextField-control');
+    this.#config = config;
+    this.#name = name;
+    this.#options = [];
+
+    this.#control = new BaseComponent('div').addClass('Select-control');
     this.#label = null;
     this.#icons = { end: null, start: null };
-    this.#input = new BaseComponent('input').setAttribute('id', this.#name).setAttribute('name', this.#name);
+    this.#input = new BaseComponent('select')
+      .addClass('typography-body-1')
+      .setAttribute('id', this.#name)
+      .setAttribute('name', this.#name);
   }
 
   render(): HTMLElement {
@@ -53,6 +52,19 @@ export class TextField extends BaseComponent implements CanBeDisabled {
     return this;
   }
 
+  renderData() {
+    const options: Component[] = this.#options.map(option => {
+      const value = this.#config.getOptionValue ? this.#config.getOptionValue(option) : String(option);
+      const label = this.#config.getOptionLabel ? this.#config.getOptionLabel(option) : String(option);
+
+      return new Typography({ text: label, tag: 'option' }).setAttribute('value', value);
+    });
+
+    this.#input.children(options);
+
+    return this;
+  }
+
   setDisabled() {
     this.addClass('Modifier-disabled');
     this.#input.setAttribute('disabled', 'true');
@@ -60,18 +72,13 @@ export class TextField extends BaseComponent implements CanBeDisabled {
   }
 
   setEnabled() {
-    this.removeClass('TextField-disabled');
+    this.removeClass('Modifier-disabled');
     this.#input.removeAttribute('disabled');
     return this;
   }
 
   setFullWidth() {
-    this.addClass('TextField-root--fullWidth');
-    return this;
-  }
-
-  setInputAttribute(name: string, value: string) {
-    this.#input.setAttribute(name, value);
+    this.addClass('Select-root--fullWidth');
     return this;
   }
 
@@ -80,8 +87,9 @@ export class TextField extends BaseComponent implements CanBeDisabled {
     return this;
   }
 
-  setPlaceholder(placeholder: string) {
-    this.#input.setAttribute('placeholder', placeholder);
+  setData(options: T[]) {
+    this.#options = options;
+    this.renderData();
     return this;
   }
 
@@ -92,10 +100,5 @@ export class TextField extends BaseComponent implements CanBeDisabled {
 
   setStatus(status: 'disabled' | 'enabled') {
     return status === 'disabled' ? this.setDisabled() : this.setEnabled();
-  }
-
-  setType(type: TextFieldTypeAttribute) {
-    this.#input.setAttribute('type', type);
-    return this;
   }
 }

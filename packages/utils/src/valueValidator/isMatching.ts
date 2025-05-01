@@ -9,8 +9,12 @@ export const isMatching = <T extends UnknownObject>(
       return false;
     }
 
-    for (const key in obj) {
+    for (const key in value) {
       const conditions = obj[key];
+      if (!conditions) {
+        return false;
+      }
+
       // @ts-ignore: cannot index a generic 'object' type
       const property = value[key];
 

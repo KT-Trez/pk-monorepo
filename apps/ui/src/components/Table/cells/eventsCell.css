@@ -1,0 +1,52 @@
+.EventsCell-root {
+    display: flex;
+    flex-direction: row;
+    gap: var(--sizing-8);
+}
+
+.EventsCell-root > p {
+    min-width: 100px;
+}
+
+.EventsCell-events {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sizing-4);
+    width: 100%;
+}
+
+.Event-root {
+    display: flex;
+    flex-direction: row;
+    gap: var(--sizing-8);
+    position: relative;
+}
+
+.Event-details {
+    grid-column: 3 / 9;
+}
+
+.Event-root .Event-delete-button {
+    display: none;
+    background-color: var(--color-danger);
+    height: fit-content;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.Event-root:hover .Event-delete-button {
+    display: flex;
+}
+
+.Event-secondary-text {
+    color: var(--color-text-secondary);
+}
+
+.Event-time {
+    grid-column: 1 / 3;
+}
+
+.Event-time > p {
+    line-height: var(--text-h5-line-height);
+}

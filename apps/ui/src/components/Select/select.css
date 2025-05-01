@@ -1,0 +1,32 @@
+.Select-root {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 350px;
+    width: fit-content;
+}
+
+.Select-root--fullWidth {
+    width: 100%;
+}
+
+.Select-control {
+    align-items: center;
+    background: var(--color-elevation-1);
+    border-radius: var(--size-border-radius);
+    display: flex;
+    flex-direction: row;
+    gap: var(--sizing-2);
+    padding-inline: var(--sizing-3);
+    padding-block: var(--sizing-2);
+    width: 100%;
+}
+
+.Select-control select {
+    background: transparent;
+    border: none;
+    height: var(--text-body-1-line-height);
+    outline: none;
+    width: 100%;
+}
+

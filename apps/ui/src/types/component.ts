@@ -16,8 +16,9 @@ export type CanBeDisabled = {
   setStatus(status: 'disabled' | 'enabled'): CanBeDisabled;
 };
 
-export type CanBeRerendered = {
-  renderContent(...args: unknown[]): void;
+export type CanBeRerendered<T> = {
+  renderData(): void;
+  setData(data: T[]): CanBeRerendered<T>;
 };
 
 export type CanBeStyled = {

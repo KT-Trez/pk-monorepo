@@ -8,11 +8,11 @@
     position: relative;
 }
 
-.Table-root tr:hover {
+.Table-root tr:has(.Table-rowAction):hover {
     background: linear-gradient(90deg, var(--color-background), var(--color-elevation-1));
 }
 
-.Table-root tr:hover td {
+.Table-root tr:has(.Table-rowAction):hover td {
     opacity: 0.15;
 }
 

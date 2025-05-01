@@ -74,7 +74,6 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
 
     return Client.instance.queryRows<T>({
       queryTextOrConfig: {
-        name: `find-${this.table}-${conditions}`.substring(0, 63),
         text: `SELECT ${attributes}
                FROM ${this.#tableIdentifier}
                WHERE ${where}
@@ -91,7 +90,6 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
 
     return Client.instance.queryRow<T>({
       queryTextOrConfig: {
-        name: `find-one-${this.table}-${conditions}`.substring(0, 63),
         text: `SELECT ${attributes}
                FROM ${this.#tableIdentifier}
                WHERE ${conditions}
