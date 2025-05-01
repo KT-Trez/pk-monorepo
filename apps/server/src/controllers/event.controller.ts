@@ -34,7 +34,7 @@ export class EventController extends BaseController {
     const uid = req.getSearchParam('uid');
 
     const event = await eventRepository.findOne(uid);
-    const calendar = await enrichedCalendarRepository.findOne({ uid: event?.uid });
+    const calendar = await enrichedCalendarRepository.findOne({ uid: event?.calendarUid });
 
     if (!req.session.hasPermission('event', 'delete', { event, calendar })) {
       return next(new Forbidden(`User is missing permissions to delete the event "${uid}"`));
