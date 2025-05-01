@@ -36,12 +36,12 @@ export class EventController extends BaseController {
     const event = await eventRepository.findOne(uid);
     const calendar = await enrichedCalendarRepository.findOne({ uid: event?.calendarUid });
 
-    if (!req.session.hasPermission('event', 'delete', { event, calendar })) {
-      return next(new Forbidden(`User is missing permissions to delete the event "${uid}"`));
-    }
-
     if (!event) {
       return next(new ObjectNotFound('event', uid));
+    }
+
+    if (!req.session.hasPermission('event', 'delete', { event, calendar })) {
+      return next(new Forbidden(`User is missing permissions to delete the event "${uid}"`));
     }
 
     await eventRepository.delete(uid);
@@ -79,19 +79,15 @@ export class EventController extends BaseController {
     const payload = req.getBody<Partial<EventApi>>();
     const uid = payload.uid;
 
-    if (!uid) {
-      return next(new Forbidden('Event UID is required'));
-    }
-
     const event = await eventRepository.findOne(uid);
     const calendar = await enrichedCalendarRepository.findOne({ uid: event?.calendarUid });
 
-    if (!req.session.hasPermission('event', 'update', { event, calendar })) {
-      return next(new Forbidden(`User is missing permissions to update the event "${uid}"`));
-    }
-
     if (!event) {
       return next(new ObjectNotFound('event', uid));
+    }
+
+    if (!req.session.hasPermission('event', 'update', { event, calendar })) {
+      return next(new Forbidden(`User is missing permissions to update the event "${uid}"`));
     }
 
     const updatedEvent = await eventRepository.update(uid, payload);

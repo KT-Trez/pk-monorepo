@@ -37,12 +37,12 @@ export class CalendarController extends BaseController {
 
     const calendar = await enrichedCalendarRepository.findOne(uid);
 
-    if (!req.session.hasPermission('calendar', 'delete', calendar)) {
-      return next(new Forbidden(`User is missing permissions to delete the calendar "${uid}"`));
-    }
-
     if (!calendar) {
       return next(new ObjectNotFound('calendar', uid));
+    }
+
+    if (!req.session.hasPermission('calendar', 'delete', calendar)) {
+      return next(new Forbidden(`User is missing permissions to delete the calendar "${uid}"`));
     }
 
     await enrichedCalendarRepository.delete(uid);
@@ -67,12 +67,12 @@ export class CalendarController extends BaseController {
 
     const calendar = await enrichedCalendarRepository.findOne(uid);
 
-    if (!req.session.hasPermission('calendar', 'update', { calendar, payload })) {
-      return next(new Forbidden(`User is missing permissions to update the calendar "${uid}"`));
-    }
-
     if (!calendar) {
       return next(new ObjectNotFound('calendar', uid));
+    }
+
+    if (!req.session.hasPermission('calendar', 'update', { calendar, payload })) {
+      return next(new Forbidden(`User is missing permissions to update the calendar "${uid}"`));
     }
 
     const updatedCalendar = await enrichedCalendarRepository.update(uid, payload);
@@ -87,14 +87,14 @@ export class CalendarController extends BaseController {
 
       const calendar = await enrichedCalendarRepository.findOne(uid);
 
+      if (!calendar) {
+        return next(new ObjectNotFound('calendar', uid));
+      }
+
       if (!req.session.hasPermission('calendar', action, calendar)) {
         return next(
           new Forbidden(`User is missing permissions to update the "sharedWith" property in calendar "${uid}"`),
         );
-      }
-
-      if (!calendar) {
-        return next(new ObjectNotFound('calendar', uid));
       }
 
       const updatedCalendar = await enrichedCalendarRepository.update(uid, payload);
