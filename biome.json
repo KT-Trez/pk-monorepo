@@ -2,11 +2,13 @@
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "files": {
     "include": [
+      "apps/**/*.css",
       "apps/**/*.js",
       "apps/**/*.jsx",
       "apps/**/*.json",
       "apps/**/*.ts",
       "apps/**/*.tsx",
+      "packages/**/*.css",
       "packages/**/*.js",
       "packages/**/*.jsx",
       "packages/**/*.json",

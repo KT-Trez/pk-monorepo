@@ -9,7 +9,7 @@ import { client, notifier } from '../../../main.ts';
 import type { Component } from '../../../types/component.ts';
 import { navigate } from '../../../utils/navigate.ts';
 
-export class CalendarFormForm extends BaseComponent {
+export class CalendarFormPage extends BaseComponent {
   #content: Component;
   #header: Component;
 

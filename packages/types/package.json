@@ -7,6 +7,7 @@
     "./calendar.js": "./src/calendar.ts",
     "./event.js": "./src/event.ts",
     "./helpers.js": "./src/helpers.ts",
+    "./option.js": "./src/option.ts",
     "./session.js": "./src/session.ts",
     "./user.js": "./src/user.ts",
     "./valueValidator.js": "./src/valueValidator.ts"

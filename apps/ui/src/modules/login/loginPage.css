@@ -1,12 +1,12 @@
 .FullPage-root {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    height: 100vh;
-    width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  height: 100vh;
+  width: 100vw;
 }
 
 @media (max-width: 600px) {
-    .FullPage-root {
-        grid-template-columns: 1fr;
-    }
+  .FullPage-root {
+    grid-template-columns: 1fr;
+  }
 }

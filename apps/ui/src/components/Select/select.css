@@ -1,4 +1,4 @@
-.TextField-root {
+.Select-root {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -6,11 +6,11 @@
   width: fit-content;
 }
 
-.TextField-root--fullWidth {
+.Select-root--fullWidth {
   width: 100%;
 }
 
-.TextField-control {
+.Select-control {
   align-items: center;
   background: var(--color-elevation-1);
   border-radius: var(--size-border-radius);
@@ -22,20 +22,10 @@
   width: 100%;
 }
 
-.TextField-control:has(input:focus) {
-  outline: 2px solid var(--color-primary);
-}
-
-.TextField-control > input {
+.Select-control select {
   background: transparent;
   border: none;
+  height: var(--text-body-1-line-height);
   outline: none;
   width: 100%;
-}
-
-.TextField-control > input[placeholder] {
-  color: var(--color-text-primary);
-  font-size: var(--text-body-1-font-size);
-  font-weight: var(--text-body-1-font-weight);
-  line-height: var(--text-body-1-line-height);
 }

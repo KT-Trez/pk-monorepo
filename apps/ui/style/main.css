@@ -1,13 +1,13 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    min-width: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
 }
 
 html {
-    background-color: var(--color-background);
-    color: var(--color-text-primary);
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 20px;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: "Ubuntu", sans-serif;
+  font-size: 20px;
 }

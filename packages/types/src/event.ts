@@ -1,15 +1,27 @@
-import type { CalendarDb } from './calendar.js';
+import type { EnrichedCalendarApi } from './calendar.js';
 
 export type EventApi = {
-  calendar_uid: string;
-  description: null | string;
-  end_date: string;
-  location: null | string;
-  start_date: string;
+  authorUid: string;
+  calendarUid: string;
+  createdAt: string;
+  description: string | null;
+  endDate: string;
+  location: string | null;
+  modifiedAt: string;
+  startDate: string;
   title: string;
   uid: string;
 };
 
-export type EventDb = EventApi & {
-  calendar: CalendarDb;
+export type EnrichedEventApi = EventApi & {
+  calendar: EnrichedCalendarApi;
+};
+
+export type EventApiCreatePayload = Pick<EventApi, 'calendarUid' | 'endDate' | 'startDate' | 'title'> & {
+  description?: EventApi['description'];
+  location?: EventApi['location'];
+};
+
+export type EventApiUpdatePayload = Partial<EventApiCreatePayload> & {
+  uid: EventApi['uid'];
 };

@@ -2,11 +2,91 @@
   "openapi": "3.1.0",
   "components": {
     "examples": {
+      "Calendar": {
+        "value": {
+          "authorUid": "123e4567-e89b-12d3-a456-426614174000",
+          "createdAt": "2023-10-01T12:00:00Z",
+          "isPublic": true,
+          "modifiedAt": "2023-10-01T12:00:00Z",
+          "name": "Work Calendar",
+          "sharedWith": {
+            "456e7890-e12d-34f5-a678-426614174000": "viewer"
+          },
+          "uid": "789e0123-e45f-67d8-a901-426614174000"
+        }
+      },
+      "CalendarCreateRequest": {
+        "value": {
+          "name": "Work Calendar",
+          "isPublic": true
+        }
+      },
+      "CalendarUpdateRequest": {
+        "value": {
+          "uid": "789e0123-e45f-67d8-a901-426614174000",
+          "name": "Updated Calendar Name",
+          "isPublic": false
+        }
+      },
+      "CalendarShareRequest": {
+        "value": {
+          "uid": "789e0123-e45f-67d8-a901-426614174000",
+          "sharedWith": {
+            "456e7890-e12d-34f5-a678-426614174000": "editor"
+          }
+        }
+      },
+      "Collection": {
+        "value": {
+          "hasMore": false,
+          "items": [],
+          "limit": 10,
+          "offset": 0
+        }
+      },
+      "Event": {
+        "value": {
+          "authorUid": "123e4567-e89b-12d3-a456-426614174000",
+          "calendarUid": "789e0123-e45f-67d8-a901-426614174000",
+          "createdAt": "2023-10-01T12:00:00Z",
+          "description": "Team meeting to discuss project progress",
+          "endDate": "2023-10-02T14:00:00Z",
+          "location": "Conference Room A",
+          "modifiedAt": "2023-10-01T12:00:00Z",
+          "startDate": "2023-10-02T13:00:00Z",
+          "title": "Team Meeting",
+          "uid": "abc1234d-e56f-78g9-h012-426614174000"
+        }
+      },
+      "EventCreateRequest": {
+        "value": {
+          "calendarUid": "789e0123-e45f-67d8-a901-426614174000",
+          "title": "Team Meeting",
+          "startDate": "2023-10-02T13:00:00Z",
+          "endDate": "2023-10-02T14:00:00Z",
+          "description": "Team meeting to discuss project progress",
+          "location": "Conference Room A"
+        }
+      },
+      "EventUpdateRequest": {
+        "value": {
+          "uid": "abc1234d-e56f-78g9-h012-426614174000",
+          "title": "Updated Meeting Title",
+          "startDate": "2023-10-02T13:30:00Z",
+          "endDate": "2023-10-02T14:30:00Z"
+        }
+      },
       "NotFound": {
         "value": {
           "code": 404,
           "message": "Not found",
           "success": false
+        }
+      },
+      "Option": {
+        "value": {
+          "name": "Work Calendar",
+          "uid": "789e0123-e45f-67d8-a901-426614174000"
         }
       },
       "ServerError": {
@@ -18,10 +98,9 @@
       },
       "Session": {
         "value": {
-          "acl": "0x1fa3bc38",
-          "expiresAt": "2023-10-02T12:00:00Z",
-          "sessionUid": "123e4567-e89b-12d3-a456-426614174000",
-          "startsAt": "2023-10-01T12:00:00Z"
+          "createdAt": "2023-10-02T12:00:00Z",
+          "expiresAt": "2023-10-03T12:00:00Z",
+          "uid": "123e4567-e89b-12d3-a456-426614174000"
         }
       },
       "SessionRequest": {
@@ -51,9 +130,357 @@
           "name": "John Doe",
           "uid": "123e4567-e89b-12d3-a456-426614174000"
         }
+      },
+      "UserCreateRequest": {
+        "value": {
+          "email": "john.doe@example.com",
+          "name": "John",
+          "surname": "Doe",
+          "password": "zaq1@WSX",
+          "roles": [
+            "member"
+          ]
+        }
+      },
+      "UserUpdateRequest": {
+        "value": {
+          "uid": "123e4567-e89b-12d3-a456-426614174000",
+          "name": "John Updated",
+          "surname": "Doe Updated"
+        }
       }
     },
     "schemas": {
+      "Calendar": {
+        "examples": {
+          "Calendar": {
+            "$ref": "#/components/examples/Calendar"
+          }
+        },
+        "properties": {
+          "authorUid": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          },
+          "modifiedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sharedWith": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "editor",
+                "viewer"
+              ]
+            }
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorUid",
+          "createdAt",
+          "isPublic",
+          "modifiedAt",
+          "name",
+          "sharedWith",
+          "uid"
+        ],
+        "type": "object"
+      },
+      "CalendarCreateRequest": {
+        "examples": {
+          "CalendarCreateRequest": {
+            "$ref": "#/components/examples/CalendarCreateRequest"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "CalendarUpdateRequest": {
+        "examples": {
+          "CalendarUpdateRequest": {
+            "$ref": "#/components/examples/CalendarUpdateRequest"
+          }
+        },
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "uid"
+        ],
+        "type": "object"
+      },
+      "CalendarShareRequest": {
+        "examples": {
+          "CalendarShareRequest": {
+            "$ref": "#/components/examples/CalendarShareRequest"
+          }
+        },
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "sharedWith": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "editor",
+                "viewer",
+                null
+              ]
+            }
+          }
+        },
+        "required": [
+          "uid",
+          "sharedWith"
+        ],
+        "type": "object"
+      },
+      "Collection": {
+        "examples": {
+          "Collection": {
+            "$ref": "#/components/examples/Collection"
+          }
+        },
+        "properties": {
+          "hasMore": {
+            "type": "boolean"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hasMore",
+          "items",
+          "limit",
+          "offset"
+        ],
+        "type": "object"
+      },
+      "Event": {
+        "examples": {
+          "Event": {
+            "$ref": "#/components/examples/Event"
+          }
+        },
+        "properties": {
+          "authorUid": {
+            "type": "string"
+          },
+          "calendarUid": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "modifiedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "authorUid",
+          "calendarUid",
+          "createdAt",
+          "endDate",
+          "modifiedAt",
+          "startDate",
+          "title",
+          "uid"
+        ],
+        "type": "object"
+      },
+      "EnrichedEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Event"
+          },
+          {
+            "properties": {
+              "calendar": {
+                "$ref": "#/components/schemas/Calendar"
+              }
+            },
+            "required": [
+              "calendar"
+            ]
+          }
+        ]
+      },
+      "EventCreateRequest": {
+        "examples": {
+          "EventCreateRequest": {
+            "$ref": "#/components/examples/EventCreateRequest"
+          }
+        },
+        "properties": {
+          "calendarUid": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "calendarUid",
+          "title",
+          "startDate",
+          "endDate"
+        ],
+        "type": "object"
+      },
+      "EventUpdateRequest": {
+        "examples": {
+          "EventUpdateRequest": {
+            "$ref": "#/components/examples/EventUpdateRequest"
+          }
+        },
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "calendarUid": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "uid"
+        ],
+        "type": "object"
+      },
+      "Option": {
+        "examples": {
+          "Option": {
+            "$ref": "#/components/examples/Option"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "uid"
+        ],
+        "type": "object"
+      },
       "ServerError": {
         "examples": {
           "ServerError": {
@@ -74,7 +501,11 @@
             "type": "boolean"
           }
         },
-        "required": ["code", "message", "success"],
+        "required": [
+          "code",
+          "message",
+          "success"
+        ],
         "type": "object"
       },
       "ServerSuccess": {
@@ -94,7 +525,11 @@
             "type": "boolean"
           }
         },
-        "required": ["code", "message", "success"],
+        "required": [
+          "code",
+          "message",
+          "success"
+        ],
         "type": "object"
       },
       "Session": {
@@ -104,7 +539,7 @@
           }
         },
         "properties": {
-          "acl": {
+          "createdAt": {
             "description": "Access Control List encoded as a hex string of permissions",
             "type": "string"
           },
@@ -112,18 +547,27 @@
             "format": "date-time",
             "type": "string"
           },
-          "sessionUid": {
+          "uid": {
             "type": "string"
           },
-          "startsAt": {
-            "format": "date-time",
-            "type": "string"
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         },
-        "required": ["acl", "expiresAt", "sessionUid", "startsAt"],
+        "required": [
+          "createdAt",
+          "expiresAt",
+          "uid",
+          "user"
+        ],
         "type": "object"
       },
       "SessionRequest": {
+        "examples": {
+          "SessionRequest": {
+            "$ref": "#/components/examples/SessionRequest"
+          }
+        },
         "properties": {
           "email": {
             "type": "string"
@@ -132,7 +576,10 @@
             "type": "string"
           }
         },
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object"
       },
       "User": {
@@ -143,7 +590,7 @@
         },
         "properties": {
           "album": {
-            "type": "integer"
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -151,11 +598,107 @@
           "name": {
             "type": "string"
           },
+          "surname": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "member"
+              ]
+            }
+          },
           "uid": {
             "type": "string"
           }
         },
-        "required": ["album", "email", "password", "uid"],
+        "required": [
+          "email",
+          "name",
+          "surname",
+          "roles",
+          "uid"
+        ],
+        "type": "object"
+      },
+      "UserCreateRequest": {
+        "examples": {
+          "UserCreateRequest": {
+            "$ref": "#/components/examples/UserCreateRequest"
+          }
+        },
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "member"
+              ]
+            }
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "surname",
+          "password",
+          "roles"
+        ],
+        "type": "object"
+      },
+      "UserUpdateRequest": {
+        "examples": {
+          "UserUpdateRequest": {
+            "$ref": "#/components/examples/UserUpdateRequest"
+          }
+        },
+        "properties": {
+          "uid": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "admin",
+                "member"
+              ]
+            }
+          }
+        },
+        "required": [
+          "uid"
+        ],
         "type": "object"
       }
     },
@@ -232,6 +775,455 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/calendar": {
+      "delete": {
+        "description": "Delete a calendar by UID",
+        "parameters": [
+          {
+            "description": "Calendar UID",
+            "in": "query",
+            "name": "uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calendar deleted successfully",
+            "$ref": "#/components/responses/200"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Delete a calendar by UID"
+      },
+      "post": {
+        "description": "Create a new calendar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalendarCreateRequest"
+              },
+              "examples": {
+                "CalendarCreateRequest": {
+                  "$ref": "#/components/examples/CalendarCreateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Calendar"
+                }
+              }
+            },
+            "description": "Calendar created successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Create a new calendar"
+      },
+      "put": {
+        "description": "Update a calendar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalendarUpdateRequest"
+              },
+              "examples": {
+                "CalendarUpdateRequest": {
+                  "$ref": "#/components/examples/CalendarUpdateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Calendar"
+                }
+              }
+            },
+            "description": "Calendar updated successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Update a calendar"
+      }
+    },
+    "/v1/calendar/follow": {
+      "put": {
+        "description": "Follow a calendar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalendarShareRequest"
+              },
+              "examples": {
+                "CalendarShareRequest": {
+                  "$ref": "#/components/examples/CalendarShareRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Calendar"
+                }
+              }
+            },
+            "description": "Calendar followed successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Follow a calendar"
+      }
+    },
+    "/v1/calendar/unfollow": {
+      "put": {
+        "description": "Unfollow a calendar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalendarShareRequest"
+              },
+              "examples": {
+                "CalendarShareRequest": {
+                  "$ref": "#/components/examples/CalendarShareRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Calendar"
+                }
+              }
+            },
+            "description": "Calendar unfollowed successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Unfollow a calendar"
+      }
+    },
+    "/v1/calendars": {
+      "get": {
+        "description": "Get all calendars with pagination",
+        "parameters": [
+          {
+            "description": "Maximum number of items to return",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "description": "Number of items to skip",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Calendar"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Calendars retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get all calendars with pagination"
+      }
+    },
+    "/v1/event": {
+      "delete": {
+        "description": "Delete an event by UID",
+        "parameters": [
+          {
+            "description": "Event UID",
+            "in": "query",
+            "name": "uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully",
+            "$ref": "#/components/responses/200"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Delete an event by UID"
+      },
+      "post": {
+        "description": "Create a new event",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventCreateRequest"
+              },
+              "examples": {
+                "EventCreateRequest": {
+                  "$ref": "#/components/examples/EventCreateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            },
+            "description": "Event created successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Create a new event"
+      },
+      "put": {
+        "description": "Update an event",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventUpdateRequest"
+              },
+              "examples": {
+                "EventUpdateRequest": {
+                  "$ref": "#/components/examples/EventUpdateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            },
+            "description": "Event updated successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Update an event"
+      }
+    },
+    "/v1/events": {
+      "get": {
+        "description": "Get all events with pagination",
+        "parameters": [
+          {
+            "description": "Maximum number of items to return",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "description": "Number of items to skip",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/EnrichedEvent"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Events retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get all events with pagination"
+      }
+    },
+    "/v1/options/calendar": {
+      "get": {
+        "description": "Get calendar options",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Option"
+                  }
+                }
+              }
+            },
+            "description": "Calendar options retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get calendar options"
+      }
+    },
     "/v1/session": {
       "delete": {
         "description": "Delete session information",
@@ -261,7 +1253,7 @@
         "summary": "Delete session information"
       },
       "post": {
-        "description": "Retrieve session information",
+        "description": "Create a new session (login)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -286,7 +1278,7 @@
                 }
               }
             },
-            "description": "API information retrieved successfully"
+            "description": "Session created successfully"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -295,16 +1287,30 @@
             "$ref": "#/components/responses/500"
           }
         },
-        "summary": "Get session information"
+        "summary": "Create a new session (login)"
       }
     },
     "/v1/user": {
       "delete": {
-        "description": "Delete user",
+        "description": "Delete a user by UID",
+        "parameters": [
+          {
+            "description": "User UID",
+            "in": "query",
+            "name": "uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "User deleted successfully",
             "$ref": "#/components/responses/200"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -312,7 +1318,181 @@
           "500": {
             "$ref": "#/components/responses/500"
           }
-        }
+        },
+        "summary": "Delete a user by UID"
+      },
+      "get": {
+        "description": "Get a user by UID",
+        "parameters": [
+          {
+            "description": "User UID",
+            "in": "query",
+            "name": "uid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "User retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get a user by UID"
+      },
+      "post": {
+        "description": "Create a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequest"
+              },
+              "examples": {
+                "UserCreateRequest": {
+                  "$ref": "#/components/examples/UserCreateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "User created successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Create a new user"
+      },
+      "put": {
+        "description": "Update a user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              },
+              "examples": {
+                "UserUpdateRequest": {
+                  "$ref": "#/components/examples/UserUpdateRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            },
+            "description": "User updated successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Update a user"
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "description": "Get all users with pagination",
+        "parameters": [
+          {
+            "description": "Maximum number of items to return",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "description": "Number of items to skip",
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Collection"
+                    },
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Users retrieved successfully"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        },
+        "summary": "Get all users with pagination"
       }
     }
   },

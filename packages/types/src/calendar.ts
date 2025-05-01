@@ -1,7 +1,7 @@
 import type { ConstValues } from './helpers.js';
 
 export type EnrichedCalendarApi = {
-  authorUid: string | null;
+  authorUid: string;
   createdAt: string;
   isPublic: boolean;
   modifiedAt: string;
@@ -12,7 +12,6 @@ export type EnrichedCalendarApi = {
 
 export type EnrichedCalendarCreateApiPayload = Pick<EnrichedCalendarApi, 'name'> & {
   isPublic?: EnrichedCalendarApi['isPublic'];
-  sharedWith?: Record<string, CalendarShareTypes>;
 };
 
 export type EnrichedCalendarUpdateApiPayload = Partial<EnrichedCalendarCreateApiPayload> & {

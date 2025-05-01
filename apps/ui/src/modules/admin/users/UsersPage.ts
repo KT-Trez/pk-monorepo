@@ -37,7 +37,7 @@ export class UsersPage extends BaseComponent {
     this.#header = new PageHeader('Users');
     this.#content = new ListPageContent({ actions }).setContent(this.#table);
 
-    this.#subscribe(users => this.#table.renderContent(users));
+    this.#subscribe(users => this.#table.setData(users));
     this.#onRender();
   }
 

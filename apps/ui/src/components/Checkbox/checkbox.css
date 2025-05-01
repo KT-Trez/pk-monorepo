@@ -1,49 +1,49 @@
 .Checkbox-root {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    gap: var(--sizing-2);
-    margin-inline: var(--sizing-2);
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: var(--sizing-2);
+  margin-inline: var(--sizing-2);
 }
 
 .Checkbox-area {
-    align-items: center;
-    background: var(--color-elevation-1);
-    border: 2px solid var(--color-primary);
-    border-radius: var(--size-border-radius);
-    display: flex;
-    height: 25px;
-    justify-content: center;
-    width: 25px;
+  align-items: center;
+  background: var(--color-elevation-1);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--size-border-radius);
+  display: flex;
+  height: 25px;
+  justify-content: center;
+  width: 25px;
 }
 
 .Checkbox-mark {
-    display: none;
-    background: var(--color-primary);
-    height: 3px;
-    width: 13px;
+  display: none;
+  background: var(--color-primary);
+  height: 3px;
+  width: 13px;
 }
 
 .Checkbox-root label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .Checkbox-root input:disabled ~ label {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 .Checkbox-root input:checked ~ .Checkbox-area > .Checkbox-mark {
-    display: block;
+  display: block;
 }
 
 .Checkbox-root input {
-    cursor: pointer;
-    height: 25px;
-    opacity: 0;
-    position: absolute;
-    width: 25px;
+  cursor: pointer;
+  height: 25px;
+  opacity: 0;
+  position: absolute;
+  width: 25px;
 }
 
 .Checkbox-root input:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
