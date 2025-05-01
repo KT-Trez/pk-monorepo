@@ -1,4 +1,5 @@
 import { DatabaseService } from './components/database/DatabaseService.ts';
+import { ScheduleService } from './components/schedule/ScheduleService.ts';
 import { RegisterToDatabaseService } from './components/web/RegisterToDatabaseService.ts';
 import { WebServer } from './components/web/WebServer.ts';
 import { EnrichedCalendarRepository } from './repositories/EnrichedCalendarRepository.ts';
@@ -26,4 +27,5 @@ await new WebServer()
   .registerController(sessionController)
   .registerService(new DatabaseService())
   .registerService(new RegisterToDatabaseService())
+  .registerService(new ScheduleService())
   .listen(5000);
