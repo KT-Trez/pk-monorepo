@@ -49,7 +49,7 @@ The UI provides the following features:
 
 ### How to use
 
-// todo: add a short description on how to use the app
+// todo: https://github.com/KT-Trez/pk-monorepo/issues/29 add a short description on how to use the app
 
 ## Maintainers
 

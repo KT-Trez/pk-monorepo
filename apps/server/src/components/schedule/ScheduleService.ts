@@ -44,7 +44,7 @@ export class ScheduleService extends BaseService {
   }
 
   async asyncConstructor() {
-    if (process.env.SCHEDULE_SRVICE_ON) {
+    if (process.env.SCHEDULE_SERVICE_ON) {
       await this.#downloadAndParse();
       await this.#saveToDatabase();
     }

@@ -62,7 +62,7 @@ The full spec can be found in [v1.0.0](./docs/v1.0.0.json).
 | `PG_PASSWORD`         | PostgreSQL password (default: `undefined`)     |
 | `PG_PORT`             | PostgreSQL port (default: `5432`)              |
 | `PG_USER`             | PostgreSQL user (default: `'pkserver'`)        |
-| `SCHEDULE_SRVICE_ON`  | Enable schedule service (default: `false`)     |
+| `SCHEDULE_SERVICE_ON` | Enable schedule service (default: `false`)     |
 
 ## Maintainers
 
