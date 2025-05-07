@@ -1,10 +1,12 @@
 import { Server } from 'node:http';
+import { Severity } from '@pk/utils/Logger/types.js';
 import type { HttpHandle, HttpMethods } from '../../types/http.ts';
 import { logger } from '../logger/logger.ts';
 import { NotFoundError } from '../response/NotFoundError.ts';
 import { ServerError } from '../response/ServerError.ts';
 import { Unauthorized } from '../response/Unauthorized.ts';
 import type { BaseController, RoutePath } from './BaseController.ts';
+import type { BaseService } from './BaseService.js';
 import { WebServerRequest } from './WebServerRequest.ts';
 import { WebServerResponse } from './WebServerResponse.ts';
 
@@ -12,6 +14,7 @@ export class WebServer {
   #authenticatedControllers: Map<RoutePath, BaseController> = new Map();
   #controllers: Map<RoutePath, BaseController> = new Map();
   #httpServer: Server<typeof WebServerRequest, typeof WebServerResponse>;
+  #services: BaseService[] = [];
 
   constructor() {
     this.#httpServer = new Server(
@@ -23,9 +26,13 @@ export class WebServer {
     );
   }
 
-  listen(port: number, cb?: () => void) {
+  async listen(port: number, cb?: () => void) {
+    for (const service of this.#services) {
+      await service.asyncConstructor();
+    }
+
     this.#httpServer.listen(port, cb);
-    logger.log({ message: `Server is listening on port: "${port}"`, severity: 'info' });
+    logger.log({ message: `Server is listening on port: "${port}"`, severity: Severity.Success });
   }
 
   registerAuthenticatedController(controller: BaseController) {
@@ -35,6 +42,11 @@ export class WebServer {
 
   registerController(controller: BaseController) {
     this.#registerRoutes(controller, this.#controllers);
+    return this;
+  }
+
+  registerService(service: BaseService) {
+    this.#services.push(service);
     return this;
   }
 

@@ -33,6 +33,7 @@
     "./valueValidator/optional.js": "./src/valueValidator/optional.ts",
     "./cookies.js": "./src/cookies.ts",
     "./exhaustiveCheck.js": "./src/exhaustiveCheck.ts",
+    "./keyBy.js": "./src/keyBy.ts",
     "./noop.js": "./src/noop.ts"
   },
   "name": "@pk/utils",

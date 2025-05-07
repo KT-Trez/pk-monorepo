@@ -9,6 +9,7 @@ import pg, {
 } from 'pg';
 import { logger } from '../logger/logger.ts';
 import { NotFoundError } from '../response/NotFoundError.ts';
+import { BaseService } from '../web/BaseService.ts';
 
 const { Pool } = pg;
 
@@ -22,21 +23,28 @@ type QueryOptions<I = unknown[]> = Query<I> & {
 };
 
 type TransactionOptions<I = unknown[]> = {
-  autocommit?: boolean;
   queries: Query<I> | Query<I>[];
   tx?: PoolClient;
 };
 
-export class Client {
-  static #instance: Client;
+export class DatabaseService extends BaseService {
+  static #instance: DatabaseService;
+
+  #database: string;
   #pool: IPool;
+  #port: number;
 
   constructor() {
+    super();
+
     const database = process.env.PG_DATABASE ?? 'pk';
     const host = process.env.PG_HOST ?? 'localhost';
     const password = process.env.PG_PASSWORD ?? '';
     const port = process.env.PG_PORT ? Number.parseInt(process.env.PG_PORT) : 5432;
     const user = process.env.PG_USER ?? 'pkserver';
+
+    this.#database = database;
+    this.#port = port;
 
     this.#pool = new Pool({
       database,
@@ -45,13 +53,24 @@ export class Client {
       port,
       user,
     });
+  }
 
+  static get instance() {
+    if (!DatabaseService.#instance) {
+      DatabaseService.#instance = new DatabaseService();
+    }
+
+    return DatabaseService.#instance;
+  }
+
+  async asyncConstructor() {
+    logger.log({ message: 'Connecting to database', severity: Severity.Info });
     this.#pool
       .connect()
       .then(() => {
         logger.log({
-          message: `Connected to database: "${database}" on port: "${port}"`,
-          severity: Severity.Info,
+          message: `Connected to database "${this.#database}" on port "${this.#port}"`,
+          severity: Severity.Success,
         });
       })
       .catch(err => {
@@ -59,14 +78,8 @@ export class Client {
         logger.log({ message: `Error connecting to database: "${message}"`, severity: Severity.Fatal });
         process.exit(1);
       });
-  }
 
-  static get instance(): Client {
-    if (!Client.#instance) {
-      Client.#instance = new Client();
-    }
-
-    return Client.#instance;
+    return this;
   }
 
   queryRow = async <R extends QueryResultRow = unknown[], I = unknown[]>({
@@ -115,43 +128,44 @@ export class Client {
   }
 
   async transaction<R extends QueryResultRow = unknown[], I = unknown[]>({
-    autocommit = true,
     queries,
     tx,
   }: TransactionOptions<I>): Promise<QueryResult<R>[]> {
-    const client = await this.#getTxClient(tx);
+    const client = tx ? tx : await this.getTxClient();
     const statements = Array.isArray(queries) ? queries : [queries];
 
     try {
       const start = performance.now();
 
-      await client.query('BEGIN');
+      if (!tx) {
+        await client.query('BEGIN');
+      }
 
       const promises = statements.map(({ queryTextOrConfig, values }) => client.query<R, I>(queryTextOrConfig, values));
       const queryResult = await Promise.all(promises);
 
-      if (autocommit) {
+      if (!tx) {
         await client.query('COMMIT');
       }
 
       const duration = performance.now() - start;
 
-      logger.log({ message: `Queries executed in ${duration.toFixed(3)}ms`, severity: Severity.Debug });
+      logger.log({ env: 'DEBUG', message: `Queries executed in ${duration.toFixed(3)}ms`, severity: Severity.Debug });
 
       return queryResult;
     } catch (err) {
-      // biome-ignore lint/complexity/noUselessCatch: the caller should handle the actual error
+      if (!tx) {
+        await client.query('ROLLBACK');
+      }
       throw err;
     } finally {
-      client.release();
+      if (!tx) {
+        client.release();
+      }
     }
   }
 
-  #getTxClient(tx?: PoolClient) {
-    if (tx) {
-      return tx;
-    }
-
+  getTxClient() {
     return this.#pool.connect();
   }
 }

@@ -23,8 +23,8 @@ export type Group = {
 export const GroupType = {
   Exercise: 'GĆ',
   Laboratory: 'GL',
-  Language: 'GANG',
+  Language: 'GLANG',
   Lecture: 'GW',
-  Unknown: 'UNKNOWN',
+  Unknown: 'GU',
 } as const;
 export type GroupTypes = ConstValues<typeof GroupType>;
