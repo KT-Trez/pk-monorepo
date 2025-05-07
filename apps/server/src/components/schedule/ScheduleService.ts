@@ -29,7 +29,7 @@ export class ScheduleService extends BaseService {
       mkdirSync(TEMP_DIR);
     }
 
-    if (process.env.SCHEDULE_SRVICE_ON) {
+    if (process.env.SCHEDULE_SERVICE_ON) {
       cron.schedule(
         '37 21 * * *',
         async () => {

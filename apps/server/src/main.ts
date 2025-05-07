@@ -19,7 +19,6 @@ export const enrichedSessionRepository = new EnrichedSessionRepository();
 export const eventRepository = new EventRepository();
 export const fullUserRepository = new FullUserRepository();
 
-new WebServer()
 await new WebServer()
   .registerAuthenticatedController(calendarController)
   .registerAuthenticatedController(eventController)
