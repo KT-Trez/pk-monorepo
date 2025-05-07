@@ -137,9 +137,7 @@
           "name": "John",
           "surname": "Doe",
           "password": "zaq1@WSX",
-          "roles": [
-            "member"
-          ]
+          "roles": ["member"]
         }
       },
       "UserUpdateRequest": {
@@ -179,25 +177,14 @@
             "type": "object",
             "additionalProperties": {
               "type": "string",
-              "enum": [
-                "editor",
-                "viewer"
-              ]
+              "enum": ["editor", "viewer"]
             }
           },
           "uid": {
             "type": "string"
           }
         },
-        "required": [
-          "authorUid",
-          "createdAt",
-          "isPublic",
-          "modifiedAt",
-          "name",
-          "sharedWith",
-          "uid"
-        ],
+        "required": ["authorUid", "createdAt", "isPublic", "modifiedAt", "name", "sharedWith", "uid"],
         "type": "object"
       },
       "CalendarCreateRequest": {
@@ -214,9 +201,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object"
       },
       "CalendarUpdateRequest": {
@@ -236,9 +221,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "uid"
-        ],
+        "required": ["uid"],
         "type": "object"
       },
       "CalendarShareRequest": {
@@ -255,18 +238,11 @@
             "type": "object",
             "additionalProperties": {
               "type": "string",
-              "enum": [
-                "editor",
-                "viewer",
-                null
-              ]
+              "enum": ["editor", "viewer", null]
             }
           }
         },
-        "required": [
-          "uid",
-          "sharedWith"
-        ],
+        "required": ["uid", "sharedWith"],
         "type": "object"
       },
       "Collection": {
@@ -292,12 +268,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "hasMore",
-          "items",
-          "limit",
-          "offset"
-        ],
+        "required": ["hasMore", "items", "limit", "offset"],
         "type": "object"
       },
       "Event": {
@@ -318,20 +289,14 @@
             "type": "string"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "endDate": {
             "format": "date-time",
             "type": "string"
           },
           "location": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "modifiedAt": {
             "format": "date-time",
@@ -348,16 +313,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "authorUid",
-          "calendarUid",
-          "createdAt",
-          "endDate",
-          "modifiedAt",
-          "startDate",
-          "title",
-          "uid"
-        ],
+        "required": ["authorUid", "calendarUid", "createdAt", "endDate", "modifiedAt", "startDate", "title", "uid"],
         "type": "object"
       },
       "EnrichedEvent": {
@@ -371,9 +327,7 @@
                 "$ref": "#/components/schemas/Calendar"
               }
             },
-            "required": [
-              "calendar"
-            ]
+            "required": ["calendar"]
           }
         ]
       },
@@ -399,24 +353,13 @@
             "type": "string"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "location": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           }
         },
-        "required": [
-          "calendarUid",
-          "title",
-          "startDate",
-          "endDate"
-        ],
+        "required": ["calendarUid", "title", "startDate", "endDate"],
         "type": "object"
       },
       "EventUpdateRequest": {
@@ -444,21 +387,13 @@
             "type": "string"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "location": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           }
         },
-        "required": [
-          "uid"
-        ],
+        "required": ["uid"],
         "type": "object"
       },
       "Option": {
@@ -475,10 +410,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "uid"
-        ],
+        "required": ["name", "uid"],
         "type": "object"
       },
       "ServerError": {
@@ -501,11 +433,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "code",
-          "message",
-          "success"
-        ],
+        "required": ["code", "message", "success"],
         "type": "object"
       },
       "ServerSuccess": {
@@ -525,11 +453,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "code",
-          "message",
-          "success"
-        ],
+        "required": ["code", "message", "success"],
         "type": "object"
       },
       "Session": {
@@ -554,12 +478,7 @@
             "$ref": "#/components/schemas/User"
           }
         },
-        "required": [
-          "createdAt",
-          "expiresAt",
-          "uid",
-          "user"
-        ],
+        "required": ["createdAt", "expiresAt", "uid", "user"],
         "type": "object"
       },
       "SessionRequest": {
@@ -576,10 +495,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object"
       },
       "User": {
@@ -605,23 +521,14 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "admin",
-                "member"
-              ]
+              "enum": ["admin", "member"]
             }
           },
           "uid": {
             "type": "string"
           }
         },
-        "required": [
-          "email",
-          "name",
-          "surname",
-          "roles",
-          "uid"
-        ],
+        "required": ["email", "name", "surname", "roles", "uid"],
         "type": "object"
       },
       "UserCreateRequest": {
@@ -647,20 +554,11 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "admin",
-                "member"
-              ]
+              "enum": ["admin", "member"]
             }
           }
         },
-        "required": [
-          "email",
-          "name",
-          "surname",
-          "password",
-          "roles"
-        ],
+        "required": ["email", "name", "surname", "password", "roles"],
         "type": "object"
       },
       "UserUpdateRequest": {
@@ -689,16 +587,11 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "admin",
-                "member"
-              ]
+              "enum": ["admin", "member"]
             }
           }
         },
-        "required": [
-          "uid"
-        ],
+        "required": ["uid"],
         "type": "object"
       }
     },

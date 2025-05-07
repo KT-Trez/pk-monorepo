@@ -24,5 +24,5 @@ export const useState = <T extends boolean | null | number | string | unknown[]>
     subscriptions.push(subscription);
   };
 
-  return [state, setState, subscribe] as const;
+  return [setState, subscribe] as const;
 };

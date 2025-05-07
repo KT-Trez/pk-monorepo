@@ -25,7 +25,7 @@ export class CalendarsPage extends BaseComponent {
     super('div');
     this.setStyle({ height: '100%' });
 
-    const [_, setCalendars, subscribe] = useState<EnrichedCalendarApi[]>([]);
+    const [setCalendars, subscribe] = useState<EnrichedCalendarApi[]>([]);
     this.#setCalendars = setCalendars;
     this.#subscribe = subscribe;
 

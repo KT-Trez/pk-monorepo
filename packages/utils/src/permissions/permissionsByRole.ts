@@ -108,7 +108,7 @@ export const permissionsByRole: PermissionsByRole = {
       create: false,
       delete: false,
       read: (user, userToRead) => user.uid === userToRead?.uid,
-      update: (user, userToUpdate) => user.uid === userToUpdate?.uid && !userToUpdate.roles?.includes('admin'),
+      update: (user, userToUpdate) => user.uid === userToUpdate?.uid,
     },
   },
 };

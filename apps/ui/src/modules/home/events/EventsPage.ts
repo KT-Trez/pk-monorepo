@@ -8,6 +8,7 @@ import { client } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
 import type { Component } from '../../../types/component.ts';
 import type { SetState, SubscribeState } from '../../../types/useState.ts';
+import { DateFormatter } from '../../../utils/DateFormatter.ts';
 import { useState } from '../../../utils/useState.ts';
 import { withNotification } from '../../../utils/withNotification.ts';
 import { useEventPageActions } from './hooks/useEventPageActions.ts';
@@ -19,6 +20,7 @@ export class EventsPage extends BaseComponent {
   #header: Component;
   #table: Table<EventsGroupedByDay>;
 
+  #events: EventsGroupedByDay[];
   #setEvents: SetState<EventsGroupedByDay[]>;
   #subscribeEvents: SubscribeState<EventsGroupedByDay[]>;
 
@@ -26,18 +28,23 @@ export class EventsPage extends BaseComponent {
     super('div');
     this.setStyle({ height: '100%' });
 
-    const [_, setCalendars, subscribe] = useState<EventsGroupedByDay[]>([]);
-    this.#setEvents = setCalendars;
+    const [setEvents, subscribe] = useState<EventsGroupedByDay[]>([]);
+    this.#events = [];
+    this.#setEvents = setEvents;
     this.#subscribeEvents = subscribe;
 
-    const actions = useEventPageActions();
+    const actions = useEventPageActions(this.#scrollToUpcomingEvents.bind(this));
     const columns = useEventTableColumns(this.#onRender.bind(this));
 
     this.#table = new Table({ columns, hideHeader: true });
     this.#header = new PageHeader('Events');
     this.#content = new ListPageContent({ actions }).setContent(this.#table);
 
-    this.#subscribeEvents(calendars => this.#table.setData(calendars));
+    this.#subscribeEvents(groupedEvents => {
+      this.#events = groupedEvents;
+      this.#table.setData(groupedEvents);
+      this.#scrollToUpcomingEvents();
+    });
     this.#onRender();
   }
 
@@ -67,6 +74,23 @@ export class EventsPage extends BaseComponent {
       return acc;
     }, {});
 
-    this.#setEvents(Object.values(eventsByDate));
+    const groupedEvents = Object.values(eventsByDate);
+    this.#setEvents(groupedEvents);
+  }
+
+  #scrollToUpcomingEvents() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    const upcomingDay = this.#events.find(group => group.date >= now);
+
+    if (!upcomingDay) {
+      return;
+    }
+
+    const upcomingDate = new DateFormatter('date').formatter.format(upcomingDay.date);
+    const cell = this.#table.root.querySelector(`[data-date-id="${upcomingDate}"]`);
+
+    cell?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }

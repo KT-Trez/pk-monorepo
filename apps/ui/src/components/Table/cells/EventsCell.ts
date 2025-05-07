@@ -16,7 +16,7 @@ export class EventsCell extends BaseComponent {
 
   constructor(date: Date, events: EnrichedEventApi[], onDelete: () => void) {
     super('div');
-    this.addClass('EventsCell-root');
+    this.addClass('EventsCell-root').setAttribute('data-date-id', new DateFormatter('date').formatter.format(date));
 
     this.#date = new Typography({ text: new DateFormatter('daymonth').formatter.format(date) });
     this.#events = events.map(event => new Event(event, onDelete));
