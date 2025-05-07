@@ -59,12 +59,12 @@ class Event extends BaseComponent {
 
     this.#deleteButton = hasPermissionToDelete
       ? new Button({ icon: 'delete_forever', text: 'Delete' })
-        .addClass('Event-delete-button')
-        .onClick(async () => {
-          await this.#onDelete(event);
-          onDelete();
-        })
-        .setFitContentWith()
+          .addClass('Event-delete-button')
+          .onClick(async () => {
+            await this.#onDelete(event);
+            onDelete();
+          })
+          .setFitContentWith()
       : null;
 
     this.#location = event.location

@@ -30,6 +30,6 @@
 
 ## Before merging
 
-- [ ] The comments are resolved
 - [ ] The code is reviewed
+- [ ] The comments are resolved
 - [ ] The tests are passing
