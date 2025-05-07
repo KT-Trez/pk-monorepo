@@ -148,11 +148,15 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     tx?: PoolClient,
   ): Promise<T | undefined> {
     const attributes: string[] = [];
+    const values: unknown[] = [];
 
     for (const key in newObject) {
       const value = newObject[key];
       if (value === null || value === undefined) {
         attributes.push(`${this.getAttributeName_new(key)} = NULL`);
+      } else if (value instanceof Buffer) {
+        attributes.push(`${this.getAttributeName_new(key)} = $${values.length + 1}`);
+        values.push(value);
       } else if (typeof value === 'string') {
         attributes.push(`${this.getAttributeName_new(key)} = ${escapeLiteral(value)}`);
       } else {
@@ -170,6 +174,7 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
                SET ${set}
                WHERE ${where}
                RETURNING ${this.#allAttributes}`,
+        values,
       },
       tx,
     });
