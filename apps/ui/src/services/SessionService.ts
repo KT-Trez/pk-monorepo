@@ -66,4 +66,18 @@ export class SessionService extends EventTarget {
       return permission(session.user, data);
     });
   }
+
+  updateUser(user: EnrichedSessionApi['user']) {
+    if (!this.#session) {
+      return;
+    }
+
+    this.#session = {
+      ...this.#session,
+      user: {
+        ...this.#session.user,
+        ...user,
+      },
+    };
+  }
 }

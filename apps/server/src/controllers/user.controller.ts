@@ -1,4 +1,9 @@
-import type { EnrichedUserApi, EnrichedUserApiCreatePayload, EnrichedUserApiUpdatePayload } from '@pk/types/user.js';
+import {
+  type EnrichedUserApi,
+  type EnrichedUserApiCreatePayload,
+  type EnrichedUserApiUpdatePayload,
+  UserRole,
+} from '@pk/types/user.js';
 import { Collection } from '../components/response/Collection.ts';
 import { Forbidden } from '../components/response/Forbidden.ts';
 import { ObjectNotFound } from '../components/response/ObjectNotFound.ts';
@@ -87,12 +92,20 @@ export class UserController extends BaseController {
       return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
     }
 
+    const isAdmin = req.session.details.user.roles.includes(UserRole.Admin);
+    const isEditingName = payload.name !== undefined || payload.surname !== undefined;
+    const isEditingRoles = payload.roles !== undefined;
+
+    if ((isEditingName || isEditingRoles) && !isAdmin) {
+      return next(new Forbidden('Only administrators can modify "name", "surname", and "roles" fields'));
+    }
+
     const data: Partial<EnrichedUserApi> = {
       ...payload,
       ...(password ? { password: await Hash.instance.hashPassword(password) } : {}),
     };
 
-    const updatedUser = await enrichedUserRepository.update({ uid: payload.uid }, data);
+    const { password: _, ...updatedUser } = (await enrichedUserRepository.update({ uid: payload.uid }, data)) ?? {};
 
     res.json(updatedUser);
   }

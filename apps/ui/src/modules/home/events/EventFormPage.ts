@@ -16,13 +16,13 @@ export class EventFormPage extends BaseComponent {
   #content: Component;
   #header: Component;
 
-  #calendarSelect: Select<Option>;
+  #calendarField: Select<Option>;
 
   constructor() {
     super('div');
     this.setStyle({ height: '100%' });
 
-    this.#calendarSelect = new Select<Option>('calendarUid', {
+    this.#calendarField = new Select<Option>('calendarUid', {
       getOptionLabel: option => option.name,
       getOptionValue: option => option.uid,
     })
@@ -34,7 +34,7 @@ export class EventFormPage extends BaseComponent {
     const minDateTime = formatDateToFormValidation(now);
 
     const detailsSectionFields: Component[] = [
-      this.#calendarSelect,
+      this.#calendarField,
       new TextField('title').setFullWidth().setLabel('Title*').setPlaceholder('Enter title').setRequired(),
       new TextField('description')
         .addIcon('short_text', 'start')
@@ -90,7 +90,7 @@ export class EventFormPage extends BaseComponent {
   async #onRender() {
     await withNotification({
       errorMessage: 'Failed to fetch calendar options.',
-      onSuccess: options => this.#calendarSelect.setData(options),
+      onSuccess: options => this.#calendarField.setData(options),
       promise: client.get<Option[]>('/v1/options/calendar'),
     });
   }
