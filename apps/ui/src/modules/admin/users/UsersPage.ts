@@ -25,7 +25,7 @@ export class UsersPage extends BaseComponent {
     super('div');
     this.setStyle({ height: '100%' });
 
-    const [_, setUsers, subscribe] = useState<FullUserApi[]>([]);
+    const [setUsers, subscribe] = useState<FullUserApi[]>([]);
     this.#setUsers = setUsers;
     this.#subscribe = subscribe;
 

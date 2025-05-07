@@ -18,7 +18,9 @@ export class ListPageContent extends BaseComponent {
     this.addClass('ListPageContent-root');
 
     this.#actions = new BaseComponent('div').addClass('ListPageContent-actions');
-    this.#buttons = actions.map(action => new Button({ text: action.label }).onClick(action.onClick).setFullWidth());
+    this.#buttons = actions.map(action =>
+      new Button({ text: action.label, variant: action.variant }).onClick(action.onClick).setFullWidth(),
+    );
     this.#list = new BaseComponent('div').addClass('ListPageContent-list');
   }
 

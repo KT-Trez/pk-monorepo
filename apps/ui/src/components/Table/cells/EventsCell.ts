@@ -16,7 +16,7 @@ export class EventsCell extends BaseComponent {
 
   constructor(date: Date, events: EnrichedEventApi[], onDelete: () => void) {
     super('div');
-    this.addClass('EventsCell-root');
+    this.addClass('EventsCell-root').setAttribute('data-date-id', new DateFormatter('date').formatter.format(date));
 
     this.#date = new Typography({ text: new DateFormatter('daymonth').formatter.format(date) });
     this.#events = events.map(event => new Event(event, onDelete));
@@ -59,12 +59,12 @@ class Event extends BaseComponent {
 
     this.#deleteButton = hasPermissionToDelete
       ? new Button({ icon: 'delete_forever', text: 'Delete' })
-          .addClass('Event-delete-button')
-          .onClick(async () => {
-            await this.#onDelete(event);
-            onDelete();
-          })
-          .setFitContentWith()
+        .addClass('Event-delete-button')
+        .onClick(async () => {
+          await this.#onDelete(event);
+          onDelete();
+        })
+        .setFitContentWith()
       : null;
 
     this.#location = event.location
