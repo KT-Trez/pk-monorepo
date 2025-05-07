@@ -52,10 +52,17 @@ export class EventController extends BaseController {
   async getAll(req: WebServerRequest, res: WebServerResponse) {
     const { limit, offset } = super.getPaginationParams(req);
 
-    // todo: https://github.com/KT-Trez/pk-monorepo/issues/27 - search only for calendars that are mentioned by
-    // calendarUid, use __in parameter to narrow down the search
-    const calendars = await enrichedCalendarRepository.find({}, { limit });
     const events = await eventRepository.find({}, { limit, offset, orderBy: 'startDate' });
+    const calendarUids = events.reduce<Set<string>>((acc, event) => {
+      acc.add(event.calendarUid);
+
+      return acc;
+    }, new Set());
+
+    const calendars = await enrichedCalendarRepository.find(
+      { uid__in: [...calendarUids] },
+      { limit: calendarUids.size },
+    );
 
     const calendarsMap = calendars.reduce<Record<string, EnrichedCalendarApi>>((acc, calendar) => {
       acc[calendar.uid] = calendar;
