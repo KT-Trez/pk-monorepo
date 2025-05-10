@@ -2,6 +2,7 @@
   "dependencies": {
     "@pk/types": "*",
     "@pk/utils": "*",
+    "node-cron": "^3.0.3",
     "pg": "^8.14.1"
   },
   "devDependencies": {
@@ -16,6 +17,7 @@
     "lint": "biome lint",
     "lint:fix": "biome check --write",
     "serve": "node --env-file=.env --experimental-strip-types --watch src/main.ts",
+    "start": "node --experimental-strip-types src/main.ts",
     "typecheck": "tsc --noEmit"
   },
   "type": "module"

@@ -1,5 +1,6 @@
 # artifacts
 /.turbo
+/**/*/dist
 /**/*/tmp
 /**/*/.turbo
 /**/*/*.js

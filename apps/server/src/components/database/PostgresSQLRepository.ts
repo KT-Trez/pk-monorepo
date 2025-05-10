@@ -229,6 +229,10 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
       const isINOperator = key.endsWith('__in') && Array.isArray(value);
 
       if (isINOperator) {
+        if (value.length === 0) {
+          continue;
+        }
+
         const originalKey = key.slice(0, -4);
         const escapedAttribute = this.getAttributeName_new(originalKey);
         const escapedValues = value.map(data => escapeLiteral(data)).join(', ');
