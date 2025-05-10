@@ -73,7 +73,7 @@ export class DatabaseService extends BaseService {
       .connect()
       .then(() => {
         logger.log({
-          message: `Connected to database "${this.#host}:${this.#port}" (${this.#database}") as "${this.#user}"`,
+          message: `Connected to database "${this.#host}:${this.#port}" (${this.#database}) as "${this.#user}"`,
           severity: Severity.Success,
         });
       })
