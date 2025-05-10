@@ -1,6 +1,6 @@
 import './dashboard.css';
 import { BaseComponent } from '../../components/BaseComponent/BaseComponent.ts';
-import { Nav } from '../../components/Nav/Nav.ts';
+import { DesktopNav } from '../../components/Nav/desktop/DesktopNav.ts';
 import { TopBar } from '../../components/TopBar/TopBar.ts';
 import type { Component } from '../../types/component.ts';
 import { useNavConfig } from './hooks/useNavConfig.ts';
@@ -18,7 +18,7 @@ export class DashboardPage extends BaseComponent {
 
     this.#content = new BaseComponent('div').addClass('Dashboard-root');
     this.#main = new BaseComponent('main').addClass('Dashboard-main');
-    this.#nav = new Nav(navConfig);
+    this.#nav = new DesktopNav(navConfig);
     this.#topBar = new TopBar();
   }
 
