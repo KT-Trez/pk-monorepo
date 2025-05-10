@@ -45,17 +45,17 @@ The full spec can be found in [v1.0.0](./docs/v1.0.0.json).
 
 ## Environment Variables
 
-| Name                  | Description                                    |
-|-----------------------|------------------------------------------------|
-| `AUTH_SEED`           | Seed for authentication (default: `undefined`) |
-| `AUTH_ADMIN_PASSWORD` | Admin password (default: `'q'`)                |
-| `DEBUG`               | Debug mode (default: `false`)                  |
-| `PG_DATABASE`         | PostgreSQL database name (default: `'pk'`)     |
-| `PG_HOST`             | PostgreSQL host (default: `'localhost'`)       |
-| `PG_PASSWORD`         | PostgreSQL password (default: `''`)            |
-| `PG_PORT`             | PostgreSQL port (default: `6000`)              |
-| `PG_USER`             | PostgreSQL user (default: `'pk-admin'`)        |
-| `SCHEDULE_SERVICE_ON` | Enable schedule service (default: `false`)     |
+| Name                  | Description                                                  |
+|-----------------------|--------------------------------------------------------------|
+| `AUTH_SEED`           | Seed for authentication (default: `undefined`, **required**) |
+| `AUTH_ADMIN_PASSWORD` | Admin password (default: `'q'`)                              |
+| `DEBUG`               | Debug mode (default: `false`)                                |
+| `PG_DATABASE`         | PostgreSQL database name (default: `'pk'`)                   |
+| `PG_HOST`             | PostgreSQL host (default: `'localhost'`)                     |
+| `PG_PASSWORD`         | PostgreSQL password (default: `''`, **required**)            |
+| `PG_PORT`             | PostgreSQL port (default: `6000`)                            |
+| `PG_USER`             | PostgreSQL user (default: `'pk-admin'`)                      |
+| `SCHEDULE_SERVICE_ON` | Enable schedule service (default: `false`)                   |
 
 ## Maintainers
 

@@ -36,10 +36,10 @@ npm install
 Before starting the services, create a `.env` file in the root directory with the following variables:
 
 ```env
-AUTH_SEED=<random-string>               # Required for authentication, should be an alphanumeric string of 16-64 characters
-AUTH_ADMIN_PASSWORD=<admin-password>    # Admin user password (default: 'q')
-PG_PASSWORD=<database-password>         # PostgreSQL root password (default: '')
-POSTGRES_PASSWORD=<database-password>   # Must match PG_PASSWORD (default: '')
+AUTH_SEED=<random-string>               # required; password hash seed, should be an alphanumeric string of 16-64 characters
+AUTH_ADMIN_PASSWORD=<admin-password>    # optional; admin user password (default: 'q')
+PG_PASSWORD=<database-password>         # required; PostgreSQL root password
+POSTGRES_PASSWORD=<database-password>   # required; must match PG_PASSWORD
 ```
 
 > [!IMPORTANT]
@@ -72,9 +72,9 @@ docker run -d \
 Then create a `apps/server/.env` file in the root directory with the following variables:
 
 ```env
-AUTH_SEED=<random-string>              # Required for authentication
-AUTH_ADMIN_PASSWORD=<admin-password>   # (default: 'q')
-PG_PASSWORD=<database-password>        # PostgreSQL root password (default: '')
+AUTH_SEED=<random-string>              # required; password hash seed, should be an alphanumeric string of 16-64 characters
+AUTH_ADMIN_PASSWORD=<admin-password>   # optional; (default: 'q')
+PG_PASSWORD=<database-password>        # required; PostgreSQL root password
 ```
 
 Start the services in development mode:
