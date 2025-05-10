@@ -2,7 +2,7 @@ export type Component<T extends keyof HTMLElementTagNameMap = keyof HTMLElementT
   readonly root: HTMLElementTagNameMap[T];
   children(children: Component | Component[]): Component;
   removeAttribute(name: string): Component;
-  render(): HTMLElement | HTMLElement[];
+  render(): HTMLElement;
   setAttribute(name: string, value: string): Component;
 };
 

@@ -5,8 +5,4 @@ export class Icon extends BaseComponent {
     super('span');
     this.addClass('material-icons').setTextContent(name);
   }
-
-  render(): HTMLElement {
-    return this.root;
-  }
 }

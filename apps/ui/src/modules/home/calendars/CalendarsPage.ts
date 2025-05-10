@@ -6,7 +6,7 @@ import { PageHeader } from '../../../components/PageHeader/PageHeader.ts';
 import { Table } from '../../../components/Table/Table.ts';
 import { client, notifier } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
-import type { Component } from '../../../types/component.ts';
+import type { CanBeRerendered, Component } from '../../../types/component.ts';
 import type { SetState, SubscribeState } from '../../../types/useState.ts';
 import { useState } from '../../../utils/useState.ts';
 import { useCalendarPageActions } from './hooks/useCalendarPageActions.ts';
@@ -16,7 +16,7 @@ import { useCalendarTableColumns } from './hooks/useCalendarTableColumns.ts';
 export class CalendarsPage extends BaseComponent {
   #content: Component;
   #header: Component;
-  #table: Table<EnrichedCalendarApi>;
+  #table: Component & CanBeRerendered<EnrichedCalendarApi>;
 
   #setCalendars: SetState<EnrichedCalendarApi[]>;
   #subscribe: SubscribeState<EnrichedCalendarApi[]>;
