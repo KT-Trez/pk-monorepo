@@ -111,6 +111,15 @@ This is a monorepo managed with [Turborepo](https://turbo.build/repo). It contai
 - [packages/types](./packages/types): Shared TypeScript types
 - [packages/utils](./packages/utils): Shared utilities
 
+### Database
+
+PostgreSQL database for storing calendars, events, sessions, and users.
+
+- [Dockerfile](./docker/database/Dockerfile): Dockerfile for PostgreSQL database
+- [init.sql](./docker/database/init.sql): SQL scripts for creating tables and seeding the database
+
+![ERD](./docs/ERD.png)
+
 ## Maintainers
 
 This project is maintained by [Bartłomiej Wąś](https://github.com/KT-Trez).
