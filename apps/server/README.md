@@ -52,7 +52,7 @@ The full spec can be found in [v1.0.0](./docs/v1.0.0.json).
 | `DEBUG`               | Debug mode (default: `false`)                  |
 | `PG_DATABASE`         | PostgreSQL database name (default: `'pk'`)     |
 | `PG_HOST`             | PostgreSQL host (default: `'localhost'`)       |
-| `PG_PASSWORD`         | PostgreSQL password (default: `undefined`)     |
+| `PG_PASSWORD`         | PostgreSQL password (default: `''`)            |
 | `PG_PORT`             | PostgreSQL port (default: `6000`)              |
 | `PG_USER`             | PostgreSQL user (default: `'pk-admin'`)        |
 | `SCHEDULE_SERVICE_ON` | Enable schedule service (default: `false`)     |

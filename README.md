@@ -31,11 +31,67 @@ npm install
 | `npm run serve`     | Start the development server for all applications                     |
 | `npm run typecheck` | Type check the code in all applications and packages using TypeScript |
 
+### Docker
+
+Before starting the services, create a `.env` file in the root directory with the following variables:
+
+```env
+AUTH_SEED=<random-string>               # Required for authentication, should be an alphanumeric string of 16-64 characters
+AUTH_ADMIN_PASSWORD=<admin-password>    # Admin user password (default: 'q')
+PG_PASSWORD=<database-password>         # PostgreSQL root password (default: '')
+POSTGRES_PASSWORD=<database-password>   # Must match PG_PASSWORD (default: '')
+```
+
+> [!IMPORTANT]
+> `PG_PASSWORD` and `POSTGRES_PASSWORD` must have the same value for the database connection to work.
+
+When using `docker compose up`, all services are started in production mode.
+The UI is available at `localhost:8080`.
+\
+Default credentials:
+
+- Email: `admin.calendar@pk.edu.pl`
+- Password: `$AUTH_ADMIN_PASSWORD`
+  I'll add a section for local development. Here's the addition for the `README.md`:
+
+### Local Development
+
+For local development, you'll need to start the database container first:
+
+```bash
+docker build -f docker/database/Dockerfile -t pk-database . && \
+docker run -d \
+  -e POSTGRES_DB=pk \
+  -e POSTGRES_PASSWORD=<database-password> \
+  -e POSTGRES_USER=pk-admin \
+  -p 6000:6000 \
+  --name pk-database \
+  pk-database
+```
+
+Then create a `apps/server/.env` file in the root directory with the following variables:
+
+```env
+AUTH_SEED=<random-string>              # Required for authentication
+AUTH_ADMIN_PASSWORD=<admin-password>   # (default: 'q')
+PG_PASSWORD=<database-password>        # PostgreSQL root password (default: '')
+```
+
+Start the services in development mode:
+
+```bash
+# start the server (available at localhost:5000)
+npm run serve -w @pk/server
+
+# start the UI (available at localhost:4000)
+npm run serve -w @pk/ui
+
+# or start everything at once
+npm run serve
+````
+
 > [!NOTE]
-> When using `docker compose up`, all services are started in production mode. The UI is available at `localhost:8080`.
-> Default credentials:
-> - Email: `admin.calendar@pk.edu.pl`
-> - Password: `q`
+> See [server docs](./apps/server/README.md#environment-variables) for additional environment variables.
 
 ## Project Structure
 
