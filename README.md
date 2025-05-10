@@ -126,7 +126,7 @@ This project is maintained by [Bartłomiej Wąś](https://github.com/KT-Trez).
 
 ## Contributing
 
-Feel free to dive in! [Open an issue](https://github.com/yourusername/pk-plan/issues/new) or submit PRs.
+Feel free to dive in! [Open an issue](https://github.com/KT-Trez/pk-monorepo/issues/new/choose) or submit PRs.
 
 ## License
 
