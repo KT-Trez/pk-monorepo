@@ -68,7 +68,8 @@ export class PostgresSQLRepository<T extends UnknownObject> implements BaseRepos
     const attributes = this.#selectAttributes(options?.attributes);
     const limit = escapeLiteral(options?.limit?.toString() ?? '100');
     const offset = escapeLiteral(options?.offset?.toString() ?? '0');
-    const orderBy = options?.orderBy ? this.getAttributeName_new(options.orderBy) : this.#primaryKeyIdentifier;
+    const orderByAttributes = Array.isArray(options?.orderBy) ? options.orderBy : [this.primaryKey];
+    const orderBy = orderByAttributes.map(attribute => this.getAttributeName_new(attribute)).join(', ');
 
     const conditions = this.#where(query);
     const where = conditions ? conditions : '1 = 1';

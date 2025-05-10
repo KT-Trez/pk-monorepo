@@ -52,7 +52,7 @@ export class EventController extends BaseController {
   async getAll(req: WebServerRequest, res: WebServerResponse) {
     const { limit, offset } = super.getPaginationParams(req);
 
-    const events = await eventRepository.find({}, { limit, offset, orderBy: 'startDate' });
+    const events = await eventRepository.find({}, { limit, offset, orderBy: ['startDate', 'endDate', 'title'] });
     const calendarUids = events.reduce<Set<string>>((acc, event) => {
       acc.add(event.calendarUid);
 

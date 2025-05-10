@@ -10,7 +10,7 @@ export type FindOptions<T extends UnknownObject, C> = {
 export type FindManyOptions<T extends UnknownObject, C> = FindOptions<T, C> & {
   limit?: number;
   offset?: number;
-  orderBy?: keyof T;
+  orderBy?: keyof T | (keyof T)[];
 };
 
 export type QueryExpression<T extends UnknownObject> = Partial<T> & {
