@@ -15,7 +15,7 @@
     "serve": "turbo serve",
     "typecheck": "turbo typecheck"
   },
-  "version": "2.7.0",
+  "version": "2.7.1",
   "workspaces": [
     "apps/*",
     "packages/*"
