@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fontsource/ubuntu": "^5.2.5",
     "@pk/types": "*",
     "@pk/utils": "*",
     "material-icons": "^1.13.14"
