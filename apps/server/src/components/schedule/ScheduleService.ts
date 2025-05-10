@@ -62,7 +62,7 @@ export class ScheduleService extends BaseService {
     }).load();
 
     logger.log({ message: 'Schedule downloaded', severity: Severity.Success });
-    logger?.log({ message: 'Parsing schedule', severity: Severity.Info });
+    logger.log({ message: 'Parsing schedule', severity: Severity.Info });
 
     this.#classInfo = [];
     await pipeline(
@@ -71,7 +71,7 @@ export class ScheduleService extends BaseService {
       new ObjectCollectorStream(this.#classInfo),
     );
 
-    logger?.log({ message: 'Schedule parsed', severity: Severity.Success });
+    logger.log({ message: 'Schedule parsed', severity: Severity.Success });
   }
 
   #getGroups() {
@@ -89,7 +89,7 @@ export class ScheduleService extends BaseService {
   }
 
   async #saveCalendarsToDatabase(serviceUser: FullUserApi, tx: PoolClient) {
-    logger?.log({ message: 'Saving calendars to database', severity: Severity.Info });
+    logger.log({ message: 'Saving calendars to database', severity: Severity.Info });
 
     const groups = this.#getGroups();
 
@@ -103,18 +103,22 @@ export class ScheduleService extends BaseService {
         return eventRepository.delete({ calendarUid });
       }
 
-      logger.log({ message: `Calendar "${group}" not found, creating new one`, severity: Severity.Debug });
+      logger.log({
+        env: 'DEBUG',
+        message: `Calendar "${group}" not found, creating new one`,
+        severity: Severity.Debug,
+      });
 
       return enrichedCalendarRepository.create({ authorUid: serviceUser.uid, isPublic: true, name: group });
     });
 
     await Promise.all(promises);
 
-    logger?.log({ message: 'Calendars saved to database', severity: Severity.Success });
+    logger.log({ message: 'Calendars saved to database', severity: Severity.Success });
   }
 
   async #saveEventsToDatabase(serviceUser: FullUserApi, tx: PoolClient) {
-    logger?.log({ message: 'Saving events to database', severity: Severity.Info });
+    logger.log({ message: 'Saving events to database', severity: Severity.Info });
 
     const groups = this.#getGroups();
 
@@ -124,7 +128,7 @@ export class ScheduleService extends BaseService {
     const events = this.#classInfo.map(classInfo => classInfoToEventApi(classInfo, calendarNameByUid, serviceUser));
     await Promise.all(events.map(event => eventRepository.create(event, tx)));
 
-    logger?.log({ message: 'Events saved to database', severity: Severity.Success });
+    logger.log({ message: 'Events saved to database', severity: Severity.Success });
   }
 
   async #saveToDatabase() {
@@ -144,9 +148,9 @@ export class ScheduleService extends BaseService {
 
       await tx.query('COMMIT');
 
-      logger?.log({ message: 'Schedule saved to database', severity: Severity.Success });
+      logger.log({ message: 'Schedule saved to database', severity: Severity.Success });
     } catch (err) {
-      logger?.log({ message: `Failed to save schedule to database: ${err}`, severity: Severity.Error });
+      logger.log({ message: `Failed to save schedule to database: ${err}`, severity: Severity.Error });
       await tx.query('ROLLBACK');
     } finally {
       tx.release();

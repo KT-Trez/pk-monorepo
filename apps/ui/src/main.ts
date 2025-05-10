@@ -1,3 +1,5 @@
+import '@fontsource/ubuntu/400.css';
+import '@fontsource/ubuntu/500.css';
 import 'material-icons/iconfont/material-icons.css';
 import { UserCreateForm } from './modules/admin/users/UserCreateForm.ts';
 import { UsersPage } from './modules/admin/users/UsersPage.ts';

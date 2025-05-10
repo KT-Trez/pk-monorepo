@@ -23,11 +23,11 @@
 }
 
 .Event-root .Event-delete-button {
-  display: none;
   background-color: var(--color-danger);
+  display: none;
   height: fit-content;
-  left: 0;
   position: absolute;
+  right: var(--sizing-8);
   top: 0;
 }
 
@@ -41,11 +41,13 @@
 
 .Event-time {
   display: block;
+  min-width: fit-content;
   white-space: nowrap;
 }
 
 .Event-mobile-time {
   display: none;
+  min-width: fit-content;
 }
 
 .Event-time > p {

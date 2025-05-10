@@ -10,6 +10,7 @@ import { FullUserRepository } from './repositories/FullUserRepository.ts';
 import { calendarController } from './routes/calendar.route.ts';
 import { eventController } from './routes/event.route.ts';
 import { optionsController } from './routes/options.route.ts';
+import { rootController } from './routes/root.route.ts';
 import { sessionController } from './routes/session.route.ts';
 import { userController } from './routes/user.route.ts';
 
@@ -24,6 +25,7 @@ await new WebServer()
   .registerAuthenticatedController(eventController)
   .registerAuthenticatedController(optionsController)
   .registerAuthenticatedController(userController)
+  .registerController(rootController)
   .registerController(sessionController)
   .registerService(new DatabaseService())
   .registerService(new RegisterToDatabaseService())

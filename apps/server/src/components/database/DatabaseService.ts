@@ -31,8 +31,10 @@ export class DatabaseService extends BaseService {
   static #instance: DatabaseService;
 
   #database: string;
+  #host: string;
   #pool: IPool;
   #port: number;
+  #user: string;
 
   constructor() {
     super();
@@ -41,10 +43,12 @@ export class DatabaseService extends BaseService {
     const host = process.env.PG_HOST ?? 'localhost';
     const password = process.env.PG_PASSWORD ?? '';
     const port = process.env.PG_PORT ? Number.parseInt(process.env.PG_PORT) : 5432;
-    const user = process.env.PG_USER ?? 'pkserver';
+    const user = process.env.PG_USER ?? 'pk-admin'; // todo: change to pk-calendar-server
 
     this.#database = database;
+    this.#host = host;
     this.#port = port;
+    this.#user = user;
 
     this.#pool = new Pool({
       database,
@@ -69,7 +73,7 @@ export class DatabaseService extends BaseService {
       .connect()
       .then(() => {
         logger.log({
-          message: `Connected to database "${this.#database}" on port "${this.#port}"`,
+          message: `Connected to database "${this.#host}:${this.#port}" (${this.#database}) as "${this.#user}"`,
           severity: Severity.Success,
         });
       })

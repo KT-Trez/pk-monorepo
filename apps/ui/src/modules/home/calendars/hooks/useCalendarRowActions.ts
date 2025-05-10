@@ -77,7 +77,7 @@ export const useCalendarRowActions = (
     },
     {
       icon: 'delete_forever',
-      isDisabled: calendar => !sessionService.hasPermission('calendar', 'delete', calendar),
+      isHidden: calendar => !sessionService.hasPermission('calendar', 'delete', calendar),
       label: 'Delete',
       onClick: async calendar => {
         await withNotification({
