@@ -31,7 +31,7 @@ npm install
 | `npm run serve`     | Start the development server for all applications                     |
 | `npm run typecheck` | Type check the code in all applications and packages using TypeScript |
 
-> [!INFO]
+> [!NOTE]
 > When using `docker compose up`, all services are started in production mode. The UI is available at `localhost:8080`.
 > Default credentials:
 > - Email: `admin.calendar@pk.edu.pl`
