@@ -2,26 +2,14 @@
 
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-> PK Calendar system
-
-PK Calendar is a solution for parsing and viewing WIiT schedule as a calendar. It also supports creating and managing
-custom calendars and events.
-
 ## Table of Contents
 
-- [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Maintainers](#maintainers)
 - [Contributing](#contributing)
 - [License](#license)
-
-## Background
-
-PK Calendar is designed to help manage university timetables and schedules. It allows users to create and manage
-calendars and events with different permission levels for different user roles. It consists of a backend server, a web
-UI, and a schedule parser service that fetches and parses the schedule from the university website.
 
 ## Install
 
@@ -36,11 +24,18 @@ npm install
 
 | Command             | Description                                                           |
 |---------------------|-----------------------------------------------------------------------|
+| `docker compose up` | Start all services in production mode using Docker Compose            |
 | `npm run build`     | Build all applications and packages for production                    |
 | `npm run lint`      | Lint the code in all applications and packages                        |
 | `npm run lint:fix`  | Lint the code in all applications and packages and fix issues         |
 | `npm run serve`     | Start the development server for all applications                     |
 | `npm run typecheck` | Type check the code in all applications and packages using TypeScript |
+
+> [!INFO]
+> When using `docker compose up`, all services are started in production mode. The UI is available at `localhost:8080`.
+> Default credentials:
+> - Email: `admin.calendar@pk.edu.pl`
+> - Password: `q`
 
 ## Project Structure
 

@@ -2,22 +2,16 @@
 
 > Web UI for the PK Calendar system
 
-This is the web user interface component of the PK Calendar system, providing a frontend for managing calendars and
-events and users. It is designed to work in conjunction with the [Server component](../server/README.md).
+This is the web user interface of the PK Calendar, providing a frontend for managing calendars and events and users.
+It is designed to work in conjunction with the [PK Calendar server](../server/README.md).
 
 ## Table of Contents
 
-- [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Features](#features)
 - [Maintainers](#maintainers)
 - [License](#license)
-
-## Background
-
-The UI component serves as the frontend interface for the PK Plan system. While optimized for desktop use, it also
-offers limited functionality on mobile devices.
 
 ## Install
 

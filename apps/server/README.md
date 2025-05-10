@@ -1,25 +1,17 @@
 # @pk/server
 
-> Backend server for the PK Calendar system
-
-This is the backend server component of the PK Calendar system, providing API endpoints for managing calendars,
-events, sessions and users. It is designed to work in conjunction with the [UI component](../ui/README.md).
+This is the backend server of the PK Calendar, providing API endpoints for managing calendars, events, sessions and
+users.
+It is designed to work in conjunction with the [PK Calendar UI](../ui/README.md).
 
 ## Table of Contents
 
-- [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
 - [Environment Variables](#environment-variables)
 - [Maintainers](#maintainers)
 - [License](#license)
-
-## Background
-
-The server component provides the backend functionality for the PK Calendar system. It handles all CRUD
-operations and includes an optional Schedule Service that manages schedule parsing and database updates. For information
-on enabling this service, please refer to the [Environment Variables](#environment-variables) section.
 
 ## Install
 
@@ -36,6 +28,7 @@ npm install
 | `npm run lint`      | Lint the code                        |
 | `npm run lint:fix`  | Lint the code and fix issues         |
 | `npm run serve`     | Start the server                     |
+| `npm run start`     | Start the server in production mode  |
 | `npm run typecheck` | Type check the code using TypeScript |
 
 ## API
@@ -60,8 +53,8 @@ The full spec can be found in [v1.0.0](./docs/v1.0.0.json).
 | `PG_DATABASE`         | PostgreSQL database name (default: `'pk'`)     |
 | `PG_HOST`             | PostgreSQL host (default: `'localhost'`)       |
 | `PG_PASSWORD`         | PostgreSQL password (default: `undefined`)     |
-| `PG_PORT`             | PostgreSQL port (default: `5432`)              |
-| `PG_USER`             | PostgreSQL user (default: `'pkserver'`)        |
+| `PG_PORT`             | PostgreSQL port (default: `6000`)              |
+| `PG_USER`             | PostgreSQL user (default: `'pk-admin'`)        |
 | `SCHEDULE_SERVICE_ON` | Enable schedule service (default: `false`)     |
 
 ## Maintainers
