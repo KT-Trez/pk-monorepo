@@ -49,6 +49,16 @@ export class Table<T> extends BaseComponent implements CanBeRerendered<T> {
       rows.push(new BaseComponent('tr').children([...columns, rowActions]));
     }
 
+    if (rows.length === 0) {
+      const emptyRow = new BaseComponent('tr').children([
+        new BaseComponent('td')
+          .setAttribute('colspan', this.#columns.length.toString())
+          .setTextContent('There is no data to display'),
+      ]);
+
+      rows.push(emptyRow);
+    }
+
     removeChildren(this.#body.root);
     this.#body.children(rows);
   }
