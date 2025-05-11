@@ -1,5 +1,6 @@
 import './topBar.css';
-import { sessionService } from '../../main.ts';
+import type { SuccessApi } from '@pk/types/api.js';
+import { client, sessionService } from '../../main.ts';
 import type { Component } from '../../types/component.ts';
 import { navigate } from '../../utils/navigate.ts';
 import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
@@ -30,7 +31,8 @@ export class TopBar extends BaseComponent {
     return this.children([this.#logo, this.#buttons.children([this.#logoutButton, this.#navButton])]).root;
   }
 
-  #onLogout() {
+  async #onLogout() {
+    await client.delete<SuccessApi>(`/v1/session?uid=${sessionService.session?.uid}`);
     sessionService.clear();
     navigate('#/');
   }
