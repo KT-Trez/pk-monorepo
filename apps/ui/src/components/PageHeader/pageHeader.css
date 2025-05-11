@@ -4,3 +4,9 @@
   padding-inline: var(--sizing-8);
   width: 100%;
 }
+
+.PageHeader-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

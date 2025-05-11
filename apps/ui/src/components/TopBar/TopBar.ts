@@ -7,23 +7,36 @@ import { Button } from '../Button/Button.ts';
 import { Logo } from '../Logo/Logo.ts';
 
 export class TopBar extends BaseComponent {
+  #buttons: Component;
   #logo: Component;
-  #logout: Component;
+
+  #logoutButton: Component;
+  #navButton: Component;
 
   constructor() {
     super('div');
     this.addClass('TopBar-root');
 
-    this.#logout = new Button({ icon: 'logout', variant: 'icon' }).onClick(this.#onLogout).setFitContentWith();
+    this.#buttons = new BaseComponent('div').addClass('TopBar-icons');
     this.#logo = new Logo('100%').setStyle({ height: '100%', width: 'fit-content' });
+    this.#logoutButton = new Button({ icon: 'logout', variant: 'icon' }).onClick(this.#onLogout).setFitContentWith();
+    this.#navButton = new Button({ icon: 'menu', variant: 'icon' })
+      .addClass('TopBarIcon--mobile-only')
+      .onClick(this.#onNavButtonClick)
+      .setFitContentWith();
   }
 
   render(): HTMLElement {
-    return this.children([this.#logo, this.#logout]).root;
+    return this.children([this.#logo, this.#buttons.children([this.#logoutButton, this.#navButton])]).root;
   }
 
   #onLogout() {
     sessionService.clear();
     navigate('#/');
+  }
+
+  #onNavButtonClick() {
+    const navDialog = <HTMLDialogElement | null>document.getElementById('nav-dialog');
+    navDialog?.showModal();
   }
 }

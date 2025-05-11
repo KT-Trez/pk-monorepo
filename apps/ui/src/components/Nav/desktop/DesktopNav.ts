@@ -1,15 +1,15 @@
-import './nav.css';
-import type { Component } from '../../types/component.ts';
-import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
-import { NavCategoryComponent } from './NavCategoryComponent.ts';
-import type { NavCategory } from './types.ts';
+import './desktopNav.css';
+import type { Component } from '../../../types/component.ts';
+import { BaseComponent } from '../../BaseComponent/BaseComponent.ts';
+import { NavCategoryComponent } from '../NavCategoryComponent.ts';
+import type { NavCategory } from '../types.ts';
 
-export class Nav extends BaseComponent {
+export class DesktopNav extends BaseComponent {
   #categories: Component[];
 
   constructor(config: NavCategory[]) {
     super('nav');
-    this.addClass('Nav-root');
+    this.addClass('DesktopNav-root');
 
     this.#categories = config.reduce<Component[]>((acc, category) => {
       if (!category.isHidden) {

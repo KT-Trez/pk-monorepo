@@ -38,7 +38,7 @@ export class CalendarFormPage extends BaseComponent {
   }
 
   #onCancel() {
-    navigate('#/admin/users');
+    navigate('#/home/calendars');
   }
 
   async #onSubmit(formData: FormData) {
