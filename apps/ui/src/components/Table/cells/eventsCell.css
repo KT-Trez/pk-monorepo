@@ -27,7 +27,7 @@
   display: none;
   height: fit-content;
   position: absolute;
-  right: var(--sizing-8);
+  right: var(--sizing-2);
   top: 0;
 }
 
