@@ -9,7 +9,7 @@ export class NavCategoryItemComponent extends BaseComponent {
   constructor(config: NavCategoryItem) {
     super('li');
 
-    if (window.location.hash === config.href) {
+    if (window.location.hash.startsWith(config.href)) {
       this.addClass('NavCategory-item--active');
     }
 
