@@ -29,7 +29,7 @@ export class CalendarsPage extends BaseComponent {
     this.#setCalendars = setCalendars;
     this.#subscribe = subscribe;
 
-    const actions = useCalendarPageActions();
+    const actions = useCalendarPageActions(this.#setCalendars);
     const columns = useCalendarTableColumns();
     const rowActions = useCalendarRowActions(this.#setCalendars);
 
