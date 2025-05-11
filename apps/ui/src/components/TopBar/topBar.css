@@ -1,6 +1,6 @@
 .TopBar-root {
-  display: flex;
   background: var(--color-elevation-1);
+  display: flex;
   flex-direction: row;
   height: var(--topbar-height);
   justify-content: space-between;
@@ -9,10 +9,19 @@
   width: 100%;
 }
 
-.TopBar-icon {
-  align-items: center;
+.TopBarIcon--mobile-only {
+  display: none;
+}
+
+.TopBar-icons {
   display: flex;
-  font-size: var(--text-h4-font-size);
-  justify-content: center;
-  padding: var(--sizing-2);
+  flex-direction: row;
+  gap: var(--sizing-1);
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  .TopBarIcon--mobile-only {
+    display: flex;
+  }
 }

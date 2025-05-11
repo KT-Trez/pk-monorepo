@@ -1,0 +1,30 @@
+.NavCategory-item {
+  display: inline-block;
+  font-weight: var(--font-weight-medium) !important;
+  text-decoration: none;
+  width: 100%;
+}
+
+.NavCategory-item--active {
+  border-right: 5px solid var(--color-primary);
+  color: var(--color-text-secondary);
+}
+
+.NavCategory-item--active a {
+  color: var(--color-text-secondary);
+}
+
+.NavCategory-item:hover {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 600px) {
+  .NavCategory-item {
+    text-align: right;
+  }
+
+  .NavCategory-item--active {
+    border-left: 5px solid var(--color-primary);
+    border-right: none;
+  }
+}

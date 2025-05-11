@@ -1,7 +1,7 @@
 import './desktopNav.css';
 import type { Component } from '../../../types/component.ts';
 import { BaseComponent } from '../../BaseComponent/BaseComponent.ts';
-import { NavCategoryComponent } from './NavCategoryComponent.ts';
+import { NavCategoryComponent } from '../NavCategoryComponent.ts';
 import type { NavCategory } from '../types.ts';
 
 export class DesktopNav extends BaseComponent {

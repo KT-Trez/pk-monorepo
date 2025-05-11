@@ -10,7 +10,7 @@ export class PageHeader extends BaseComponent {
     super('div');
     this.addClass('PageHeader-root');
 
-    this.#header = new Typography({ text: title, variant: 'h2' });
+    this.#header = new Typography({ text: title, variant: 'h2' }).addClass('PageHeader-title');
   }
 
   render(): HTMLElement {

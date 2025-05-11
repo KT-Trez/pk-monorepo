@@ -1,0 +1,22 @@
+::backdrop {
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.MobileNav-root {
+  background: var(--color-elevation-1);
+  border: 1px solid transparent;
+  border-radius: var(--size-border-radius);
+  box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.25);
+  margin-left: auto;
+  margin-right: var(--sizing-4);
+  margin-top: var(--topbar-height);
+  max-width: 50ch;
+  padding-block: var(--sizing-6);
+  padding-inline: var(--sizing-4);
+}
+
+.MobileNav-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sizing-4);
+}

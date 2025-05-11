@@ -1,8 +1,9 @@
-import type { Component } from '../../../types/component.ts';
-import { BaseComponent } from '../../BaseComponent/BaseComponent.ts';
-import { Typography } from '../../Typography/Typography.ts';
+import './navCategory.css';
+import type { Component } from '../../types/component.ts';
+import { BaseComponent } from '../BaseComponent/BaseComponent.ts';
+import { Typography } from '../Typography/Typography.ts';
 import { NavCategoryItemComponent } from './NavCategoryItemComponent.ts';
-import type { NavCategory } from '../types.ts';
+import type { NavCategory } from './types.ts';
 
 export class NavCategoryComponent extends BaseComponent {
   #header: Component;
