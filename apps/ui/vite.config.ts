@@ -1,5 +1,6 @@
 import path from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
+import tanstackRouter from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import type { UserConfig } from 'vite';
 
@@ -7,7 +8,7 @@ const TRPC_PATH_REGEX = /^\/trpc/;
 
 // biome-ignore lint/style/noDefaultExport: vite requires its config to be a default export
 export default {
-  plugins: [react(), tailwindcss()],
+  plugins: [tanstackRouter({ autoCodeSplitting: true, target: 'react' }), react(), tailwindcss()],
   preview: {
     port: 8000,
     strictPort: true,
@@ -16,7 +17,7 @@ export default {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
-    extensions: ['.json', '.ts'],
+    extensions: ['.json', '.ts', '.tsx'],
   },
   server: {
     port: 4000,

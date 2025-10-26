@@ -1,8 +1,13 @@
+import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider.tsx';
+import { routeTree } from '@/routeTree.gen.ts';
 import { makeQueryClient } from '@/utils/query.ts';
 import { TRPCProvider, makeTrpcClient } from '@/utils/trpc.ts';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { SnackbarProvider } from 'notistack';
 import { useRef } from 'react';
+
+const router = createRouter({ routeTree });
 
 export const App = () => {
   const { current: queryClient } = useRef(makeQueryClient()); // todo: implement global error handling
@@ -12,9 +17,11 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-        <SnackbarProvider ref={snackbarRef}>
-          <div>page works!</div>
-        </SnackbarProvider>
+        <ThemeProvider>
+          <SnackbarProvider ref={snackbarRef}>
+            <RouterProvider router={router} />
+          </SnackbarProvider>
+        </ThemeProvider>
       </TRPCProvider>
     </QueryClientProvider>
   );
