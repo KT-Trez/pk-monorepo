@@ -6,7 +6,7 @@ import { PageHeader } from '../../../components/PageHeader/PageHeader.ts';
 import { Table } from '../../../components/Table/Table.ts';
 import { client } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
-import type { Component } from '../../../types/component.ts';
+import type { CanBeRerendered, Component } from '../../../types/component.ts';
 import type { SetState, SubscribeState } from '../../../types/useState.ts';
 import { DateFormatter } from '../../../utils/DateFormatter.ts';
 import { useState } from '../../../utils/useState.ts';
@@ -18,7 +18,7 @@ import type { EventsGroupedByDay } from './types.ts';
 export class EventsPage extends BaseComponent {
   #content: ListPageContent;
   #header: Component;
-  #table: Table<EventsGroupedByDay>;
+  #table: Component & CanBeRerendered<EventsGroupedByDay>;
 
   #events: EventsGroupedByDay[];
   #setEvents: SetState<EventsGroupedByDay[]>;

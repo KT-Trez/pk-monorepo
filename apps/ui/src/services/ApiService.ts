@@ -64,7 +64,7 @@ export class ApiService {
         throw err;
       }
 
-      throw new ApiError('Unknown error', err);
+      throw new ApiError('Oops! An unexpected error occurred.', err);
     }
   }
 }

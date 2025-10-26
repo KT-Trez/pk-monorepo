@@ -23,8 +23,8 @@
 
 .Table-root tr th {
   background: var(--color-elevation-1);
-  text-align: left;
   position: sticky;
+  text-align: left;
   top: calc(var(--sizing-4) * -1);
   z-index: 100;
 }
@@ -62,13 +62,13 @@
 }
 
 .Table-rowActions {
-  display: none;
   bottom: 0;
+  display: none;
   gap: var(--sizing-2);
   height: fit-content;
   margin: auto 0;
   position: absolute;
-  right: var(--sizing-8);
+  right: var(--sizing-2);
   top: 0;
 }
 

@@ -13,8 +13,4 @@ export class DateCell extends Typography {
     super({ text: formattedDate });
     this.setStyle({ whiteSpace: 'nowrap' });
   }
-
-  render(): HTMLElement {
-    return this.root;
-  }
 }

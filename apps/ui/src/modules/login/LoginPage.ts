@@ -60,7 +60,7 @@ export class LoginPage extends BaseComponent {
       sessionService.session = await client.post<EnrichedSessionApi>('/v1/session', { email, password });
       navigate('#/home/events');
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      const message = error instanceof Error ? error.message : 'Oops! An unexpected error occurred.';
       notifier.notify({ text: message, severity: 'error' });
     }
   }

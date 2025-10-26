@@ -16,10 +16,6 @@ export class Form extends BaseComponent<'form'> {
     return this;
   }
 
-  render(): HTMLElement {
-    return this.root;
-  }
-
   setMethod(method: 'DELETE' | 'GET' | 'POST' | 'PUT') {
     this.setAttribute('method', method);
     return this;

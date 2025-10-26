@@ -6,7 +6,7 @@ import { PageHeader } from '../../../components/PageHeader/PageHeader.ts';
 import { Table } from '../../../components/Table/Table.ts';
 import { client, notifier } from '../../../main.ts';
 import { ApiService } from '../../../services/ApiService.ts';
-import type { Component } from '../../../types/component.ts';
+import type { CanBeRerendered, Component } from '../../../types/component.ts';
 import type { SetState, SubscribeState } from '../../../types/useState.ts';
 import { useState } from '../../../utils/useState.ts';
 import { usePageActions } from './config/usePageActions.ts';
@@ -16,7 +16,7 @@ import { useTableColumns } from './config/useTableColumns.ts';
 export class UsersPage extends BaseComponent {
   #content: Component;
   #header: Component;
-  #table: Table<FullUserApi>;
+  #table: Component & CanBeRerendered<FullUserApi>;
 
   #setUsers: SetState<FullUserApi[]>;
   #subscribe: SubscribeState<FullUserApi[]>;

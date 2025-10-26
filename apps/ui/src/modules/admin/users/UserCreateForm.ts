@@ -76,7 +76,7 @@ export class UserCreateForm extends BaseComponent {
       const message = `User ${user.name} ${user.surname} (${user.uid}) created successfully.`;
       notifier.notify({ text: message, severity: 'success' });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      const message = error instanceof Error ? error.message : 'Oops! An unexpected error occurred.';
       notifier.notify({ text: message, severity: 'error' });
     }
   }

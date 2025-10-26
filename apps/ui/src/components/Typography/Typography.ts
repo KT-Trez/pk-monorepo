@@ -17,8 +17,4 @@ export class Typography<T extends keyof HTMLElementTagNameMap = keyof HTMLElemen
     super(tagName as T);
     this.addClass(className).setTextContent(text);
   }
-
-  render(): HTMLElement {
-    return this.root;
-  }
 }

@@ -1,21 +1,34 @@
 import { Notification, type NotificationProps } from '../components/Notification/Notification.ts';
+import { NotificationsContainer } from '../components/Notification/NotificationsContainer.ts';
+import type { Component } from '../types/component.ts';
 
 export class NotificationService {
-  #notifications: HTMLElement[] = [];
+  #container: Component | null;
   #timeout: number;
 
   constructor(timeout = 10000) {
+    this.#container = null;
     this.#timeout = timeout;
   }
 
   notify(props: NotificationProps) {
-    const notification = new Notification({ ...props, index: this.#notifications.length }).render();
-    document.body.appendChild(notification);
-    this.#notifications.push(notification);
+    const container = this.#container ?? new NotificationsContainer();
+
+    if (!this.#container) {
+      document.body.appendChild(container.render());
+      this.#container = container;
+    }
+
+    const notification = new Notification(props).render();
+    container.root.appendChild(notification);
 
     setTimeout(() => {
-      this.#notifications.pop();
-      notification.remove(); // todo: https://github.com/KT-Trez/pk-monorepo/issues/23
+      notification.remove();
+
+      if (container.root.children.length === 0) {
+        container.root.remove();
+        this.#container = null;
+      }
     }, this.#timeout);
   }
 }

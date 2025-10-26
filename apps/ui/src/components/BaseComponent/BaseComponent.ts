@@ -1,8 +1,7 @@
 import type { CabBeWritten, CanBeStyled, Component } from '../../types/component.ts';
 
 export class BaseComponent<T extends keyof HTMLElementTagNameMap = keyof HTMLElementTagNameMap>
-  implements Component, CanBeStyled, CabBeWritten
-{
+  implements Component, CanBeStyled, CabBeWritten {
   readonly root: HTMLElementTagNameMap[T];
 
   constructor(tag: T) {
@@ -53,7 +52,7 @@ export class BaseComponent<T extends keyof HTMLElementTagNameMap = keyof HTMLEle
     return this;
   }
 
-  render(): HTMLElement | HTMLElement[] {
+  render(): HTMLElement {
     return this.root;
   }
 
