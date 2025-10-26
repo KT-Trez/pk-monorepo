@@ -2,8 +2,11 @@
   "dependencies": {
     "@pk/types": "*",
     "@pk/utils": "*",
+    "@trpc/server": "^11.7.0",
     "node-cron": "^3.0.3",
-    "pg": "^8.14.1"
+    "pg": "^8.14.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@pk/ts-config": "*",
