@@ -10,11 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as SettingsAccountRouteImport } from './routes/settings/account'
+import { Route as HomeEventsRouteImport } from './routes/home/events'
+import { Route as HomeCalendarsRouteImport } from './routes/home/calendars'
 import { Route as AdminUsersRouteImport } from './routes/admin/users'
 
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAccountRoute = SettingsAccountRouteImport.update({
+  id: '/settings/account',
+  path: '/settings/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeEventsRoute = HomeEventsRouteImport.update({
+  id: '/home/events',
+  path: '/home/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeCalendarsRoute = HomeCalendarsRouteImport.update({
+  id: '/home/calendars',
+  path: '/home/calendars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
@@ -25,27 +43,55 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/admin/users': typeof AdminUsersRoute
+  '/home/calendars': typeof HomeCalendarsRoute
+  '/home/events': typeof HomeEventsRoute
+  '/settings/account': typeof SettingsAccountRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin/users': typeof AdminUsersRoute
+  '/home/calendars': typeof HomeCalendarsRoute
+  '/home/events': typeof HomeEventsRoute
+  '/settings/account': typeof SettingsAccountRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/admin/users': typeof AdminUsersRoute
+  '/home/calendars': typeof HomeCalendarsRoute
+  '/home/events': typeof HomeEventsRoute
+  '/settings/account': typeof SettingsAccountRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/admin/users' | '/admin'
+  fullPaths:
+    | '/admin/users'
+    | '/home/calendars'
+    | '/home/events'
+    | '/settings/account'
+    | '/admin'
   fileRoutesByTo: FileRoutesByTo
-  to: '/admin/users' | '/admin'
-  id: '__root__' | '/admin/users' | '/admin/'
+  to:
+    | '/admin/users'
+    | '/home/calendars'
+    | '/home/events'
+    | '/settings/account'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/admin/users'
+    | '/home/calendars'
+    | '/home/events'
+    | '/settings/account'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AdminUsersRoute: typeof AdminUsersRoute
+  HomeCalendarsRoute: typeof HomeCalendarsRoute
+  HomeEventsRoute: typeof HomeEventsRoute
+  SettingsAccountRoute: typeof SettingsAccountRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -56,6 +102,27 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/account': {
+      id: '/settings/account'
+      path: '/settings/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof SettingsAccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home/events': {
+      id: '/home/events'
+      path: '/home/events'
+      fullPath: '/home/events'
+      preLoaderRoute: typeof HomeEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home/calendars': {
+      id: '/home/calendars'
+      path: '/home/calendars'
+      fullPath: '/home/calendars'
+      preLoaderRoute: typeof HomeCalendarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
@@ -70,6 +137,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   AdminUsersRoute: AdminUsersRoute,
+  HomeCalendarsRoute: HomeCalendarsRoute,
+  HomeEventsRoute: HomeEventsRoute,
+  SettingsAccountRoute: SettingsAccountRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport

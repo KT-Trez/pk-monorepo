@@ -1,14 +1,15 @@
 import type { SideNavConfig } from '@/components/SideNav/types.ts';
+import type { FileRoutesByPath } from '@tanstack/react-router';
 import { useMemo } from 'react';
 
 export const useSideNavConfig = () => {
-  return useMemo<SideNavConfig>(
+  return useMemo<SideNavConfig<keyof FileRoutesByPath>>(
     () => [
       {
         // isHidden: !sessionService.session?.user?.roles.includes('admin'),
         items: [
           {
-            href: '#/admin/admin',
+            href: '/admin/users',
             // isHidden: !sessionService.hasPermission('user', 'read'),
             name: 'Users',
           },
@@ -19,11 +20,11 @@ export const useSideNavConfig = () => {
         // isHidden: sessionService.session?.user.roles.length === 0,
         items: [
           {
-            href: '#/home/calendars',
+            href: '/home/calendars',
             name: 'Calendars',
           },
           {
-            href: '#/home/events',
+            href: '/home/events',
             name: 'Events',
           },
         ],
@@ -32,7 +33,7 @@ export const useSideNavConfig = () => {
       {
         items: [
           {
-            href: '#/settings/account',
+            href: '/settings/account',
             name: 'Account',
           },
         ],

@@ -3,12 +3,12 @@ import type { SideNavConfig } from '@/components/SideNav/types.ts';
 import { Card, CardContent } from '@/components/ui/card.tsx';
 import { cn } from '@/lib/utils.ts';
 
-type SideNavProps = {
+type SideNavProps<T extends string> = {
   className?: string;
-  config: SideNavConfig;
+  config: SideNavConfig<T>;
 };
 
-export const SideNav = ({ className, config }: SideNavProps) => {
+export const SideNav = <T extends string>({ className, config }: SideNavProps<T>) => {
   return (
     <div className={cn('p-4 pr-2', className)}>
       <Card className="h-full w-full">

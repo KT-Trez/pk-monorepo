@@ -2,11 +2,11 @@ import { SideNavItem } from '@/components/SideNav/components/SideNavItem.tsx';
 import { Typography } from '@/components/Typography/Typography.tsx';
 import type { SideNavCategory as ISideNavCategory } from '../types.ts';
 
-type SideNavCategoryProps = {
-  category: ISideNavCategory;
+type SideNavCategoryProps<T extends string> = {
+  category: ISideNavCategory<T>;
 };
 
-export const SideNavCategory = ({ category }: SideNavCategoryProps) => {
+export const SideNavCategory = <T extends string>({ category }: SideNavCategoryProps<T>) => {
   if (category.isHidden) {
     return null;
   }
