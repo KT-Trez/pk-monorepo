@@ -60,12 +60,12 @@
   },
   "overrides": [
     {
-
       "include": [
         "apps/server/**/*.ts",
         "apps/server/**/*.tsx",
         "apps/timetable-parser-service/**/*.ts",
         "apps/timetable-parser-service/**/*.tsx",
+        "apps/ui/tsconfig.node.json",
         "packages/**/*.ts",
         "packages/**/*.tsx"
       ],
