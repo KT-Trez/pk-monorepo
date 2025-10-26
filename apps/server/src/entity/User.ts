@@ -12,7 +12,7 @@ export class User {
   calendars!: Relation<Calendar[]>;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: Date;
+  createdAt!: string;
 
   @Column('varchar', { nullable: false })
   email!: string;
@@ -24,7 +24,7 @@ export class User {
   events!: Relation<Event[]>;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: Date;
+  modifiedAt!: string;
 
   @Column('varchar', { nullable: false })
   name!: string;

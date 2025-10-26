@@ -11,7 +11,7 @@ export class Calendar {
   author!: User;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: Date;
+  createdAt!: string;
 
   @OneToMany(
     () => Event,
@@ -23,7 +23,7 @@ export class Calendar {
   isPublic!: boolean;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: Date;
+  modifiedAt!: string;
 
   @Column('varchar', { nullable: false })
   name!: string;

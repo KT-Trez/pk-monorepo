@@ -1,6 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
   "files": {
+    "ignore": ["**/routeTree.gen.ts"],
     "include": [
       "apps/**/*.css",
       "apps/**/*.js",
@@ -34,9 +35,7 @@
       "arrowParentheses": "asNeeded",
       "quoteStyle": "single"
     },
-    "globals": [
-      "BufferEncoding"
-    ]
+    "globals": ["BufferEncoding"]
   },
   "json": {
     "formatter": {
@@ -78,14 +77,11 @@
       }
     },
     {
-      "include": [
-        "apps/ui/**/*.ts",
-        "apps/ui/**/*.tsx"
-      ],
+      "include": ["apps/ui/**/*.ts", "apps/ui/**/*.tsx"],
       "linter": {
         "rules": {
-          "correctness": {
-            "useHookAtTopLevel": "off"
+          "suspicious": {
+            "noReactSpecificProps": "off"
           }
         }
       }

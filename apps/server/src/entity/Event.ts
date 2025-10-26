@@ -17,25 +17,25 @@ export class Event {
   calendar!: Calendar;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: Date;
+  createdAt!: string;
 
   @Column('varchar', { nullable: true })
   description!: string;
 
-  @Column('timestamptz', { default: () => '(NOW() + \'01:00:00\'::INTERVAL)', nullable: false })
-  endDateTime!: Date;
+  @Column('timestamptz', { default: () => "(NOW() + '01:00:00'::INTERVAL)", nullable: false })
+  endDateTime!: string;
 
   @Column('varchar', { nullable: false })
   location!: string;
 
   @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: Date;
+  modifiedAt!: string;
 
   @Column('varchar', { nullable: false })
   name!: string;
 
   @Column('timestamptz', { default: () => 'NOW()', nullable: false })
-  startDateTime!: Date;
+  startDateTime!: string;
 
   @PrimaryGeneratedColumn('uuid')
   uid!: string;
