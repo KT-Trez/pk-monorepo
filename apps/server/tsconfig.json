@@ -1,4 +1,10 @@
 {
   "extends": "@pk/ts-config/src/tsconfig.node.json",
-  "include": ["lib", "src"]
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": [
+    "src"
+  ]
 }
