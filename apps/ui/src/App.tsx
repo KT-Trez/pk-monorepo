@@ -1,16 +1,21 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { makeQueryClient } from '@/utils/query.ts';
+import { TRPCProvider, makeTrpcClient } from '@/utils/trpc.ts';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { SnackbarProvider } from 'notistack';
 import { useRef } from 'react';
 
 export const App = () => {
-  const { current: queryClient } = useRef(new QueryClient()); // todo: implement global error handling
+  const { current: queryClient } = useRef(makeQueryClient()); // todo: implement global error handling
   const snackbarRef = useRef<SnackbarProvider>(null);
+  const { current: trpcClient } = useRef(makeTrpcClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SnackbarProvider ref={snackbarRef}>
-        <div>page works!</div>
-      </SnackbarProvider>
+      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+        <SnackbarProvider ref={snackbarRef}>
+          <div>page works!</div>
+        </SnackbarProvider>
+      </TRPCProvider>
     </QueryClientProvider>
   );
 };

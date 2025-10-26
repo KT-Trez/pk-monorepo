@@ -6,7 +6,7 @@ import { NotFoundError } from '../response/NotFoundError.ts';
 import { ServerError } from '../response/ServerError.ts';
 import { Unauthorized } from '../response/Unauthorized.ts';
 import type { BaseController, RoutePath } from './BaseController.ts';
-import type { BaseService } from './BaseService.js';
+import type { BaseService } from './BaseService.ts';
 import { WebServerRequest } from './WebServerRequest.ts';
 import { WebServerResponse } from './WebServerResponse.ts';
 

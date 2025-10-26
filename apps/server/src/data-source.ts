@@ -1,10 +1,13 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './entity/User.js';
+import { Calendar } from './entity/Calendar.ts';
+import { Event } from './entity/Event.ts';
+import { User } from './entity/User.ts';
+import { UserRole } from './entity/UserRole.ts';
 
 export const AppDataSource = new DataSource({
   database: 'test',
-  entities: [User],
+  entities: [Calendar, Event, User, UserRole],
   host: 'localhost',
   logging: false,
   migrations: [],
