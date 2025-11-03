@@ -1,5 +1,4 @@
 {
-  "openapi": "3.1.0",
   "components": {
     "examples": {
       "Calendar": {
@@ -17,23 +16,23 @@
       },
       "CalendarCreateRequest": {
         "value": {
-          "name": "Work Calendar",
-          "isPublic": true
-        }
-      },
-      "CalendarUpdateRequest": {
-        "value": {
-          "uid": "789e0123-e45f-67d8-a901-426614174000",
-          "name": "Updated Calendar Name",
-          "isPublic": false
+          "isPublic": true,
+          "name": "Work Calendar"
         }
       },
       "CalendarShareRequest": {
         "value": {
-          "uid": "789e0123-e45f-67d8-a901-426614174000",
           "sharedWith": {
             "456e7890-e12d-34f5-a678-426614174000": "editor"
-          }
+          },
+          "uid": "789e0123-e45f-67d8-a901-426614174000"
+        }
+      },
+      "CalendarUpdateRequest": {
+        "value": {
+          "isPublic": false,
+          "name": "Updated Calendar Name",
+          "uid": "789e0123-e45f-67d8-a901-426614174000"
         }
       },
       "Collection": {
@@ -61,19 +60,19 @@
       "EventCreateRequest": {
         "value": {
           "calendarUid": "789e0123-e45f-67d8-a901-426614174000",
-          "title": "Team Meeting",
-          "startDate": "2023-10-02T13:00:00Z",
-          "endDate": "2023-10-02T14:00:00Z",
           "description": "Team meeting to discuss project progress",
-          "location": "Conference Room A"
+          "endDate": "2023-10-02T14:00:00Z",
+          "location": "Conference Room A",
+          "startDate": "2023-10-02T13:00:00Z",
+          "title": "Team Meeting"
         }
       },
       "EventUpdateRequest": {
         "value": {
-          "uid": "abc1234d-e56f-78g9-h012-426614174000",
-          "title": "Updated Meeting Title",
+          "endDate": "2023-10-02T14:30:00Z",
           "startDate": "2023-10-02T13:30:00Z",
-          "endDate": "2023-10-02T14:30:00Z"
+          "title": "Updated Meeting Title",
+          "uid": "abc1234d-e56f-78g9-h012-426614174000"
         }
       },
       "NotFound": {
@@ -96,6 +95,13 @@
           "success": false
         }
       },
+      "ServerSuccess": {
+        "value": {
+          "code": 200,
+          "message": "OK",
+          "success": true
+        }
+      },
       "Session": {
         "value": {
           "createdAt": "2023-10-02T12:00:00Z",
@@ -107,13 +113,6 @@
         "value": {
           "email": "john.doe@example.com",
           "password": "zaq1@WSX"
-        }
-      },
-      "ServerSuccess": {
-        "value": {
-          "code": 200,
-          "message": "OK",
-          "success": true
         }
       },
       "Unauthorized": {
@@ -135,17 +134,79 @@
         "value": {
           "email": "john.doe@example.com",
           "name": "John",
-          "surname": "Doe",
           "password": "zaq1@WSX",
-          "roles": ["member"]
+          "roles": ["member"],
+          "surname": "Doe"
         }
       },
       "UserUpdateRequest": {
         "value": {
-          "uid": "123e4567-e89b-12d3-a456-426614174000",
           "name": "John Updated",
-          "surname": "Doe Updated"
+          "surname": "Doe Updated",
+          "uid": "123e4567-e89b-12d3-a456-426614174000"
         }
+      }
+    },
+    "responses": {
+      "200": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "ServerSuccess": {
+                "$ref": "#/components/examples/ServerSuccess"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerSuccess"
+            }
+          }
+        },
+        "description": "OK"
+      },
+      "401": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "Unauthorized": {
+                "$ref": "#/components/examples/Unauthorized"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        },
+        "description": "Unauthorized"
+      },
+      "404": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "NotFound": {
+                "$ref": "#/components/examples/NotFound"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        },
+        "description": "Not found"
+      },
+      "500": {
+        "content": {
+          "application/json": {
+            "examples": {
+              "ServerError": {
+                "$ref": "#/components/examples/ServerError"
+              }
+            },
+            "schema": {
+              "$ref": "#/components/schemas/ServerError"
+            }
+          }
+        },
+        "description": "Server error"
       }
     },
     "schemas": {
@@ -174,11 +235,11 @@
             "type": "string"
           },
           "sharedWith": {
-            "type": "object",
             "additionalProperties": {
-              "type": "string",
-              "enum": ["editor", "viewer"]
-            }
+              "enum": ["editor", "viewer"],
+              "type": "string"
+            },
+            "type": "object"
           },
           "uid": {
             "type": "string"
@@ -194,34 +255,14 @@
           }
         },
         "properties": {
-          "name": {
-            "type": "string"
-          },
           "isPublic": {
             "type": "boolean"
+          },
+          "name": {
+            "type": "string"
           }
         },
         "required": ["name"],
-        "type": "object"
-      },
-      "CalendarUpdateRequest": {
-        "examples": {
-          "CalendarUpdateRequest": {
-            "$ref": "#/components/examples/CalendarUpdateRequest"
-          }
-        },
-        "properties": {
-          "uid": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isPublic": {
-            "type": "boolean"
-          }
-        },
-        "required": ["uid"],
         "type": "object"
       },
       "CalendarShareRequest": {
@@ -231,18 +272,38 @@
           }
         },
         "properties": {
+          "sharedWith": {
+            "additionalProperties": {
+              "enum": ["editor", "viewer", null],
+              "type": "string"
+            },
+            "type": "object"
+          },
           "uid": {
             "type": "string"
-          },
-          "sharedWith": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "enum": ["editor", "viewer", null]
-            }
           }
         },
         "required": ["uid", "sharedWith"],
+        "type": "object"
+      },
+      "CalendarUpdateRequest": {
+        "examples": {
+          "CalendarUpdateRequest": {
+            "$ref": "#/components/examples/CalendarUpdateRequest"
+          }
+        },
+        "properties": {
+          "isPublic": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": ["uid"],
         "type": "object"
       },
       "Collection": {
@@ -256,10 +317,10 @@
             "type": "boolean"
           },
           "items": {
-            "type": "array",
             "items": {
               "type": "object"
-            }
+            },
+            "type": "array"
           },
           "limit": {
             "type": "integer"
@@ -270,6 +331,21 @@
         },
         "required": ["hasMore", "items", "limit", "offset"],
         "type": "object"
+      },
+      "EnrichedEvent": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Event"
+          },
+          {
+            "properties": {
+              "calendar": {
+                "$ref": "#/components/schemas/Calendar"
+              }
+            },
+            "required": ["calendar"]
+          }
+        ]
       },
       "Event": {
         "examples": {
@@ -316,21 +392,6 @@
         "required": ["authorUid", "calendarUid", "createdAt", "endDate", "modifiedAt", "startDate", "title", "uid"],
         "type": "object"
       },
-      "EnrichedEvent": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Event"
-          },
-          {
-            "properties": {
-              "calendar": {
-                "$ref": "#/components/schemas/Calendar"
-              }
-            },
-            "required": ["calendar"]
-          }
-        ]
-      },
       "EventCreateRequest": {
         "examples": {
           "EventCreateRequest": {
@@ -341,22 +402,22 @@
           "calendarUid": {
             "type": "string"
           },
-          "title": {
-            "type": "string"
-          },
-          "startDate": {
-            "format": "date-time",
-            "type": "string"
+          "description": {
+            "type": ["string", "null"]
           },
           "endDate": {
             "format": "date-time",
             "type": "string"
           },
-          "description": {
-            "type": ["string", "null"]
-          },
           "location": {
             "type": ["string", "null"]
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
           }
         },
         "required": ["calendarUid", "title", "startDate", "endDate"],
@@ -369,28 +430,28 @@
           }
         },
         "properties": {
-          "uid": {
-            "type": "string"
-          },
           "calendarUid": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "startDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "endDate": {
-            "format": "date-time",
             "type": "string"
           },
           "description": {
             "type": ["string", "null"]
           },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
           "location": {
             "type": ["string", "null"]
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
           }
         },
         "required": ["uid"],
@@ -514,15 +575,15 @@
           "name": {
             "type": "string"
           },
+          "roles": {
+            "items": {
+              "enum": ["admin", "member"],
+              "type": "string"
+            },
+            "type": "array"
+          },
           "surname": {
             "type": "string"
-          },
-          "roles": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["admin", "member"]
-            }
           },
           "uid": {
             "type": "string"
@@ -544,18 +605,18 @@
           "name": {
             "type": "string"
           },
-          "surname": {
-            "type": "string"
-          },
           "password": {
             "type": "string"
           },
           "roles": {
-            "type": "array",
             "items": {
-              "type": "string",
-              "enum": ["admin", "member"]
-            }
+              "enum": ["admin", "member"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "surname": {
+            "type": "string"
           }
         },
         "required": ["email", "name", "surname", "password", "roles"],
@@ -568,105 +629,44 @@
           }
         },
         "properties": {
-          "uid": {
-            "type": "string"
-          },
           "email": {
             "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "surname": {
-            "type": "string"
-          },
           "password": {
             "type": "string"
           },
           "roles": {
-            "type": "array",
             "items": {
-              "type": "string",
-              "enum": ["admin", "member"]
-            }
+              "enum": ["admin", "member"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
           }
         },
         "required": ["uid"],
         "type": "object"
-      }
-    },
-    "responses": {
-      "200": {
-        "description": "OK",
-        "content": {
-          "application/json": {
-            "examples": {
-              "ServerSuccess": {
-                "$ref": "#/components/examples/ServerSuccess"
-              }
-            },
-            "schema": {
-              "$ref": "#/components/schemas/ServerSuccess"
-            }
-          }
-        }
-      },
-      "401": {
-        "description": "Unauthorized",
-        "content": {
-          "application/json": {
-            "examples": {
-              "Unauthorized": {
-                "$ref": "#/components/examples/Unauthorized"
-              }
-            },
-            "schema": {
-              "$ref": "#/components/schemas/ServerError"
-            }
-          }
-        }
-      },
-      "404": {
-        "description": "Not found",
-        "content": {
-          "application/json": {
-            "examples": {
-              "NotFound": {
-                "$ref": "#/components/examples/NotFound"
-              }
-            },
-            "schema": {
-              "$ref": "#/components/schemas/ServerError"
-            }
-          }
-        }
-      },
-      "500": {
-        "description": "Server error",
-        "content": {
-          "application/json": {
-            "examples": {
-              "ServerError": {
-                "$ref": "#/components/examples/ServerError"
-              }
-            },
-            "schema": {
-              "$ref": "#/components/schemas/ServerError"
-            }
-          }
-        }
       }
     }
   },
   "info": {
     "description": "This is the API documentation for the @pk/server package.",
     "license": {
-      "name": "GNU General Public License v3.0 or later",
-      "identifier": "GPL-3.0-or-later"
+      "identifier": "GPL-3.0-or-later",
+      "name": "GNU General Public License v3.0 or later"
     },
     "title": "@pk/server",
     "version": "1.0.0"
   },
+  "openapi": "3.1.0",
   "paths": {
     "/v1/calendar": {
       "delete": {
@@ -684,8 +684,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Calendar deleted successfully",
-            "$ref": "#/components/responses/200"
+            "$ref": "#/components/responses/200",
+            "description": "Calendar deleted successfully"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -704,13 +704,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalendarCreateRequest"
-              },
               "examples": {
                 "CalendarCreateRequest": {
                   "$ref": "#/components/examples/CalendarCreateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CalendarCreateRequest"
               }
             }
           },
@@ -741,13 +741,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalendarUpdateRequest"
-              },
               "examples": {
                 "CalendarUpdateRequest": {
                   "$ref": "#/components/examples/CalendarUpdateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CalendarUpdateRequest"
               }
             }
           },
@@ -783,13 +783,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalendarShareRequest"
-              },
               "examples": {
                 "CalendarShareRequest": {
                   "$ref": "#/components/examples/CalendarShareRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CalendarShareRequest"
               }
             }
           },
@@ -825,13 +825,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalendarShareRequest"
-              },
               "examples": {
                 "CalendarShareRequest": {
                   "$ref": "#/components/examples/CalendarShareRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CalendarShareRequest"
               }
             }
           },
@@ -871,8 +871,8 @@
             "name": "limit",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 10
+              "default": 10,
+              "type": "integer"
             }
           },
           {
@@ -881,8 +881,8 @@
             "name": "offset",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 0
+              "default": 0,
+              "type": "integer"
             }
           }
         ],
@@ -898,10 +898,10 @@
                     {
                       "properties": {
                         "items": {
-                          "type": "array",
                           "items": {
                             "$ref": "#/components/schemas/Calendar"
-                          }
+                          },
+                          "type": "array"
                         }
                       }
                     }
@@ -937,8 +937,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Event deleted successfully",
-            "$ref": "#/components/responses/200"
+            "$ref": "#/components/responses/200",
+            "description": "Event deleted successfully"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -957,13 +957,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EventCreateRequest"
-              },
               "examples": {
                 "EventCreateRequest": {
                   "$ref": "#/components/examples/EventCreateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/EventCreateRequest"
               }
             }
           },
@@ -994,13 +994,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EventUpdateRequest"
-              },
               "examples": {
                 "EventUpdateRequest": {
                   "$ref": "#/components/examples/EventUpdateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/EventUpdateRequest"
               }
             }
           },
@@ -1040,8 +1040,8 @@
             "name": "limit",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 10
+              "default": 10,
+              "type": "integer"
             }
           },
           {
@@ -1050,8 +1050,8 @@
             "name": "offset",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 0
+              "default": 0,
+              "type": "integer"
             }
           }
         ],
@@ -1067,10 +1067,10 @@
                     {
                       "properties": {
                         "items": {
-                          "type": "array",
                           "items": {
                             "$ref": "#/components/schemas/EnrichedEvent"
-                          }
+                          },
+                          "type": "array"
                         }
                       }
                     }
@@ -1098,10 +1098,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Option"
-                  }
+                  },
+                  "type": "array"
                 }
               }
             },
@@ -1133,8 +1133,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Session deleted successfully",
-            "$ref": "#/components/responses/200"
+            "$ref": "#/components/responses/200",
+            "description": "Session deleted successfully"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -1150,13 +1150,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SessionRequest"
-              },
               "examples": {
                 "SessionRequest": {
                   "$ref": "#/components/examples/SessionRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/SessionRequest"
               }
             }
           },
@@ -1199,8 +1199,8 @@
         ],
         "responses": {
           "200": {
-            "description": "User deleted successfully",
-            "$ref": "#/components/responses/200"
+            "$ref": "#/components/responses/200",
+            "description": "User deleted successfully"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -1255,13 +1255,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreateRequest"
-              },
               "examples": {
                 "UserCreateRequest": {
                   "$ref": "#/components/examples/UserCreateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequest"
               }
             }
           },
@@ -1292,13 +1292,13 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdateRequest"
-              },
               "examples": {
                 "UserUpdateRequest": {
                   "$ref": "#/components/examples/UserUpdateRequest"
                 }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
               }
             }
           },
@@ -1338,8 +1338,8 @@
             "name": "limit",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 10
+              "default": 10,
+              "type": "integer"
             }
           },
           {
@@ -1348,8 +1348,8 @@
             "name": "offset",
             "required": false,
             "schema": {
-              "type": "integer",
-              "default": 0
+              "default": 0,
+              "type": "integer"
             }
           }
         ],
@@ -1365,10 +1365,10 @@
                     {
                       "properties": {
                         "items": {
-                          "type": "array",
                           "items": {
                             "$ref": "#/components/schemas/User"
-                          }
+                          },
+                          "type": "array"
                         }
                       }
                     }

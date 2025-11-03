@@ -1,14 +1,10 @@
 {
-  "extends": "@pk/ts-config/src/tsconfig.vite.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "extends": "@pk/ts-config/src/tsconfig.vite.json",
+  "include": ["src"]
 }

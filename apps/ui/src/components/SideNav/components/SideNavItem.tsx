@@ -1,5 +1,5 @@
-import { Typography } from '@/components/Typography/Typography.tsx';
 import { Link } from '@tanstack/react-router';
+import { Typography } from '@/components/Typography/Typography.tsx';
 import type { SideNavItem as ISideNavItem } from '../types.ts';
 
 type SideNavItemProps<T extends string> = {

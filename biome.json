@@ -1,25 +1,36 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.3/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    },
+    "enabled": true
+  },
   "files": {
-    "ignore": ["**/routeTree.gen.ts"],
-    "include": [
-      "apps/**/*.css",
-      "apps/**/*.js",
-      "apps/**/*.jsx",
-      "apps/**/*.json",
-      "apps/**/*.md",
-      "apps/**/*.ts",
-      "apps/**/*.tsx",
-      "packages/**/*.css",
-      "packages/**/*.js",
-      "packages/**/*.jsx",
-      "packages/**/*.json",
-      "packages/**/*.md",
-      "packages/**/*.ts",
-      "packages/**/*.tsx",
-      "*.js",
-      "*.json",
-      "*.ts"
+    "includes": [
+      "**/apps/**/*.css",
+      "**/apps/**/*.js",
+      "**/apps/**/*.jsx",
+      "**/apps/**/*.json",
+      "**/apps/**/*.md",
+      "**/apps/**/*.ts",
+      "**/apps/**/*.tsx",
+      "**/packages/**/*.css",
+      "**/packages/**/*.js",
+      "**/packages/**/*.jsx",
+      "**/packages/**/*.json",
+      "**/packages/**/*.md",
+      "**/packages/**/*.ts",
+      "**/packages/**/*.tsx",
+      "**/*.js",
+      "**/*.json",
+      "**/*.ts",
+      "!**/routeTree.gen.ts"
     ]
   },
   "formatter": {
@@ -31,8 +42,8 @@
   },
   "javascript": {
     "formatter": {
-      "enabled": true,
       "arrowParentheses": "asNeeded",
+      "enabled": true,
       "quoteStyle": "single"
     },
     "globals": ["BufferEncoding"]
@@ -45,7 +56,6 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "all": true,
       "correctness": {
         "noUndeclaredDependencies": "off"
       },
@@ -54,19 +64,16 @@
       }
     }
   },
-  "organizeImports": {
-    "enabled": true
-  },
   "overrides": [
     {
-      "include": [
-        "apps/server/**/*.ts",
-        "apps/server/**/*.tsx",
-        "apps/timetable-parser-service/**/*.ts",
-        "apps/timetable-parser-service/**/*.tsx",
-        "apps/ui/tsconfig.node.json",
-        "packages/**/*.ts",
-        "packages/**/*.tsx"
+      "includes": [
+        "**/apps/server/**/*.ts",
+        "**/apps/server/**/*.tsx",
+        "**/apps/timetable-parser-service/**/*.ts",
+        "**/apps/timetable-parser-service/**/*.tsx",
+        "**/apps/ui/tsconfig.node.json",
+        "**/packages/**/*.ts",
+        "**/packages/**/*.tsx"
       ],
       "linter": {
         "rules": {
@@ -77,7 +84,7 @@
       }
     },
     {
-      "include": ["apps/ui/**/*.ts", "apps/ui/**/*.tsx"],
+      "includes": ["**/apps/ui/**/*.ts", "**/apps/ui/**/*.tsx"],
       "linter": {
         "rules": {
           "suspicious": {

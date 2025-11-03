@@ -16,7 +16,7 @@ export class EventController extends BaseController {
 
     const calendar = await enrichedCalendarRepository.findOne({ uid: payload.calendarUid });
 
-    if (!req.session.hasPermission('event', 'create', { event: payload, calendar })) {
+    if (!req.session.hasPermission('event', 'create', { calendar, event: payload })) {
       return next(new Forbidden('User is missing permissions to create a new event'));
     }
 
@@ -40,7 +40,7 @@ export class EventController extends BaseController {
       return next(new ObjectNotFound('event', uid));
     }
 
-    if (!req.session.hasPermission('event', 'delete', { event, calendar })) {
+    if (!req.session.hasPermission('event', 'delete', { calendar, event })) {
       return next(new Forbidden(`User is missing permissions to delete the event "${uid}"`));
     }
 
@@ -73,7 +73,7 @@ export class EventController extends BaseController {
     const items = events.reduce<EnrichedEventApi[]>((acc, event) => {
       const calendar = calendarsMap[event.calendarUid];
 
-      if (calendar && req.session.hasPermission('event', 'read', { event, calendar })) {
+      if (calendar && req.session.hasPermission('event', 'read', { calendar, event })) {
         acc.push({ ...event, calendar: calendar });
       }
 
@@ -95,7 +95,7 @@ export class EventController extends BaseController {
       return next(new ObjectNotFound('event', uid));
     }
 
-    if (!req.session.hasPermission('event', 'update', { event, calendar })) {
+    if (!req.session.hasPermission('event', 'update', { calendar, event })) {
       return next(new Forbidden(`User is missing permissions to update the event "${uid}"`));
     }
 

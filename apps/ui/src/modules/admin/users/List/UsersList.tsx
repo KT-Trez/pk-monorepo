@@ -1,6 +1,6 @@
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { DataTable } from '@/components/DataTable/DataTable.tsx';
 import { useUserColumns } from '@/modules/admin/users/List/hooks/useUserColumns.tsx';
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useUsersFetch } from './hooks/useUsersFetch.ts';
 
 export const UsersList = () => {
@@ -8,8 +8,8 @@ export const UsersList = () => {
   const { data, isLoading } = useUsersFetch();
 
   const table = useReactTable({
-    data,
     columns,
+    data,
     getCoreRowModel: getCoreRowModel(),
   });
 

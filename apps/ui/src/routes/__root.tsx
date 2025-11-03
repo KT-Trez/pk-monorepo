@@ -1,6 +1,6 @@
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { SideNav } from '@/components/SideNav/SideNav.tsx';
 import { useSideNavConfig } from '@/hooks/useSideNavConfig.ts';
-import { Outlet, createRootRoute } from '@tanstack/react-router';
 
 export const Route = createRootRoute({ component: RootLayout });
 

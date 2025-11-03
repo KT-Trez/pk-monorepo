@@ -54,8 +54,8 @@ export class EventsPage extends BaseComponent {
 
   async #onRender() {
     const collection = await withNotification({
-      promise: client.get<Collection<EnrichedEventApi>>(`/v1/events?limit=${ApiService.DEFAULT_LIMIT}`),
       errorMessage: 'Failed to fetch events.',
+      promise: client.get<Collection<EnrichedEventApi>>(`/v1/events?limit=${ApiService.DEFAULT_LIMIT}`),
     });
 
     const events = collection?.items ?? [];

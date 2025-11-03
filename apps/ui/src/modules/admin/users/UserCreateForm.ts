@@ -63,21 +63,21 @@ export class UserCreateForm extends BaseComponent {
 
   async #onSubmit(formData: FormData) {
     const payload: EnrichedUserApiCreatePayload = {
-      name: formData.get('name') as string,
-      surname: formData.get('surname') as string,
       email: formData.get('email') as string,
+      name: formData.get('name') as string,
       password: formData.get('password') as string,
       roles: [...(formData.get('admin') ? [UserRole.Admin] : []), UserRole.Member],
+      surname: formData.get('surname') as string,
     };
 
     try {
       const user = await client.post<FullUserApi, EnrichedUserApiCreatePayload>('/v1/user', payload);
       navigate('#/admin/users');
       const message = `User ${user.name} ${user.surname} (${user.uid}) created successfully.`;
-      notifier.notify({ text: message, severity: 'success' });
+      notifier.notify({ severity: 'success', text: message });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      notifier.notify({ text: message, severity: 'error' });
+      notifier.notify({ severity: 'error', text: message });
     }
   }
 }

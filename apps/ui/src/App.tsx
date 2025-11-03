@@ -1,11 +1,11 @@
+import { QueryClientProvider } from '@tanstack/react-query';
+import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { SnackbarProvider } from 'notistack';
+import { useRef } from 'react';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider.tsx';
 import { routeTree } from '@/routeTree.gen.ts';
 import { makeQueryClient } from '@/utils/query.ts';
-import { TRPCProvider, makeTrpcClient } from '@/utils/trpc.ts';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { SnackbarProvider } from 'notistack';
-import { useRef } from 'react';
+import { makeTrpcClient, TRPCProvider } from '@/utils/trpc.ts';
 
 const router = createRouter({ routeTree });
 
@@ -16,7 +16,7 @@ export const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+      <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
         <ThemeProvider>
           <SnackbarProvider ref={snackbarRef}>
             <RouterProvider router={router} />

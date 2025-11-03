@@ -1,7 +1,7 @@
-import { Typography } from '@/components/Typography/Typography.tsx';
 import type { User } from '@pk/server/src/entity/User.ts';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { Typography } from '@/components/Typography/Typography.tsx';
 
 export const useUserColumns = () => {
   return useMemo<ColumnDef<User>[]>(

@@ -15,7 +15,7 @@ export const isMatching = <T extends UnknownObject>(
         return false;
       }
 
-      // @ts-ignore: cannot index a generic 'object' type
+      // @ts-expect-error: cannot index a generic 'object' type
       const property = value[key];
 
       const isValid = conditions?.every(condition => condition(property));

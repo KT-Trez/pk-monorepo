@@ -1,8 +1,8 @@
 .FullPage-root {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  height: 100dvh;
   width: 100dvw;
+  height: 100dvh;
 }
 
 @media (max-width: 600px) {

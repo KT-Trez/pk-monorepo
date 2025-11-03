@@ -3,7 +3,7 @@ import { Severity } from '@pk/utils/Logger/types.js';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import { logger } from './components/logger/logger.ts';
 import { createContext } from './context.ts';
-import { AppDataSource } from './data-source.ts';
+import { AppDataSource } from './dataSource.ts';
 import { EnrichedCalendarRepository } from './repositories/EnrichedCalendarRepository.ts';
 import { EnrichedSessionRepository } from './repositories/EnrichedSessionRepository.ts';
 import { EnrichedUserRepository } from './repositories/EnrichedUserRepository.ts';

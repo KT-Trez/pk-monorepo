@@ -1,6 +1,6 @@
-import { TableCell, TableRow } from '@/components/ui/table.tsx';
-import { flexRender } from '@tanstack/react-table';
 import type { Table as ITable } from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
+import { TableCell, TableRow } from '@/components/ui/table.tsx';
 
 type TableBodyDataProps<TData> = {
   table: ITable<TData>;
@@ -8,7 +8,7 @@ type TableBodyDataProps<TData> = {
 
 export const TableBodyData = <TData,>({ table }: TableBodyDataProps<TData>) => {
   return table.getRowModel().rows.map(row => (
-    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+    <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
       {row.getVisibleCells().map(cell => (
         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
       ))}

@@ -112,7 +112,7 @@ export class AccountPage extends BaseComponent {
     const repeatPassword = <string>formData.get('repeatedPassword');
 
     if (password && password !== repeatPassword) {
-      notifier.notify({ text: 'Password* must match the Repeated password*', severity: 'error' });
+      notifier.notify({ severity: 'error', text: 'Password* must match the Repeated password*' });
       return false;
     }
 

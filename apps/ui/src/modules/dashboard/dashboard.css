@@ -1,8 +1,8 @@
 .Dashboard-root {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  height: calc(100dvh - var(--topbar-height));
   width: 100%;
+  height: calc(100dvh - var(--topbar-height));
 }
 
 .Dashboard-main {

@@ -1,6 +1,4 @@
 :root {
-  color-scheme: dark;
-
   --color-primary: #77a43f;
 
   --color-background: #333333;
@@ -68,4 +66,6 @@
   --text-button-text-transform: uppercase;
   --text-caption-font-size: 0.75rem; /* 12px */
   --text-caption-font-weight: 400;
+
+  color-scheme: dark;
 }

@@ -1,10 +1,8 @@
 {
-  "extends": "@pk/ts-config/src/tsconfig.node.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "src"
-  ]
+  "extends": "@pk/ts-config/src/tsconfig.node.json",
+  "include": ["src"]
 }

@@ -1,6 +1,6 @@
-import type { SideNavConfig } from '@/components/SideNav/types.ts';
 import type { FileRoutesByPath } from '@tanstack/react-router';
 import { useMemo } from 'react';
+import type { SideNavConfig } from '@/components/SideNav/types.ts';
 
 export const useSideNavConfig = () => {
   return useMemo<SideNavConfig<keyof FileRoutesByPath>>(

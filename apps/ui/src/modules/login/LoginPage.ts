@@ -61,7 +61,7 @@ export class LoginPage extends BaseComponent {
       navigate('#/home/events');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      notifier.notify({ text: message, severity: 'error' });
+      notifier.notify({ severity: 'error', text: message });
     }
   }
 }

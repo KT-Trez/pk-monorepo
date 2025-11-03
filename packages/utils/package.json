@@ -6,11 +6,15 @@
     "@pk/ts-config": "*"
   },
   "exports": {
+    "./cookies.js": "./src/cookies.ts",
+    "./exhaustiveCheck.js": "./src/exhaustiveCheck.ts",
+    "./keyBy.js": "./src/keyBy.ts",
     "./Logger/createDefaultLogger.js": "./src/Logger/createDefaultLogger.ts",
     "./Logger/Logger.js": "./src/Logger/Logger.ts",
     "./Logger/LoggerBuilder.js": "./src/Logger/LoggerBuilder.ts",
     "./Logger/LoggerConsoleTransport.js": "./src/Logger/LoggerConsoleTransport.ts",
     "./Logger/types.js": "./src/Logger/types.ts",
+    "./noop.js": "./src/noop.ts",
     "./permissions/permissionsByRole.js": "./src/permissions/permissionsByRole.ts",
     "./permissions/types.js": "./src/permissions/types.ts",
     "./regexes/email.js": "./src/regexes/email.ts",
@@ -21,8 +25,8 @@
     "./valueValidator/isEmpty.js": "./src/valueValidator/isEmpty.ts",
     "./valueValidator/isEqual.js": "./src/valueValidator/isEqual.ts",
     "./valueValidator/isGreaterOrEqualThan.js": "./src/valueValidator/isGreaterOrEqualThan.ts",
-    "./valueValidator/isMapMatching.js": "./src/valueValidator/isMapMatching.ts",
     "./valueValidator/isLessOrEqualThan.js": "./src/valueValidator/isLessOrEqualThan.ts",
+    "./valueValidator/isMapMatching.js": "./src/valueValidator/isMapMatching.ts",
     "./valueValidator/isMatching.js": "./src/valueValidator/isMatching.ts",
     "./valueValidator/isNull.js": "./src/valueValidator/isNull.ts",
     "./valueValidator/isNumber.js": "./src/valueValidator/isNumber.ts",
@@ -30,11 +34,7 @@
     "./valueValidator/isString.js": "./src/valueValidator/isString.ts",
     "./valueValidator/isUUID.js": "./src/valueValidator/isUUID.ts",
     "./valueValidator/not.js": "./src/valueValidator/not.ts",
-    "./valueValidator/optional.js": "./src/valueValidator/optional.ts",
-    "./cookies.js": "./src/cookies.ts",
-    "./exhaustiveCheck.js": "./src/exhaustiveCheck.ts",
-    "./keyBy.js": "./src/keyBy.ts",
-    "./noop.js": "./src/noop.ts"
+    "./valueValidator/optional.js": "./src/valueValidator/optional.ts"
   },
   "name": "@pk/utils",
   "scripts": {

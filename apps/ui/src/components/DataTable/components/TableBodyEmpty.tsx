@@ -8,7 +8,7 @@ type TableBodyLoadingProps = {
 export const TableBodyEmpty = ({ columnsLength }: TableBodyLoadingProps) => {
   return (
     <TableRow>
-      <TableCell colSpan={columnsLength} className="h-24 text-center">
+      <TableCell className="h-24 text-center" colSpan={columnsLength}>
         <Typography variant="muted"> No results.</Typography>
       </TableCell>
     </TableRow>

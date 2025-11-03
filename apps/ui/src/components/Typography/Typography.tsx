@@ -1,7 +1,7 @@
+import type { FC, ReactNode } from 'react';
 import { typographyClassName, typographyComponent } from '@/components/Typography/constants.ts';
 import { type TypographyVariant, typographyVariant } from '@/components/Typography/types.ts';
 import { cn } from '@/lib/utils.ts';
-import type { FC, ReactNode } from 'react';
 
 type TypographyProps<TComponentProps> = {
   Component?: FC<TComponentProps>;

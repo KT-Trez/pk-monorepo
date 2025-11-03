@@ -128,14 +128,14 @@ export class EventFormPage extends BaseComponent {
     const endDate = new Date(endDateString);
 
     if (startDate >= endDate) {
-      notifier.notify({ text: 'Start date must be before end date.', severity: 'error' });
+      notifier.notify({ severity: 'error', text: 'Start date must be before end date.' });
       return false;
     }
 
     const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
     const endDateOnly = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
     if (startDateOnly.getTime() !== endDateOnly.getTime()) {
-      notifier.notify({ text: 'Events cannot span multiple days.', severity: 'error' });
+      notifier.notify({ severity: 'error', text: 'Events cannot span multiple days.' });
       return false;
     }
 

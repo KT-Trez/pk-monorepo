@@ -55,10 +55,10 @@ export class CalendarFormPage extends BaseComponent {
 
       navigate('#/home/calendars');
       const message = `Calendar ${calendar.name} (${calendar.uid}) created successfully.`;
-      notifier.notify({ text: message, severity: 'success' });
+      notifier.notify({ severity: 'success', text: message });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create calendar';
-      notifier.notify({ text: message, severity: 'error' });
+      notifier.notify({ severity: 'error', text: message });
     }
   }
 }

@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { EMPTY_ARRAY } from '@/constants/fallback.ts';
 import { useTRPC } from '@/utils/trpc.ts';
-import { useQuery } from '@tanstack/react-query';
 
 export const useUsersFetch = () => {
   const trpc = useTRPC();

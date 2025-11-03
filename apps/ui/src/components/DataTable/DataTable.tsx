@@ -1,8 +1,8 @@
+import type { Table as ITable } from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 import { TableBodySection } from '@/components/DataTable/components/TableBodySection.tsx';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils.ts';
-import { flexRender } from '@tanstack/react-table';
-import type { Table as ITable } from '@tanstack/react-table';
 
 type DataTableProps<TData> = {
   className?: string;

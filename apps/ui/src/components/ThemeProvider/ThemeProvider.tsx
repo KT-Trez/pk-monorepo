@@ -1,5 +1,5 @@
-import { type ThemeProviderState, type ThemeVariant, themeVariant } from '@/components/ThemeProvider/types.ts';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { type ThemeProviderState, type ThemeVariant, themeVariant } from '@/components/ThemeProvider/types.ts';
 import { ThemeProviderContext } from './context.tsx';
 
 type ThemeProviderProps = {
@@ -34,11 +34,11 @@ export const ThemeProvider = ({
 
   const value = useMemo<ThemeProviderState>(
     () => ({
-      theme,
       setTheme: theme => {
         localStorage.setItem(storageKey, theme);
         setTheme(theme);
       },
+      theme,
     }),
     [storageKey, theme],
   );

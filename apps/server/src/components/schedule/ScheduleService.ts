@@ -1,13 +1,13 @@
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
+import type { ClassInfo } from '@pk/timetable-parser-core/classInfo.js';
 import { ObjectCollectorStream } from '@pk/timetable-parser-core/ObjectCollectorStream.js';
 import { XlsBufferReaderStream } from '@pk/timetable-parser-core/XlsBufferReaderStream.js';
 import { XlsScheduleDownloader } from '@pk/timetable-parser-core/XlsScheduleDownloader.js';
 import { XlsScheduleParserStream } from '@pk/timetable-parser-core/XlsScheduleParserStream.js';
-import type { ClassInfo } from '@pk/timetable-parser-core/classInfo.js';
 import type { FullUserApi } from '@pk/types/user.js';
-import { Severity } from '@pk/utils/Logger/types.js';
 import { keyBy } from '@pk/utils/keyBy.js';
+import { Severity } from '@pk/utils/Logger/types.js';
 import cron from 'node-cron';
 import type { PoolClient } from 'pg';
 import { enrichedCalendarRepository, enrichedUserRepository, eventRepository } from '../../main.ts';
@@ -57,8 +57,8 @@ export class ScheduleService extends BaseService {
 
     await new XlsScheduleDownloader({
       downloadPath: TEMP_DOWNLOAD_PATH,
-      logger,
       httpPageOrigin: SCHEDULE_ORIGIN,
+      logger,
     }).load();
 
     logger.log({ message: 'Schedule downloaded', severity: Severity.Success });
