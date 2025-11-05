@@ -2,7 +2,7 @@ import type { EnrichedCalendarApi } from '@pk/types/calendar.js';
 import { DateCell } from '../../../../components/Table/cells/DateCell.ts';
 import { NameCell } from '../../../../components/Table/cells/NameCell.ts';
 import { VisibilityCell, VisibilityType } from '../../../../components/Table/cells/VisibilityCell.ts';
-import type { ColumnDefinition } from '../../../../components/Table/types.ts';
+import type { ColumnDefinition } from '../../../../components/Table/validationSchema.ts';
 import { Typography } from '../../../../components/Typography/Typography.ts';
 
 export const useCalendarTableColumns = (): ColumnDefinition<EnrichedCalendarApi>[] => {

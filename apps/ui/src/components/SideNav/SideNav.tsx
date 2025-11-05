@@ -10,9 +10,9 @@ type SideNavProps<T extends string> = {
 
 export const SideNav = <T extends string>({ className, config }: SideNavProps<T>) => {
   return (
-    <div className={cn('p-4 pr-2', className)}>
+    <div className={cn('p-4', className)}>
       <Card className="h-full w-full">
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-4 px-4">
           {config.map(category => (
             <SideNavCategory category={category} key={category.name} />
           ))}

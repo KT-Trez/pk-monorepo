@@ -4,7 +4,7 @@ import {
   type EnrichedCalendarApi,
   type EnrichedCalendarShareApiPayload,
 } from '@pk/types/calendar.js';
-import { type RowAction, RowActionVariant } from '../../../../components/Table/types.ts';
+import { type RowAction, RowActionVariant } from '../../../../components/Table/validationSchema.ts';
 import { client, sessionService } from '../../../../main.ts';
 import type { SetState } from '../../../../types/useState.ts';
 import { withNotification } from '../../../../utils/withNotification.ts';

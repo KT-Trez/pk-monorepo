@@ -1,4 +1,4 @@
-import type { ListPageAction } from '../../../../components/PageContent/types.ts';
+import type { ListPageAction } from '../../../../components/PageContent/validationSchema.ts';
 import { navigate } from '../../../../utils/navigate.ts';
 
 export const useEventPageActions = (scrollToUpcomingEvents: () => void): ListPageAction[] => {

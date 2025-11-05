@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { Typography } from '@/components/Typography/Typography.tsx';
 
-export const useUserColumns = () => {
+export const useUserListColumns = () => {
   return useMemo<ColumnDef<User>[]>(
     () => [
       {

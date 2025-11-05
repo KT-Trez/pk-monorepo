@@ -1,5 +1,5 @@
 import type { EnrichedCalendarApi } from '@pk/types/calendar.js';
-import type { ListPageAction } from '../../../../components/PageContent/types.ts';
+import type { ListPageAction } from '../../../../components/PageContent/validationSchema.ts';
 import { sessionService } from '../../../../main.ts';
 import type { SetState } from '../../../../types/useState.ts';
 import { navigate } from '../../../../utils/navigate.ts';

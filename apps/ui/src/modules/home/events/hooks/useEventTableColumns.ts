@@ -1,5 +1,5 @@
 import { EventsCell } from '../../../../components/Table/cells/EventsCell.ts';
-import type { ColumnDefinition } from '../../../../components/Table/types.ts';
+import type { ColumnDefinition } from '../../../../components/Table/validationSchema.ts';
 import type { EventsGroupedByDay } from '../types.ts';
 
 export const useEventTableColumns = (onDelete: () => void): ColumnDefinition<EventsGroupedByDay>[] => {

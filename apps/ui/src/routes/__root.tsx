@@ -1,19 +1,20 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { SideNav } from '@/components/SideNav/SideNav.tsx';
-import { useSideNavConfig } from '@/hooks/useSideNavConfig.ts';
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
+import type { AuthProviderState } from '@/components/AuthProvider/types.ts';
+import { TopBar } from '@/components/TopBar/TopBar.tsx';
 
-export const Route = createRootRoute({ component: RootLayout });
+type RouterContext = {
+  auth: AuthProviderState;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootLayout,
+});
 
 function RootLayout() {
-  const sideNavConfig = useSideNavConfig();
-
   return (
-    <div className="grid grid-cols-12 h-screen">
-      <SideNav className="col-span-2" config={sideNavConfig} />
-
-      <div className="col-span-10">
-        <Outlet />
-      </div>
+    <div className="grid grid-cols-12  grid-rows-[auto_1fr] h-screen">
+      <TopBar className="pb-2" />
+      <Outlet />
     </div>
   );
 }
