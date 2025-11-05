@@ -1,3 +1,4 @@
+import type { BaseModelApi } from './model.js';
 import type { FullUserApi } from './user.js';
 
 export type EnrichedSessionApi = {
@@ -10,4 +11,8 @@ export type EnrichedSessionApi = {
 export type SessionApiCreatePayload = {
   email: string;
   password: string;
+};
+
+export type SessionApi = BaseModelApi & {
+  expiresAt: Date;
 };

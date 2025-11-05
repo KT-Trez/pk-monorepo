@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { Base } from './Base.ts';
 import { Calendar } from './Calendar.ts';
 import { User } from './User.ts';
 
 @Entity()
-export class Event {
+export class Event extends Base {
   @ManyToOne(
     () => User,
     user => user.events,
@@ -16,27 +17,18 @@ export class Event {
   )
   calendar!: Calendar;
 
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: string;
-
   @Column('varchar', { nullable: true })
   description!: string;
 
   @Column('timestamptz', { default: () => "(NOW() + '01:00:00'::INTERVAL)", nullable: false })
-  endDateTime!: string;
+  endDateTime!: Date;
 
   @Column('varchar', { nullable: false })
   location!: string;
-
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: string;
 
   @Column('varchar', { nullable: false })
   name!: string;
 
   @Column('timestamptz', { default: () => 'NOW()', nullable: false })
-  startDateTime!: string;
-
-  @PrimaryGeneratedColumn('uuid')
-  uid!: string;
+  startDateTime!: Date;
 }

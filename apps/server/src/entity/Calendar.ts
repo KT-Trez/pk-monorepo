@@ -1,17 +1,15 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, type Relation } from 'typeorm';
+import { Base } from './Base.ts';
 import { Event } from './Event.ts';
 import { User } from './User.ts';
 
 @Entity()
-export class Calendar {
+export class Calendar extends Base {
   @ManyToOne(
     () => User,
     user => user.calendars,
   )
   author!: User;
-
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: string;
 
   @OneToMany(
     () => Event,
@@ -22,12 +20,6 @@ export class Calendar {
   @Column('boolean', { default: false, nullable: false })
   isPublic!: boolean;
 
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: string;
-
   @Column('varchar', { nullable: false })
   name!: string;
-
-  @PrimaryGeneratedColumn('uuid')
-  uid!: string;
 }

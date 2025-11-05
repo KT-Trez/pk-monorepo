@@ -1,20 +1,19 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
+import type { UserApi } from '@pk/types/user.js';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, type Relation } from 'typeorm';
+import { Base } from './Base.ts';
 import { Calendar } from './Calendar.ts';
 import { Event } from './Event.ts';
 import { UserRole } from './UserRole.ts';
 
 @Entity()
-export class User {
+export class User extends Base implements UserApi {
   @OneToMany(
     () => Calendar,
     calendar => calendar.author,
   )
   calendars!: Relation<Calendar[]>;
 
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  createdAt!: string;
-
-  @Column('varchar', { nullable: false })
+  @Column('varchar', { nullable: false, unique: true })
   email!: string;
 
   @OneToMany(
@@ -22,9 +21,6 @@ export class User {
     event => event.author,
   )
   events!: Relation<Event[]>;
-
-  @Column('timestamp', { default: () => 'NOW()', nullable: false })
-  modifiedAt!: string;
 
   @Column('varchar', { nullable: false })
   name!: string;
@@ -38,7 +34,4 @@ export class User {
 
   @Column('varchar', { nullable: false })
   surname!: string;
-
-  @PrimaryGeneratedColumn('uuid')
-  uid!: string;
 }

@@ -1,4 +1,14 @@
 import type { ConstValues } from './helpers.js';
+import type { BaseModelApi } from './model.js';
+
+export type UserApi = BaseModelApi & {
+  // calendars: CalendarApi[];
+  email: string;
+  // events: EventApi[];
+  name: string;
+  // roles: UserRoles[];
+  surname: string;
+};
 
 export type FullUserApi = {
   createdAt: string;
