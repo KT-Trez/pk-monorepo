@@ -16,9 +16,9 @@ export const ListPage = ({ actions, children }: ListPageProps) => {
       {actions && (
         <div className="col-span-2">
           <Card className="h-full">
-            <CardContent>
+            <CardContent className="px-4">
               {actions.map(action => (
-                <Button className="uppercase w-full" key={action.label} onClick={action.onClick}>
+                <Button className="w-full" key={action.label} onClick={action.onClick}>
                   {action.label}
                 </Button>
               ))}

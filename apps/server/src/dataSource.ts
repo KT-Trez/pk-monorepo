@@ -8,15 +8,15 @@ import { UserAuth } from './entity/UserAuth.ts';
 import { UserRole } from './entity/UserRole.ts';
 
 export const AppDataSource = new DataSource({
-  database: 'test',
+  database: process.env.POSTGRES_DB,
   entities: [Calendar, Event, Session, User, UserAuth, UserRole],
-  host: 'localhost',
+  host: process.env.POSTGRES_HOST,
   logging: false,
   migrations: [],
-  password: 'test',
+  password: process.env.POSTGRES_PASSWORD,
   port: 5432,
   subscribers: [],
   synchronize: true,
   type: 'postgres',
-  username: 'test',
+  username: process.env.POSTGRES_USER,
 });

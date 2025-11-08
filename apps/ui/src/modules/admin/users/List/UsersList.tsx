@@ -7,8 +7,6 @@ export const UsersList = () => {
   const columns = useUserListColumns();
   const { data, isLoading } = useUsersFetch();
 
-  console.log(data);
-
   const table = useReactTable({
     columns,
     data,

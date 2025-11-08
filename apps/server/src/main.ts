@@ -31,16 +31,22 @@ export const fullUserRepository = new FullUserRepository();
 // .registerService(new ScheduleService())
 // .listen(5000);
 
-const PORT = process.env.PORT || 5000;
+const TRPC_PORT = process.env.PORT || 5000;
 
 AppDataSource.initialize()
+  .then(() => {
+    const db = process.env.POSTGRES_DB;
+    const host = process.env.POSTGRES_HOST;
+
+    logger.log({ message: `Connected to database (address="${host}:5432", db="${db}")`, severity: Severity.Success });
+  })
   .then(() => {
     const server = createHTTPServer({
       createContext,
       router: appRouter,
     });
-    server.listen({ port: PORT });
+    server.listen({ port: TRPC_PORT });
 
-    logger.log({ message: `Server is listening on port: "${PORT}"`, severity: Severity.Success });
+    logger.log({ message: `Started tRPC server (port=${TRPC_PORT})`, severity: Severity.Success });
   })
-  .catch(error => logger.log({ message: `Failed to initialize DataSource: ${error}`, severity: Severity.Error }));
+  .catch(error => logger.log({ message: `Connection failed: ${error}`, severity: Severity.Error }));

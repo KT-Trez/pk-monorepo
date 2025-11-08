@@ -10,7 +10,7 @@ export const makeQueryClient = ({ onError }: MakeQueryClientParameters) => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        retry: 3,
+        retry: false,
       },
     },
     mutationCache: new MutationCache({

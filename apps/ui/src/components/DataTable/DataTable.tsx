@@ -1,8 +1,8 @@
 import type { Table as ITable } from '@tanstack/react-table';
-import { flexRender } from '@tanstack/react-table';
 import { TableBodySection } from '@/components/DataTable/components/TableBodySection.tsx';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableHeader } from '@/components/ui/table';
 import { cn } from '@/lib/utils.ts';
+import { TableHeaderSection } from './components/TableHeaderSection.tsx';
 
 type DataTableProps<TData> = {
   className?: string;
@@ -15,17 +15,7 @@ export const DataTable = <TData,>({ className, isLoading, table }: DataTableProp
     <div className={cn('overflow-hidden rounded-md border ', className)}>
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
+          <TableHeaderSection isLoading={isLoading} table={table} />
         </TableHeader>
         <TableBody>
           <TableBodySection isLoading={isLoading} table={table} />

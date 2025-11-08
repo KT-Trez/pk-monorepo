@@ -1,10 +1,10 @@
 import type { SessionApi } from '@pk/types/session.js';
 import { useMutation } from '@tanstack/react-query';
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo } from 'react';
 import { AuthProviderContext } from '@/components/AuthProvider/context.ts';
 import type { AuthProviderState } from '@/components/AuthProvider/types.ts';
 import { useSessionStorage } from '../../hooks/useSessionStorage.ts';
-import { useTRPC } from '../../utils/trpc.ts';
+import { setAuthorizationHeader, useTRPC } from '../../utils/trpc.ts';
 import { sessionSessionStorageKey } from './constants.ts';
 
 type AuthProviderProps = {
@@ -42,6 +42,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }),
     [isPending, mutateAsync, session, setSession],
   );
+
+  useEffect(() => {
+    setAuthorizationHeader(session?.uid ? `Bearer ${session.uid}` : undefined);
+  }, [session?.uid]);
 
   return <AuthProviderContext value={value}>{children}</AuthProviderContext>;
 };

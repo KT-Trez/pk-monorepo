@@ -1,4 +1,5 @@
 import type { CreateHTTPContextOptions } from '@trpc/server/adapters/standalone';
+import { MoreThan } from 'typeorm';
 import { AppDataSource } from './dataSource.ts';
 import { Session } from './entity/Session.ts';
 
@@ -15,7 +16,7 @@ export const createContext = async (opts: CreateHTTPContextOptions) => {
   const sessionRepository = AppDataSource.getRepository(Session);
 
   return {
-    session: await sessionRepository.findOneBy({ uid: token }),
+    session: await sessionRepository.findOneBy({ expiresAt: MoreThan(new Date()), uid: token }),
   };
 };
 
