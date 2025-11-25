@@ -33,8 +33,8 @@ export type EnrichedUserApiUpdatePayload = Partial<EnrichedUserApiCreatePayload>
   uid: FullUserApi['uid'];
 };
 
-export const UserRole = {
+export const UserRoleEnum = {
   Admin: 'admin',
   Member: 'member',
 } as const;
-export type UserRoles = ConstValues<typeof UserRole>;
+export type UserRoles = ConstValues<typeof UserRoleEnum>;

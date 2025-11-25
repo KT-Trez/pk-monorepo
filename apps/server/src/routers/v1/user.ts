@@ -1,9 +1,10 @@
+import { UserRoleEnum } from '@pk/types/user.js';
 import { z } from 'zod';
 import { AppDataSource } from '../../dataSource.ts';
 import { User } from '../../entity/User.ts';
 import { UserAuth } from '../../entity/UserAuth.ts';
+import { UserRole } from '../../entity/UserRole.ts';
 import { protectedProcedure, router } from '../../trpc.ts';
-import { HashUtilities } from '../../utils/Hash.ts';
 
 export const userRouter = router({
   createUser: protectedProcedure
@@ -23,21 +24,20 @@ export const userRouter = router({
     )
     .mutation(async ({ input }) => {
       return await AppDataSource.transaction('READ UNCOMMITTED', async entityManager => {
-        const userRepository = entityManager.getRepository(User);
         const userAuthRepository = entityManager.getRepository(UserAuth);
+        const userRepository = entityManager.getRepository(User);
+        const userRoleRepository = entityManager.getRepository(UserRole);
 
-        const salt = HashUtilities.generateSalt();
-        const passwordHash = await HashUtilities.hashPassword(input.password, salt);
+        const memberRole = await userRoleRepository.findOneByOrFail({ id: UserRoleEnum.Member });
 
-        const newUser = new User();
-        newUser.email = input.email;
-        newUser.name = input.name;
-        newUser.surname = input.surname;
+        const newUser = User.create({
+          email: input.email,
+          name: input.name,
+          roles: [memberRole],
+          surname: input.surname,
+        });
 
-        const newUserAuth = new UserAuth();
-        newUserAuth.password = passwordHash;
-        newUserAuth.salt = salt;
-        newUserAuth.user = newUser;
+        const newUserAuth = await UserAuth.create({ password: input.password, user: newUser });
 
         const user = await userRepository.save(newUser);
         await userAuthRepository.save(newUserAuth);
@@ -53,6 +53,6 @@ export const userRouter = router({
   userList: protectedProcedure.query(() => {
     const userRepository = AppDataSource.getRepository(User);
 
-    return userRepository.find();
+    return userRepository.find({ relations: { roles: true } });
   }),
 });

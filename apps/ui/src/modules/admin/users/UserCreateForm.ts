@@ -1,4 +1,4 @@
-import { type EnrichedUserApiCreatePayload, type FullUserApi, UserRole } from '@pk/types/user.js';
+import { type EnrichedUserApiCreatePayload, type FullUserApi, UserRoleEnum } from '@pk/types/user.js';
 import { BaseComponent } from '../../../components/BaseComponent/BaseComponent.ts';
 import { Checkbox } from '../../../components/Checkbox/Checkbox.ts';
 import { FormSection } from '../../../components/Form/FormSection.ts';
@@ -66,7 +66,7 @@ export class UserCreateForm extends BaseComponent {
       email: formData.get('email') as string,
       name: formData.get('name') as string,
       password: formData.get('password') as string,
-      roles: [...(formData.get('admin') ? [UserRole.Admin] : []), UserRole.Member],
+      roles: [...(formData.get('admin') ? [UserRoleEnum.Admin] : []), UserRoleEnum.Member],
       surname: formData.get('surname') as string,
     };
 

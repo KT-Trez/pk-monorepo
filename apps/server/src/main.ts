@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Severity } from '@pk/utils/Logger/types.js';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
+import { runSeeders } from 'typeorm-extension';
 import { logger } from './components/logger/logger.ts';
 import { createContext } from './context.ts';
 import { AppDataSource } from './dataSource.ts';
@@ -40,7 +41,9 @@ AppDataSource.initialize()
 
     logger.log({ message: `Connected to database (address="${host}:5432", db="${db}")`, severity: Severity.Success });
   })
-  .then(() => {
+  .then(async () => {
+    await runSeeders(AppDataSource);
+
     const server = createHTTPServer({
       createContext,
       router: appRouter,

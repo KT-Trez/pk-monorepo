@@ -8,6 +8,7 @@
     "reflect-metadata": "^0.2.2",
     "superjson": "^2.2.5",
     "typeorm": "^0.3.27",
+    "typeorm-extension": "^3.7.2",
     "zod": "^4.1.12"
   },
   "devDependencies": {

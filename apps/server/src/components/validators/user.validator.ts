@@ -1,4 +1,4 @@
-import { type EnrichedUserApiCreatePayload, type EnrichedUserApiUpdatePayload, UserRole } from '@pk/types/user.js';
+import { type EnrichedUserApiCreatePayload, type EnrichedUserApiUpdatePayload, UserRoleEnum } from '@pk/types/user.js';
 import { EMAIL_REGEX } from '@pk/utils/regexes/email.js';
 import { isArrayOf } from '@pk/utils/valueValidator/isArrayOf.js';
 import { isEmpty } from '@pk/utils/valueValidator/isEmpty.js';
@@ -17,7 +17,7 @@ export const postUserBodyValidator = new RequestValidatorBuilder()
       email: [isStringMatching(EMAIL_REGEX)],
       name: [isString()],
       password: [isString()],
-      roles: [isArrayOf([UserRole.Admin, UserRole.Member])],
+      roles: [isArrayOf([UserRoleEnum.Admin, UserRoleEnum.Member])],
       surname: [isString()],
     }),
     'must match the "EnrichedUserApiCreatePayload" object shape',
@@ -33,7 +33,7 @@ export const putUserBodyValidator = new RequestValidatorBuilder()
       email: [optional(isStringMatching(EMAIL_REGEX))],
       name: [optional(isString())],
       password: [isString()],
-      roles: [optional(isArrayOf([UserRole.Admin, UserRole.Member]))],
+      roles: [optional(isArrayOf([UserRoleEnum.Admin, UserRoleEnum.Member]))],
       surname: [optional(isString())],
       uid: [isUUID],
     }),

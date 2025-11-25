@@ -21,6 +21,10 @@ export const useUserListColumns = () => {
         accessorKey: 'email',
         header: 'Email',
       },
+      {
+        accessorFn: row => row.roles.map(role => role.name).join(', '),
+        header: 'Roles',
+      },
     ],
     [],
   );

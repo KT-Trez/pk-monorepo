@@ -5,8 +5,25 @@ import { Calendar } from './Calendar.ts';
 import { Event } from './Event.ts';
 import { UserRole } from './UserRole.ts';
 
+type UserCreateOptions = {
+  email: string;
+  name: string;
+  roles: UserRole[];
+  surname: string;
+};
+
 @Entity()
 export class User extends Base implements UserApi {
+  static create(data: UserCreateOptions): User {
+    const user = new User();
+    user.email = data.email;
+    user.name = data.name;
+    user.roles = data.roles;
+    user.surname = data.surname;
+
+    return user;
+  }
+
   @OneToMany(
     () => Calendar,
     calendar => calendar.author,

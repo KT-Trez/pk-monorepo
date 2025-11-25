@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { type FullUserApi, UserRole } from '@pk/types/user.js';
+import { type FullUserApi, UserRoleEnum } from '@pk/types/user.js';
 import { Severity } from '@pk/utils/Logger/types.js';
 import { enrichedUserRepository } from '../../main.ts';
 import { logger } from '../logger/logger.ts';
@@ -10,14 +10,14 @@ export class RegisterToDatabaseService extends BaseService {
   static readonly adminUser: Partial<FullUserApi> = {
     email: 'admin.calendar@pk.edu.pl',
     name: 'Admin',
-    roles: [UserRole.Admin, UserRole.Member],
+    roles: [UserRoleEnum.Admin, UserRoleEnum.Member],
     surname: 'Calendar',
   };
 
   static readonly serviceUser: Partial<FullUserApi> = {
     email: 'api.calendar@pk.edu.pl',
     name: 'API',
-    roles: [UserRole.Admin, UserRole.Member],
+    roles: [UserRoleEnum.Admin, UserRoleEnum.Member],
     surname: 'Calendar',
   };
 

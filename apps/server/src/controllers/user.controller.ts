@@ -2,7 +2,7 @@ import {
   type EnrichedUserApi,
   type EnrichedUserApiCreatePayload,
   type EnrichedUserApiUpdatePayload,
-  UserRole,
+  UserRoleEnum,
 } from '@pk/types/user.js';
 import { Collection } from '../components/response/Collection.ts';
 import { Forbidden } from '../components/response/Forbidden.ts';
@@ -92,7 +92,7 @@ export class UserController extends BaseController {
       return next(new Forbidden(`User is missing permissions to update the user "${uid}"`));
     }
 
-    const isAdmin = req.session.details.user.roles.includes(UserRole.Admin);
+    const isAdmin = req.session.details.user.roles.includes(UserRoleEnum.Admin);
     const isEditingName = payload.name !== undefined || payload.surname !== undefined;
     const isEditingRoles = payload.roles !== undefined;
 
