@@ -20,7 +20,7 @@ export const sessionRouter = router({
       const userRepository = AppDataSource.getRepository(User);
       const userAuthRepository = AppDataSource.getRepository(UserAuth);
 
-      const user = await userRepository.findOneBy({ email: input.email });
+      const user = await userRepository.findOne({ relations: { roles: true }, where: { email: input.email } });
 
       if (!user) {
         throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid email or password' });

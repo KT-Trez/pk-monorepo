@@ -1,4 +1,12 @@
 import type { ConstValues } from './helpers.js';
+import type { BaseModelApi } from './model.js';
+import type { UserApi } from './user.js';
+
+export type CalendarApi = BaseModelApi & {
+  author: UserApi;
+  isPublic: boolean;
+  name: string;
+};
 
 export type EnrichedCalendarApi = {
   authorUid: string;

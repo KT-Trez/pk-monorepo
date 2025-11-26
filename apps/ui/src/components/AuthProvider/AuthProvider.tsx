@@ -1,6 +1,6 @@
 import type { SessionApi } from '@pk/types/session.js';
 import { useMutation } from '@tanstack/react-query';
-import { type ReactNode, useEffect, useMemo } from 'react';
+import { type ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { AuthProviderContext } from '@/components/AuthProvider/context.ts';
 import type { AuthProviderState } from '@/components/AuthProvider/types.ts';
 import { useSessionStorage } from '../../hooks/useSessionStorage.ts';
@@ -23,6 +23,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }),
   );
 
+  const hasRole = useCallback(
+    (role: string): boolean => {
+      if (!session) {
+        return false;
+      }
+
+      return session.user.roles.find(({ id }) => id === role) !== undefined;
+    },
+    [session],
+  );
+
   const value = useMemo<AuthProviderState>(
     () => ({
       getSession: () => {
@@ -32,6 +43,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         return session;
       },
+      hasRole,
       isAuthenticated: session !== null,
       isLoading: isPending,
       login: async (email, password) => mutateAsync({ email, password }),
@@ -40,7 +52,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       },
       session,
     }),
-    [isPending, mutateAsync, session, setSession],
+    [hasRole, isPending, mutateAsync, session, setSession],
   );
 
   useEffect(() => {

@@ -1,12 +1,15 @@
+import type { CalendarApi } from './calendar.js';
 import type { ConstValues } from './helpers.js';
 import type { BaseModelApi } from './model.js';
+import type { UserRoleApi } from './userRole.js';
 
 export type UserApi = BaseModelApi & {
-  // calendars: CalendarApi[];
+  calendars?: CalendarApi[];
   email: string;
   // events: EventApi[];
   name: string;
-  // roles: UserRoles[];
+  // todo: make optional
+  roles: UserRoleApi[];
   surname: string;
 };
 

@@ -14,8 +14,9 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated.settings.account'
 import { Route as AuthenticatedHomeEventsRouteImport } from './routes/_authenticated.home.events'
-import { Route as AuthenticatedHomeCalendarsRouteImport } from './routes/_authenticated.home.calendars'
+import { Route as AuthenticatedHomeCalendarsIndexRouteImport } from './routes/_authenticated.home.calendars.index'
 import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated.admin.users.index'
+import { Route as AuthenticatedHomeCalendarsCreateRouteImport } from './routes/_authenticated.home.calendars.create'
 import { Route as AuthenticatedAdminUsersCreateRouteImport } from './routes/_authenticated.admin.users.create'
 
 const LoginRoute = LoginRouteImport.update({
@@ -43,16 +44,22 @@ const AuthenticatedHomeEventsRoute = AuthenticatedHomeEventsRouteImport.update({
   path: '/home/events',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedHomeCalendarsRoute =
-  AuthenticatedHomeCalendarsRouteImport.update({
-    id: '/home/calendars',
-    path: '/home/calendars',
+const AuthenticatedHomeCalendarsIndexRoute =
+  AuthenticatedHomeCalendarsIndexRouteImport.update({
+    id: '/home/calendars/',
+    path: '/home/calendars/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAdminUsersIndexRoute =
   AuthenticatedAdminUsersIndexRouteImport.update({
     id: '/admin/users/',
     path: '/admin/users/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedHomeCalendarsCreateRoute =
+  AuthenticatedHomeCalendarsCreateRouteImport.update({
+    id: '/home/calendars/create',
+    path: '/home/calendars/create',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAdminUsersCreateRoute =
@@ -65,61 +72,67 @@ const AuthenticatedAdminUsersCreateRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/home/calendars': typeof AuthenticatedHomeCalendarsRoute
   '/home/events': typeof AuthenticatedHomeEventsRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/admin/users/create': typeof AuthenticatedAdminUsersCreateRoute
+  '/home/calendars/create': typeof AuthenticatedHomeCalendarsCreateRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
+  '/home/calendars': typeof AuthenticatedHomeCalendarsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/home/calendars': typeof AuthenticatedHomeCalendarsRoute
   '/home/events': typeof AuthenticatedHomeEventsRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/admin/users/create': typeof AuthenticatedAdminUsersCreateRoute
+  '/home/calendars/create': typeof AuthenticatedHomeCalendarsCreateRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
+  '/home/calendars': typeof AuthenticatedHomeCalendarsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/home/calendars': typeof AuthenticatedHomeCalendarsRoute
   '/_authenticated/home/events': typeof AuthenticatedHomeEventsRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/admin/users/create': typeof AuthenticatedAdminUsersCreateRoute
+  '/_authenticated/home/calendars/create': typeof AuthenticatedHomeCalendarsCreateRoute
   '/_authenticated/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
+  '/_authenticated/home/calendars/': typeof AuthenticatedHomeCalendarsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/login'
-    | '/home/calendars'
     | '/home/events'
     | '/settings/account'
     | '/admin/users/create'
+    | '/home/calendars/create'
     | '/admin/users'
+    | '/home/calendars'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
-    | '/home/calendars'
     | '/home/events'
     | '/settings/account'
     | '/admin/users/create'
+    | '/home/calendars/create'
     | '/admin/users'
+    | '/home/calendars'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
-    | '/_authenticated/home/calendars'
     | '/_authenticated/home/events'
     | '/_authenticated/settings/account'
     | '/_authenticated/admin/users/create'
+    | '/_authenticated/home/calendars/create'
     | '/_authenticated/admin/users/'
+    | '/_authenticated/home/calendars/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,11 +178,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeEventsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/home/calendars': {
-      id: '/_authenticated/home/calendars'
+    '/_authenticated/home/calendars/': {
+      id: '/_authenticated/home/calendars/'
       path: '/home/calendars'
       fullPath: '/home/calendars'
-      preLoaderRoute: typeof AuthenticatedHomeCalendarsRouteImport
+      preLoaderRoute: typeof AuthenticatedHomeCalendarsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/admin/users/': {
@@ -177,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/home/calendars/create': {
+      id: '/_authenticated/home/calendars/create'
+      path: '/home/calendars/create'
+      fullPath: '/home/calendars/create'
+      preLoaderRoute: typeof AuthenticatedHomeCalendarsCreateRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/admin/users/create': {
@@ -190,19 +210,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedHomeCalendarsRoute: typeof AuthenticatedHomeCalendarsRoute
   AuthenticatedHomeEventsRoute: typeof AuthenticatedHomeEventsRoute
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
   AuthenticatedAdminUsersCreateRoute: typeof AuthenticatedAdminUsersCreateRoute
+  AuthenticatedHomeCalendarsCreateRoute: typeof AuthenticatedHomeCalendarsCreateRoute
   AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
+  AuthenticatedHomeCalendarsIndexRoute: typeof AuthenticatedHomeCalendarsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedHomeCalendarsRoute: AuthenticatedHomeCalendarsRoute,
   AuthenticatedHomeEventsRoute: AuthenticatedHomeEventsRoute,
   AuthenticatedSettingsAccountRoute: AuthenticatedSettingsAccountRoute,
   AuthenticatedAdminUsersCreateRoute: AuthenticatedAdminUsersCreateRoute,
+  AuthenticatedHomeCalendarsCreateRoute: AuthenticatedHomeCalendarsCreateRoute,
   AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,
+  AuthenticatedHomeCalendarsIndexRoute: AuthenticatedHomeCalendarsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

@@ -11,6 +11,7 @@
     "./option.js": "./src/option.ts",
     "./session.js": "./src/session.ts",
     "./user.js": "./src/user.ts",
+    "./userRole.js": "./src/userRole.ts",
     "./valueValidator.js": "./src/valueValidator.ts"
   },
   "name": "@pk/types",

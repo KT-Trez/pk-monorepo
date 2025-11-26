@@ -1,13 +1,15 @@
+import type { UserRoles } from '@pk/types/user.js';
+import type { UserRoleApi } from '@pk/types/userRole.js';
 import { Column, Entity, ManyToMany, PrimaryColumn, type Relation } from 'typeorm';
 import { User } from './User.ts';
 
 type UserRoleCreateOptions = {
-  id: string;
+  id: UserRoles;
   name: string;
 };
 
 @Entity()
-export class UserRole {
+export class UserRole implements UserRoleApi {
   static create(data: UserRoleCreateOptions) {
     const userRole = new UserRole();
     userRole.id = data.id;
@@ -17,7 +19,7 @@ export class UserRole {
   }
 
   @PrimaryColumn('varchar', { nullable: false })
-  id!: string;
+  id!: UserRoles;
 
   @Column('varchar', { nullable: false })
   name!: string;

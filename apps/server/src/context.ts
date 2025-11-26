@@ -16,7 +16,17 @@ export const createContext = async (opts: CreateHTTPContextOptions) => {
   const sessionRepository = AppDataSource.getRepository(Session);
 
   return {
-    session: await sessionRepository.findOneBy({ expiresAt: MoreThan(new Date()), uid: token }),
+    session: await sessionRepository.findOne({
+      relations: {
+        user: {
+          roles: true,
+        },
+      },
+      where: {
+        expiresAt: MoreThan(new Date()),
+        uid: token,
+      },
+    }),
   };
 };
 

@@ -1,4 +1,5 @@
 import { UserRoleEnum } from '@pk/types/user.js';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { AppDataSource } from '../../dataSource.ts';
 import { User } from '../../entity/User.ts';
@@ -22,7 +23,7 @@ export const userRouter = router({
           .max(255, { message: 'Surname must be at most 255 characters long' }),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       return await AppDataSource.transaction('READ UNCOMMITTED', async entityManager => {
         const userAuthRepository = entityManager.getRepository(UserAuth);
         const userRepository = entityManager.getRepository(User);
@@ -37,6 +38,10 @@ export const userRouter = router({
           surname: input.surname,
         });
 
+        if (!ctx.session.hasPermission('user', 'read', newUser)) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have permission to create users' });
+        }
+
         const newUserAuth = await UserAuth.create({ password: input.password, user: newUser });
 
         const user = await userRepository.save(newUser);
@@ -45,14 +50,24 @@ export const userRouter = router({
         return user;
       });
     }),
-  userByUid: protectedProcedure.input(z.string()).query(({ input }) => {
+  userByUid: protectedProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOneBy({ uid: input });
 
-    return userRepository.findOneBy({ uid: input });
+    if (!user) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+    }
+
+    if (!ctx.session.hasPermission('user', 'read', user)) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have permission to view this user' });
+    }
+
+    return user;
   }),
-  userList: protectedProcedure.query(() => {
+  userList: protectedProcedure.query(async ({ ctx }) => {
     const userRepository = AppDataSource.getRepository(User);
+    const users = await userRepository.find({ relations: { roles: true } });
 
-    return userRepository.find({ relations: { roles: true } });
+    return users.filter(user => ctx.session.hasPermission('user', 'read', user));
   }),
 });
